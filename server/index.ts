@@ -13,8 +13,8 @@ const port = 3001;
   }
 })();
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello UwU!');
+app.get('/', (_: Request, res: Response) => {
+  res.send('Server is running!');
 });
 
 app.listen(port, () => {
