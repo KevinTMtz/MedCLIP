@@ -1,4 +1,5 @@
-import React, { MouseEvent, useState } from 'react';
+import React from 'react';
+import { MouseEvent, useState } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Route, Switch } from 'react-router';
 import {
@@ -17,15 +18,11 @@ import { AccountCircle } from '@material-ui/icons';
 
 import Homepage from './containers/Homepage';
 import Landingpage from './containers/Landingpage';
+import { styles } from './styles';
+import CreateForm from './containers/cases/CreateForm';
 
-const useStyles = makeStyles((theme: Theme) =>
+const appBarStyles = makeStyles((_: Theme) =>
   createStyles({
-    root: {
-      flexGrow: 1,
-    },
-    menuButton: {
-      marginRight: theme.spacing(2),
-    },
     title: {
       flexGrow: 1,
     },
@@ -33,7 +30,8 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const App = () => {
-  const classes = useStyles();
+  const classesAppBar = appBarStyles();
+  const classes = styles();
 
   // TODO: Check if auth
   const auth = false;
@@ -51,46 +49,53 @@ const App = () => {
 
   return (
     <Router>
-      <div>
-        <AppBar position='static'>
-          <Toolbar variant='dense'>
-            <Typography className={classes.title} variant='h6' color='inherit'>
-              MedCLIP
-            </Typography>
-            {!auth && <Button color='inherit'>Login</Button>}
-            {auth && (
-              <div>
-                <IconButton onClick={handleMenu} color='inherit'>
-                  <AccountCircle />
-                </IconButton>
-                <Menu
-                  anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  open={open}
-                  onClose={handleClose}
-                >
-                  <MenuItem onClick={handleClose}>Profile</MenuItem>
-                  <MenuItem onClick={handleClose}>My account</MenuItem>
-                </Menu>
-              </div>
-            )}
-          </Toolbar>
-        </AppBar>
+      <AppBar position='static'>
+        <Toolbar variant='dense'>
+          <Typography
+            className={classesAppBar.title}
+            variant='h6'
+            color='inherit'
+          >
+            MedCLIP
+          </Typography>
+          {!auth && <Button color='inherit'>Login</Button>}
+          {auth && (
+            <div>
+              <IconButton onClick={handleMenu} color='inherit'>
+                <AccountCircle />
+              </IconButton>
+              <Menu
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={open}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={handleClose}>Profile</MenuItem>
+                <MenuItem onClick={handleClose}>My account</MenuItem>
+              </Menu>
+            </div>
+          )}
+        </Toolbar>
+      </AppBar>
 
+      <div className={classes.rootDiv}>
         <Switch>
           <Route exact path='/home'>
             <Homepage />
           </Route>
           <Route exact path='/'>
             <Landingpage />
+          </Route>
+          <Route exact path='/test'>
+            <CreateForm />
           </Route>
         </Switch>
       </div>
