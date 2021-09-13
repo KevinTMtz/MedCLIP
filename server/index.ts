@@ -4,8 +4,6 @@ import db from './db/connection';
 
 import authRouter from './routers/auth';
 
-import verifyJWT from './middlewares/verifyJWT';
-
 const app = express();
 const port = 3001;
 
@@ -21,7 +19,6 @@ const port = 3001;
 })();
 
 app.use(express.json());
-app.use(verifyJWT);
 
 // Authentication router
 app.use('/auth', authRouter);
