@@ -1,14 +1,10 @@
-import { DataTypes, Model, Optional } from 'sequelize';
+import { DataTypes } from 'sequelize';
 import db from '../connection';
+import IUser from '../interfaces/IUser';
 
-interface UserInterface extends Model {
-  id: number;
-  name: string;
-}
-
-const User = db.define<UserInterface>('User', {
+const User = db.define<IUser>('User', {
   id: {
-    type: DataTypes.UUID,
+    type: DataTypes.INTEGER,
     autoIncrement: true,
     allowNull: false,
     primaryKey: true,
@@ -16,9 +12,16 @@ const User = db.define<UserInterface>('User', {
   },
   name: {
     type: DataTypes.STRING,
+    allowNull: false,
   },
   email: {
     type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
+  password: {
+    type: DataTypes.STRING,
+    allowNull: false,
   },
 });
 
