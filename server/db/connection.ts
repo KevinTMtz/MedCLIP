@@ -1,12 +1,13 @@
 import { Sequelize } from 'sequelize';
+import SERVER from '../config/config';
 
-//TODO: Replace with .env variables
-const db_name = 'medclip_dev';
-const db_username = 'root';
-const db_password = '';
+const host = SERVER.host;
+const db_name = SERVER.db.name;
+const db_username = SERVER.db.username;
+const db_password = SERVER.db.password;
 
 const db = new Sequelize(db_name, db_username, db_password, {
-  host: 'localhost',
+  host: host,
   dialect: 'mysql',
   logging: false,
 });

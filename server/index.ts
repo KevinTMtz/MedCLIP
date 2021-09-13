@@ -12,7 +12,7 @@ const port = 3001;
   try {
     await db.authenticate;
     console.log('Database online');
-    await db.sync({ alter: true }).then(() => console.log('Tables created'));
+    await db.sync().then(() => console.log('Tables created'));
   } catch (error) {
     throw new Error(error as string);
   }

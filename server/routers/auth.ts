@@ -7,6 +7,7 @@ import bcrypt from 'bcrypt';
 
 const router = Router();
 
+// Create new token
 const signJWT = (
   user: IUser,
   callback: (error: Error | null, token: string | null) => void
@@ -14,6 +15,7 @@ const signJWT = (
   let startTime = new Date().getTime();
   let expirationTime = startTime + Number(config.token.expireTime) * 100000;
   expirationTime = Math.floor(expirationTime / 1000);
+
   try {
     jwt.sign(
       {
@@ -49,12 +51,12 @@ router.post('/login', async (req: Request, res: Response) => {
           message: 'The email does not exist!',
         });
       }
-      bcrypt.compare(password, user.password, (error, hash) => {
-        if (error) {
+      bcrypt.compare(password, user.password, (err, hash) => {
+        if (!hash) {
           return res.status(401).json({
             message: 'The email and the password do not match!',
           });
-        } else if (hash) {
+        } else {
           signJWT(user, (error, token) => {
             if (error) {
               return res.status(500).json({
@@ -63,7 +65,7 @@ router.post('/login', async (req: Request, res: Response) => {
               });
             } else if (token) {
               return res.status(200).json({
-                message: 'Auth successful',
+                message: 'Authentication successful',
                 token: token,
                 user: user,
               });
