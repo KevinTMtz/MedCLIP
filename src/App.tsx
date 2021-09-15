@@ -1,7 +1,7 @@
 import React from 'react';
 import { MouseEvent, useState } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { Route, Switch } from 'react-router';
+import { Route, Switch, useHistory } from 'react-router';
 import {
   AppBar,
   createStyles,
@@ -28,12 +28,14 @@ const appBarStyles = makeStyles((_: Theme) =>
     title: {
       flexGrow: 1,
     },
-  }),
+  })
 );
 
 const App = () => {
   const classesAppBar = appBarStyles();
   const classes = styles();
+
+  const history = useHistory();
 
   // TODO: Check if auth
   const auth = false;
@@ -50,20 +52,24 @@ const App = () => {
   };
 
   return (
-    <Router>
-      <AppBar position='static'>
-        <Toolbar variant='dense'>
+    <div>
+      <AppBar position="static">
+        <Toolbar variant="dense">
           <Typography
             className={classesAppBar.title}
-            variant='h6'
-            color='inherit'
+            variant="h6"
+            color="inherit"
           >
             MedCLIP
           </Typography>
-          {!auth && <Button color='inherit'>Login</Button>}
+          {!auth && (
+            <Button color="inherit" onClick={() => history.push('/login')}>
+              Login
+            </Button>
+          )}
           {auth && (
             <div>
-              <IconButton onClick={handleMenu} color='inherit'>
+              <IconButton onClick={handleMenu} color="inherit">
                 <AccountCircle />
               </IconButton>
               <Menu
@@ -90,24 +96,24 @@ const App = () => {
 
       <div className={classes.rootDiv}>
         <Switch>
-          <Route exact path='/'>
+          <Route exact path="/">
             <Landingpage />
           </Route>
-          <Route exact path='/home'>
+          <Route exact path="/home">
             <Homepage />
           </Route>
-          <Route exact path='/create-case'>
+          <Route exact path="/create-case">
             <CreateCase />
           </Route>
-          <Route exact path='/edit-case'>
+          <Route exact path="/edit-case">
             <EditCase />
           </Route>
-          <Route path='/review-diagnostic'>
+          <Route path="/review-diagnostic">
             <ReviewDiagnostic />
           </Route>
         </Switch>
       </div>
-    </Router>
+    </div>
   );
 };
 
