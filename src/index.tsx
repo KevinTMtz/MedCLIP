@@ -8,6 +8,7 @@ import './styles/index.css';
 import Homepage from './containers/Homepage';
 import Landingpage from './containers/Landingpage';
 import Loginpage from './containers/auth/Loginpage';
+import Registerpage from './containers/auth/Registerpage';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -21,7 +22,7 @@ ReactDOM.render(
           <Loginpage />
         </Route>
         <Route exact path="/register">
-          <div>Register</div>
+          <Registerpage />
         </Route>
         <Route exact path="/">
           <Landingpage />

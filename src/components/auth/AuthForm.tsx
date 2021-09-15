@@ -65,7 +65,7 @@ const AuthForm: React.FC<LoginFormProps | RegisterFormProps> = (
                 Iniciar sesión
               </Button>
               <div onClick={() => history.push('/register')}>
-                ¿No tienes cuenta? Regístrate
+                ¿No tienes una cuenta? Regístrate
               </div>
             </>
           ) : (
@@ -77,7 +77,9 @@ const AuthForm: React.FC<LoginFormProps | RegisterFormProps> = (
               >
                 Registrarse
               </Button>
-              <div>¿Ya tienes cuenta? Inicia sesión</div>
+              <div onClick={() => history.push('/login')}>
+                ¿Ya tienes una cuenta? Inicia sesión
+              </div>
             </>
           )}
         </div>
