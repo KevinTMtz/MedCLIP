@@ -1,6 +1,5 @@
 import React from 'react';
 import { MouseEvent, useState } from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
 import { Route, Switch, useHistory } from 'react-router';
 import {
   AppBar,
@@ -22,6 +21,8 @@ import { styles } from './styles';
 import CreateCase from './containers/cases/CreateCase';
 import ReviewDiagnostic from './containers/diagnostics/ReviewDiagnostic';
 import EditCase from './containers/cases/EditCase';
+import Loginpage from './containers/auth/Loginpage';
+import Registerpage from './containers/auth/Registerpage';
 
 const appBarStyles = makeStyles((_: Theme) =>
   createStyles({
@@ -98,6 +99,12 @@ const App = () => {
         <Switch>
           <Route exact path="/">
             <Landingpage />
+          </Route>
+          <Route exact path="/login">
+            <Loginpage />
+          </Route>
+          <Route exact path="/register">
+            <Registerpage />
           </Route>
           <Route exact path="/home">
             <Homepage />
