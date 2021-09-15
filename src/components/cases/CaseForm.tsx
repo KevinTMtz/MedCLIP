@@ -14,6 +14,7 @@ import {
   MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import { useHistory } from 'react-router';
 
 import { styles } from '../../styles';
 
@@ -39,6 +40,14 @@ const caseFormStyles = makeStyles((_: Theme) =>
       position: 'relative',
       top: '-30px',
     },
+    styledInputImagePreview: {
+      maxWidth: '50%',
+      maxHeight: '300px',
+      marginTop: '16px',
+      '@media (max-width: 600px)': {
+        maxWidth: '90%',
+      },
+    },
   }),
 );
 
@@ -48,7 +57,7 @@ interface PatientCaseData {
 }
 
 interface CaseFormProps {
-  title: string;
+  isEditing: boolean;
   imageFile: File | undefined;
   setImageFile: React.Dispatch<React.SetStateAction<File | undefined>>;
   imageURL: string | undefined;
@@ -61,20 +70,22 @@ const CaseForm = (props: CaseFormProps) => {
   const classesCaseForm = caseFormStyles();
   const classes = styles();
 
+  const history = useHistory();
+
   return (
     <div>
-      <header>
-        <h1>{props.title}</h1>
-      </header>
+      <h1>{props.isEditing ? 'Edit' : 'Create'} case</h1>
+      {/* Add onSubmit validation */}
       <form className={classes.displayRows}>
-        <TextField variant='outlined' label='Case Name' />
+        <TextField variant='outlined' label='Case Name' required />
         <TextField
           label='Case Description'
           multiline
           rows={5}
           variant='outlined'
+          required
         />
-        <TextField variant='outlined' label='Patient Name' />
+        <TextField variant='outlined' label='Patient Name' required />
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <KeyboardDatePicker
             disableToolbar
@@ -89,9 +100,10 @@ const CaseForm = (props: CaseFormProps) => {
                 patientBirthDate: date,
               })
             }
+            required
           />
         </MuiPickersUtilsProvider>
-        <FormControl variant='outlined'>
+        <FormControl variant='outlined' required>
           <InputLabel htmlFor='outlined-age-native-simple'>
             Patient Sex
           </InputLabel>
@@ -110,6 +122,12 @@ const CaseForm = (props: CaseFormProps) => {
             <option value={'Female'}>Female</option>
           </Select>
         </FormControl>
+        <TextField
+          label='Patient Weight (kg)'
+          variant='outlined'
+          type='number'
+          required
+        />
         <label className={classesCaseForm.inputImageLabel}>
           {props.imageFile
             ? `Image file: ${props.imageFile.name}`
@@ -131,16 +149,45 @@ const CaseForm = (props: CaseFormProps) => {
             <img
               alt='Could not display'
               src={props.imageURL}
-              className={classes.styledInputImagePreview}
-            ></img>
+              className={classesCaseForm.styledInputImagePreview}
+            />
           )}
         </label>
 
         <div className={classes.displayRowsButtons}>
-          <Button variant='contained' color='primary'>
-            Make diagnostic
+          <Button
+            type='submit'
+            value='saveAndDiagnostic'
+            variant='contained'
+            color='primary'
+            onClick={() =>
+              history.push({
+                pathname: '/review-diagnostic',
+                state: {
+                  imageURL: props.imageURL,
+                  patientName: 'UwU',
+                  patientBirthDate: new Date(),
+                  patientSex: 'Male',
+                  PatientWeight: '69',
+                },
+              })
+            }
+          >
+            {props.isEditing ? 'Update case' : 'Create case'} &amp; Make
+            diagnostic
           </Button>
-          <Button variant='contained' color='secondary'>
+          <Button
+            variant='contained'
+            value='saveAndDiagnostic'
+            onClick={() => history.push('/home')}
+          >
+            {props.isEditing ? 'Update case' : 'Create case'}
+          </Button>
+          <Button
+            variant='contained'
+            color='secondary'
+            onClick={() => history.push('/home')}
+          >
             Cancel
           </Button>
         </div>

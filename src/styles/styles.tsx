@@ -19,15 +19,5 @@ export const styles = makeStyles((theme: Theme) =>
         marginBottom: theme.spacing(2),
       },
     },
-
-    // Case form & diagnostic
-    styledInputImagePreview: {
-      maxWidth: '50%',
-      maxHeight: '300px',
-      marginTop: '16px',
-      '@media (max-width: 600px)': {
-        maxWidth: '90%',
-      },
-    },
   }),
 );

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import CaseDiagnostic from '../../components/cases/CaseDiagnostic';
+
 import CaseForm from '../../components/cases/CaseForm';
 
 interface PatientCaseData {
@@ -7,10 +7,10 @@ interface PatientCaseData {
   sex: string;
 }
 
-const CreateCaseForm = () => {
+const EditCase = () => {
   const [patientCase, setPatientCase] = useState<PatientCaseData>({
     patientBirthDate: new Date(),
-    sex: 'Male',
+    sex: '',
   });
 
   const [imageFile, setImageFile] = useState<File>();
@@ -19,7 +19,7 @@ const CreateCaseForm = () => {
   return (
     <div>
       <CaseForm
-        title='Create diagnostic'
+        isEditing={true}
         imageFile={imageFile}
         setImageFile={setImageFile}
         imageURL={imageURL}
@@ -31,4 +31,4 @@ const CreateCaseForm = () => {
   );
 };
 
-export default CreateCaseForm;
+export default EditCase;

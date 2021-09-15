@@ -19,7 +19,9 @@ import { AccountCircle } from '@material-ui/icons';
 import Homepage from './containers/Homepage';
 import Landingpage from './containers/Landingpage';
 import { styles } from './styles';
-import CreateForm from './containers/cases/CreateForm';
+import CreateCase from './containers/cases/CreateCase';
+import ReviewDiagnostic from './containers/diagnostics/ReviewDiagnostic';
+import EditCase from './containers/cases/EditCase';
 
 const appBarStyles = makeStyles((_: Theme) =>
   createStyles({
@@ -88,14 +90,20 @@ const App = () => {
 
       <div className={classes.rootDiv}>
         <Switch>
-          <Route exact path='/home'>
-            <Homepage />
-          </Route>
           <Route exact path='/'>
             <Landingpage />
           </Route>
-          <Route exact path='/test'>
-            <CreateForm />
+          <Route exact path='/home'>
+            <Homepage />
+          </Route>
+          <Route exact path='/create-case'>
+            <CreateCase />
+          </Route>
+          <Route exact path='/edit-case'>
+            <EditCase />
+          </Route>
+          <Route path='/review-diagnostic'>
+            <ReviewDiagnostic />
           </Route>
         </Switch>
       </div>
