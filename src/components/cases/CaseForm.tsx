@@ -17,6 +17,8 @@ import DateFnsUtils from '@date-io/date-fns';
 import { useHistory } from 'react-router';
 
 import { styles } from '../../styles';
+import { PatientCaseData } from '../../common';
+import { mergeObjects } from '../../common/utils';
 
 const caseFormStyles = makeStyles((_: Theme) =>
   createStyles({
@@ -51,17 +53,10 @@ const caseFormStyles = makeStyles((_: Theme) =>
   }),
 );
 
-interface PatientCaseData {
-  patientBirthDate: Date | null;
-  sex: string;
-}
-
 interface CaseFormProps {
   isEditing: boolean;
   imageFile: File | undefined;
   setImageFile: React.Dispatch<React.SetStateAction<File | undefined>>;
-  imageURL: string | undefined;
-  setImageURL: React.Dispatch<React.SetStateAction<string | undefined>>;
   patientCase: PatientCaseData;
   setPatientCase: React.Dispatch<React.SetStateAction<PatientCaseData>>;
 }
@@ -72,20 +67,49 @@ const CaseForm = (props: CaseFormProps) => {
 
   const history = useHistory();
 
+  const hangleSetPatientCase = (newValues: any) =>
+    props.setPatientCase(mergeObjects(props.patientCase, newValues));
+
   return (
     <div>
       <h1>{props.isEditing ? 'Edit' : 'Create'} case</h1>
       {/* Add onSubmit validation */}
       <form className={classes.displayRows}>
-        <TextField variant='outlined' label='Case Name' required />
+        <TextField
+          variant='outlined'
+          label='Case Name'
+          required
+          value={props.patientCase.caseName}
+          onChange={(event: React.ChangeEvent<{ value: unknown }>) =>
+            hangleSetPatientCase({
+              caseName: event.target.value as string,
+            })
+          }
+        />
         <TextField
           label='Case Description'
           multiline
           rows={5}
           variant='outlined'
           required
+          value={props.patientCase.caseDescription}
+          onChange={(event: React.ChangeEvent<{ value: unknown }>) =>
+            hangleSetPatientCase({
+              caseDescription: event.target.value as string,
+            })
+          }
         />
-        <TextField variant='outlined' label='Patient Name' required />
+        <TextField
+          variant='outlined'
+          label='Patient Name'
+          required
+          value={props.patientCase.patientName}
+          onChange={(event: React.ChangeEvent<{ value: unknown }>) =>
+            hangleSetPatientCase({
+              patientName: event.target.value as string,
+            })
+          }
+        />
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <KeyboardDatePicker
             disableToolbar
@@ -109,14 +133,14 @@ const CaseForm = (props: CaseFormProps) => {
           </InputLabel>
           <Select
             native
-            value={props.patientCase.sex}
+            label='Patien Sex'
+            value={props.patientCase.patientSex}
             onChange={(event: React.ChangeEvent<{ value: unknown }>) =>
               props.setPatientCase({
                 ...props.patientCase,
-                sex: event.target.value as string,
+                patientSex: event.target.value as string,
               })
             }
-            label='Patien Sex'
           >
             <option value={'Male'}>Male</option>
             <option value={'Female'}>Female</option>
@@ -127,11 +151,17 @@ const CaseForm = (props: CaseFormProps) => {
           variant='outlined'
           type='number'
           required
+          value={props.patientCase.PatientWeight}
+          onChange={(event: React.ChangeEvent<{ value: unknown }>) =>
+            hangleSetPatientCase({
+              PatientWeight: event.target.value as string,
+            })
+          }
         />
         <label className={classesCaseForm.inputImageLabel}>
           {props.imageFile
             ? `Image file: ${props.imageFile.name}`
-            : 'Upload Image'}
+            : 'Upload Medical Image'}
           <input
             type='file'
             accept='image/*'
@@ -142,18 +172,22 @@ const CaseForm = (props: CaseFormProps) => {
                 ? event.target.files[0]
                 : props.imageFile;
               props.setImageFile(newImageFile);
-              props.setImageURL(URL.createObjectURL(newImageFile));
+              props.setPatientCase({
+                ...props.patientCase,
+                imageURL: URL.createObjectURL(newImageFile),
+              });
             }}
           />
           {props.imageFile && (
             <img
               alt='Could not display'
-              src={props.imageURL}
+              src={props.patientCase.imageURL}
               className={classesCaseForm.styledInputImagePreview}
             />
           )}
         </label>
 
+        {/* Actions */}
         <div className={classes.displayRowsButtons}>
           <Button
             type='submit'
@@ -164,11 +198,7 @@ const CaseForm = (props: CaseFormProps) => {
               history.push({
                 pathname: '/review-diagnostic',
                 state: {
-                  imageURL: props.imageURL,
-                  patientName: 'UwU',
-                  patientBirthDate: new Date(),
-                  patientSex: 'Male',
-                  PatientWeight: '69',
+                  ...props.patientCase,
                 },
               })
             }

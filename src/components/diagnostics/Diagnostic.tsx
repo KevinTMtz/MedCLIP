@@ -1,6 +1,7 @@
 import React from 'react';
 import { makeStyles, createStyles, Theme } from '@material-ui/core';
 
+import { PatientCaseData } from '../../common';
 import { styles } from '../../styles';
 
 const diagnosticStyles = makeStyles((_: Theme) =>
@@ -17,31 +18,35 @@ const diagnosticStyles = makeStyles((_: Theme) =>
 );
 
 interface DiagnosticProps {
-  imageURL: string | undefined;
-  patientName: string;
-  patientBirthDate: Date;
-  patientSex: string;
-  PatientWeight: string;
+  patientCaseData: PatientCaseData;
   diagnostic: string;
 }
 
-const Diagnostic = (props: DiagnosticProps) => {
+const Diagnostic: React.FC<DiagnosticProps> = ({
+  patientCaseData,
+  diagnostic,
+}) => {
   const classesDiagnostic = diagnosticStyles();
   const classes = styles();
 
   return (
     <div className={classes.displayRows}>
       <h1>Case Diagnostic</h1>
-      <p>Patient Name: {props.patientName}</p>
-      <p>Patient Birth Date: {props.patientBirthDate.toLocaleString()}</p>
-      <p>Patient Sex: {props.patientSex}</p>
-      <p>Patient Weight: {props.PatientWeight}kg</p>
+      <p>Case Name: {patientCaseData.caseName}</p>
+      <p>Case Description: {patientCaseData.caseDescription}</p>
+      <p>Patient Name: {patientCaseData.patientName}</p>
+      <p>
+        Patient Birth Date: {patientCaseData.patientBirthDate?.toLocaleString()}
+      </p>
+      <p>Patient Sex: {patientCaseData.patientSex}</p>
+      <p>Patient Weight: {patientCaseData.PatientWeight}kg</p>
+      <p>Medical Image:</p>
       <img
         alt='Could not display'
-        src={props.imageURL}
+        src={patientCaseData.imageURL}
         className={classesDiagnostic.image}
       />
-      <p>Diagnostic: {props.diagnostic}</p>
+      <h3>Diagnostic: {diagnostic}</h3>
     </div>
   );
 };

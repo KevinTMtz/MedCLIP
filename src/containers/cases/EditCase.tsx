@@ -1,20 +1,19 @@
 import React, { useState } from 'react';
 
+import { PatientCaseData } from '../../common';
 import CaseForm from '../../components/cases/CaseForm';
 
-interface PatientCaseData {
-  patientBirthDate: Date | null;
-  sex: string;
-}
-
 const EditCase = () => {
-  const [patientCase, setPatientCase] = useState<PatientCaseData>({
-    patientBirthDate: new Date(),
-    sex: '',
-  });
-
   const [imageFile, setImageFile] = useState<File>();
-  const [imageURL, setImageURL] = useState<string>();
+  const [patientCase, setPatientCase] = useState<PatientCaseData>({
+    caseName: 'Brain',
+    caseDescription: 'The patient has headaches',
+    patientName: 'Juan',
+    patientBirthDate: new Date(),
+    patientSex: 'Male',
+    PatientWeight: 69,
+    imageURL: '',
+  });
 
   return (
     <div>
@@ -22,8 +21,6 @@ const EditCase = () => {
         isEditing={true}
         imageFile={imageFile}
         setImageFile={setImageFile}
-        imageURL={imageURL}
-        setImageURL={setImageURL}
         patientCase={patientCase}
         setPatientCase={setPatientCase}
       />
