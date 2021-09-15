@@ -50,7 +50,7 @@ const caseFormStyles = makeStyles((_: Theme) =>
         maxWidth: '90%',
       },
     },
-  }),
+  })
 );
 
 interface CaseFormProps {
@@ -76,8 +76,8 @@ const CaseForm = (props: CaseFormProps) => {
       {/* Add onSubmit validation */}
       <form className={classes.displayRows}>
         <TextField
-          variant='outlined'
-          label='Case Name'
+          variant="outlined"
+          label="Case Name"
           required
           value={props.patientCase.caseName}
           onChange={(event: React.ChangeEvent<{ value: unknown }>) =>
@@ -87,10 +87,10 @@ const CaseForm = (props: CaseFormProps) => {
           }
         />
         <TextField
-          label='Case Description'
+          label="Case Description"
           multiline
           rows={5}
-          variant='outlined'
+          variant="outlined"
           required
           value={props.patientCase.caseDescription}
           onChange={(event: React.ChangeEvent<{ value: unknown }>) =>
@@ -100,8 +100,8 @@ const CaseForm = (props: CaseFormProps) => {
           }
         />
         <TextField
-          variant='outlined'
-          label='Patient Name'
+          variant="outlined"
+          label="Patient Name"
           required
           value={props.patientCase.patientName}
           onChange={(event: React.ChangeEvent<{ value: unknown }>) =>
@@ -113,10 +113,10 @@ const CaseForm = (props: CaseFormProps) => {
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <KeyboardDatePicker
             disableToolbar
-            variant='inline'
-            id='date-picker-inline'
-            label='Patient Date Of Birth'
-            format='MM/dd/yyyy'
+            variant="inline"
+            id="date-picker-inline"
+            label="Patient Date Of Birth"
+            format="MM/dd/yyyy"
             value={props.patientCase.patientBirthDate}
             onChange={(date: Date | null) =>
               props.setPatientCase({
@@ -127,13 +127,13 @@ const CaseForm = (props: CaseFormProps) => {
             required
           />
         </MuiPickersUtilsProvider>
-        <FormControl variant='outlined' required>
-          <InputLabel htmlFor='outlined-age-native-simple'>
+        <FormControl variant="outlined" required>
+          <InputLabel htmlFor="outlined-age-native-simple">
             Patient Sex
           </InputLabel>
           <Select
             native
-            label='Patien Sex'
+            label="Patien Sex"
             value={props.patientCase.patientSex}
             onChange={(event: React.ChangeEvent<{ value: unknown }>) =>
               props.setPatientCase({
@@ -147,9 +147,9 @@ const CaseForm = (props: CaseFormProps) => {
           </Select>
         </FormControl>
         <TextField
-          label='Patient Weight (kg)'
-          variant='outlined'
-          type='number'
+          label="Patient Weight (kg)"
+          variant="outlined"
+          type="number"
           required
           value={props.patientCase.PatientWeight}
           onChange={(event: React.ChangeEvent<{ value: unknown }>) =>
@@ -163,8 +163,8 @@ const CaseForm = (props: CaseFormProps) => {
             ? `Image file: ${props.imageFile.name}`
             : 'Upload Medical Image'}
           <input
-            type='file'
-            accept='image/*'
+            type="file"
+            accept="image/*"
             className={classesCaseForm.styledInputImage}
             required={props.imageFile ? false : true}
             onChange={(event) => {
@@ -180,7 +180,7 @@ const CaseForm = (props: CaseFormProps) => {
           />
           {props.imageFile && (
             <img
-              alt='Could not display'
+              alt="Could not display"
               src={props.patientCase.imageURL}
               className={classesCaseForm.styledInputImagePreview}
             />
@@ -190,10 +190,10 @@ const CaseForm = (props: CaseFormProps) => {
         {/* Actions */}
         <div className={classes.displayRowsButtons}>
           <Button
-            type='submit'
-            value='saveAndDiagnostic'
-            variant='contained'
-            color='primary'
+            type="submit"
+            value="saveAndDiagnostic"
+            variant="contained"
+            color="primary"
             onClick={() =>
               history.push({
                 pathname: '/review-diagnostic',
@@ -207,15 +207,15 @@ const CaseForm = (props: CaseFormProps) => {
             diagnostic
           </Button>
           <Button
-            variant='contained'
-            value='saveAndDiagnostic'
+            variant="contained"
+            value="saveAndDiagnostic"
             onClick={() => history.push('/home')}
           >
             {props.isEditing ? 'Update case' : 'Create case'}
           </Button>
           <Button
-            variant='contained'
-            color='secondary'
+            variant="contained"
+            color="secondary"
             onClick={() => history.push('/home')}
           >
             Cancel

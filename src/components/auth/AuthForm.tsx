@@ -2,24 +2,7 @@ import React from 'react';
 import { Button, TextField } from '@material-ui/core';
 import { useHistory } from 'react-router';
 
-//TODO: De-comment after merging Kevin's branch with the style's file
-//import { styles } from '../../styles';
-/*
-const authFormStyles = makeStyles((theme: Theme) => {
-  createStyles({
-    displayRows: {
-      display: 'flex',
-      flexDirection: 'column',
-      '& > *': {
-        marginBottom: theme.spacing(3),
-      },
-    },
-    inputLabel: {
-      display: 'flex',
-      backgroundColor: 'red',
-    },
-  });
-});*/
+import { styles } from '../../styles';
 
 interface LoginFormProps {
   title: string;
@@ -40,15 +23,14 @@ interface RegisterFormProps extends LoginFormProps {
 const AuthForm: React.FC<LoginFormProps | RegisterFormProps> = (
   props: LoginFormProps | RegisterFormProps
 ) => {
-  //const classesAuthForm = authFormStyles();
-  //TODO: De-comment after merging Kevin's branch with the style's file
-  //const classes = styles();
+  const classes = styles();
+
   const history = useHistory();
   return (
     <div>
       <header>
         <h1>{props.title}</h1>
-        <form style={{ display: 'flex', flexDirection: 'column' }}>
+        <form className={classes.displayRows}>
           {props.type === 'register' && (
             <TextField variant="outlined" label="Nombre:" />
           )}
@@ -58,15 +40,22 @@ const AuthForm: React.FC<LoginFormProps | RegisterFormProps> = (
             <TextField variant="outlined" label="Confirmar contraseña:" />
           )}
         </form>
-        <div>
+        <div className={classes.displayRowsButtons}>
           {props.type === 'login' ? (
             <>
-              <Button variant="contained" color="primary">
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => history.push('/homepage')}
+              >
                 Iniciar sesión
               </Button>
-              <div onClick={() => history.push('/register')}>
+              <Button
+                variant="contained"
+                onClick={() => history.push('/register')}
+              >
                 ¿No tienes una cuenta? Regístrate
-              </div>
+              </Button>
             </>
           ) : (
             <>
@@ -77,11 +66,17 @@ const AuthForm: React.FC<LoginFormProps | RegisterFormProps> = (
               >
                 Registrarse
               </Button>
-              <div onClick={() => history.push('/login')}>
+              <Button
+                variant="contained"
+                onClick={() => history.push('/login')}
+              >
                 ¿Ya tienes una cuenta? Inicia sesión
-              </div>
+              </Button>
             </>
           )}
+          <Button variant="outlined" onClick={() => history.push('/')}>
+            Cancelar
+          </Button>
         </div>
       </header>
     </div>

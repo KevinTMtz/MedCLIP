@@ -9,7 +9,7 @@ const Registerpage: React.FC = () => {
   return (
     <div>
       <AuthForm
-        title="Login"
+        title="Registro"
         type="register"
         name={name}
         setName={setName}
