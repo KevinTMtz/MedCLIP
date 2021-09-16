@@ -26,7 +26,7 @@ const caseFormStyles = makeStyles((_: Theme) =>
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      padding: '16px 16px',
+      padding: '16px',
       cursor: 'pointer',
       textAlign: 'center',
       width: 'calc(100% - 34px)',
@@ -46,6 +46,7 @@ const caseFormStyles = makeStyles((_: Theme) =>
       maxWidth: '50%',
       maxHeight: '300px',
       marginTop: '16px',
+      borderRadius: '4px',
       '@media (max-width: 600px)': {
         maxWidth: '90%',
       },
@@ -207,7 +208,8 @@ const CaseForm = (props: CaseFormProps) => {
             diagnostic
           </Button>
           <Button
-            variant='contained'
+            variant='outlined'
+            color='primary'
             value='saveAndDiagnostic'
             onClick={() => history.push('/home')}
           >
@@ -218,7 +220,10 @@ const CaseForm = (props: CaseFormProps) => {
             color='secondary'
             onClick={() => history.push('/home')}
           >
-            Cancel
+            Delete case
+          </Button>
+          <Button variant='contained' onClick={() => history.push('/home')}>
+            Return to my cases
           </Button>
         </div>
       </form>

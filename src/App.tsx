@@ -22,6 +22,7 @@ import { styles } from './styles';
 import CreateCase from './containers/cases/CreateCase';
 import ReviewDiagnostic from './containers/diagnostics/ReviewDiagnostic';
 import EditCase from './containers/cases/EditCase';
+import ViewDiagnostic from './containers/diagnostics/ViewDiagnostic';
 
 const appBarStyles = makeStyles((_: Theme) =>
   createStyles({
@@ -101,6 +102,9 @@ const App = () => {
           </Route>
           <Route exact path='/edit-case'>
             <EditCase />
+          </Route>
+          <Route path='/diagnostic'>
+            <ViewDiagnostic />
           </Route>
           <Route path='/review-diagnostic'>
             <ReviewDiagnostic />

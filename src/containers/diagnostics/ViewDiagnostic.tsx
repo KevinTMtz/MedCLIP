@@ -2,11 +2,11 @@ import React from 'react';
 import { useHistory, useLocation } from 'react-router';
 import { Button } from '@material-ui/core';
 
-import { PatientCaseData } from '../../common';
 import Diagnostic from '../../components/diagnostics/Diagnostic';
+import { PatientCaseData } from '../../common';
 import { styles } from '../../styles';
 
-const ReviewDiagnostic = () => {
+const ViewDiagnostic = () => {
   const classes = styles();
 
   const history = useHistory();
@@ -22,25 +22,21 @@ const ReviewDiagnostic = () => {
           color='primary'
           onClick={() => history.push('/home')}
         >
-          Confirm diagnostic
+          Publish diagnostic
         </Button>
         <Button
           variant='contained'
           color='secondary'
           onClick={() => history.push('/edit-case')}
         >
-          Edit case &amp; Dismiss diagnostic
+          Edit case &amp; Delete diagnostic
         </Button>
-        <Button
-          variant='outlined'
-          color='secondary'
-          onClick={() => history.push('/home')}
-        >
-          Dismiss diagnostic
+        <Button variant='contained' onClick={() => history.push('/home')}>
+          Return to my cases
         </Button>
       </div>
     </div>
   );
 };
 
-export default ReviewDiagnostic;
+export default ViewDiagnostic;
