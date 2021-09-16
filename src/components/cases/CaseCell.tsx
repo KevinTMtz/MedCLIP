@@ -14,6 +14,8 @@ import {
   Chip,
 } from '@material-ui/core';
 
+import { PatientCaseData } from '../../common';
+
 const caseCellStyles = makeStyles((_: Theme) =>
   createStyles({
     root: {
@@ -36,24 +38,13 @@ const caseCellStyles = makeStyles((_: Theme) =>
 
 interface CaseCellProps {
   hasDiagnostic: boolean;
+  patientCaseData: PatientCaseData;
 }
 
 const CaseCell = (props: CaseCellProps) => {
   const classesCaseCell = caseCellStyles();
 
   const history = useHistory();
-
-  const staticState = {
-    caseName: 'Brain',
-    caseDescription:
-      'Left temporal lobe ring enhancing lesion with associated vasogenic edema.',
-    patientName: 'Juan',
-    patientBirthDate: new Date(),
-    patientSex: 'Male',
-    PatientWeight: 69,
-    imageURL:
-      'https://prod-images-static.radiopaedia.org/images/25899296/0c8c2658ce6f072ec207823e75f7c7_big_gallery.jpeg',
-  };
 
   return (
     <Card className={classesCaseCell.root}>
@@ -65,7 +56,7 @@ const CaseCell = (props: CaseCellProps) => {
         />
         <CardContent>
           <Typography gutterBottom variant='h5' component='h2'>
-            Brain{' '}
+            {`${props.patientCaseData.caseName} `}
             {props.hasDiagnostic && (
               <Chip
                 variant='outlined'
@@ -77,8 +68,7 @@ const CaseCell = (props: CaseCellProps) => {
           </Typography>
 
           <Typography variant='body2' color='textSecondary' component='p'>
-            Left temporal lobe ring enhancing lesion with associated vasogenic
-            edema.
+            {props.patientCaseData.caseDescription}
           </Typography>
         </CardContent>
       </CardActionArea>
@@ -91,7 +81,7 @@ const CaseCell = (props: CaseCellProps) => {
             onClick={() =>
               history.push({
                 pathname: '/diagnostic',
-                state: staticState,
+                state: props.patientCaseData,
               })
             }
           >
@@ -104,7 +94,12 @@ const CaseCell = (props: CaseCellProps) => {
             variant='contained'
             size='small'
             color='primary'
-            onClick={() => history.push('/edit-case')}
+            onClick={() =>
+              history.push({
+                pathname: '/edit-case',
+                state: props.patientCaseData,
+              })
+            }
           >
             Edit case
           </Button>
@@ -115,7 +110,7 @@ const CaseCell = (props: CaseCellProps) => {
             onClick={() =>
               history.push({
                 pathname: '/review-diagnostic',
-                state: staticState,
+                state: props.patientCaseData,
               })
             }
           >

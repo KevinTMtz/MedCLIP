@@ -46,6 +46,7 @@ const caseFormStyles = makeStyles((_: Theme) =>
       maxWidth: '50%',
       maxHeight: '300px',
       marginTop: '16px',
+      borderRadius: '4px',
       '@media (max-width: 600px)': {
         maxWidth: '90%',
       },

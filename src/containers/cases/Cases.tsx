@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { makeStyles, createStyles, Theme, Button } from '@material-ui/core';
 
 import { styles } from '../../styles';
 import CaseCell from '../../components/cases/CaseCell';
+import { PatientCaseData } from '../../common';
 
 const casesStyles = makeStyles((_: Theme) =>
   createStyles({
@@ -23,6 +24,28 @@ const Cases = () => {
 
   const history = useHistory();
 
+  const [cases, setCases] = useState<PatientCaseData[]>([]);
+
+  useEffect(() => {
+    const casesArr: PatientCaseData[] = [];
+
+    for (let i = 1; i <= 5; i++) {
+      casesArr.push({
+        caseName: `Brain ${i}`,
+        caseDescription:
+          'Left temporal lobe ring enhancing lesion with associated vasogenic edema.',
+        patientName: 'Juan',
+        patientBirthDate: new Date(),
+        patientSex: 'Male',
+        PatientWeight: 69,
+        imageURL:
+          'https://prod-images-static.radiopaedia.org/images/25899296/0c8c2658ce6f072ec207823e75f7c7_big_gallery.jpeg',
+      });
+    }
+
+    setCases(casesArr);
+  }, []);
+
   return (
     <div>
       <h1>My Cases</h1>
@@ -38,11 +61,12 @@ const Cases = () => {
         </Button>
       </div>
       <div className={classesCases.cellsDiv}>
-        <CaseCell hasDiagnostic={true} />
-        <CaseCell hasDiagnostic={false} />
-        <CaseCell hasDiagnostic={true} />
-        <CaseCell hasDiagnostic={false} />
-        <CaseCell hasDiagnostic={false} />
+        {cases.map((caseData, index) => (
+          <CaseCell
+            hasDiagnostic={index % 2 === 0}
+            patientCaseData={caseData}
+          />
+        ))}
       </div>
     </div>
   );
