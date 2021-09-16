@@ -207,7 +207,8 @@ const CaseForm = (props: CaseFormProps) => {
             diagnostic
           </Button>
           <Button
-            variant='contained'
+            variant='outlined'
+            color='primary'
             value='saveAndDiagnostic'
             onClick={() => history.push('/home')}
           >
@@ -218,7 +219,10 @@ const CaseForm = (props: CaseFormProps) => {
             color='secondary'
             onClick={() => history.push('/home')}
           >
-            Cancel
+            Delete case
+          </Button>
+          <Button variant='contained' onClick={() => history.push('/home')}>
+            Return to my cases
           </Button>
         </div>
       </form>

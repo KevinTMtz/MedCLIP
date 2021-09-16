@@ -11,6 +11,7 @@ import {
   Typography,
   CardActions,
   Button,
+  Chip,
 } from '@material-ui/core';
 
 const caseCellStyles = makeStyles((_: Theme) =>
@@ -64,8 +65,17 @@ const CaseCell = (props: CaseCellProps) => {
         />
         <CardContent>
           <Typography gutterBottom variant='h5' component='h2'>
-            Brain
+            Brain{' '}
+            {props.hasDiagnostic && (
+              <Chip
+                variant='outlined'
+                size='small'
+                color='secondary'
+                label='Private'
+              />
+            )}
           </Typography>
+
           <Typography variant='body2' color='textSecondary' component='p'>
             Left temporal lobe ring enhancing lesion with associated vasogenic
             edema.
@@ -80,7 +90,7 @@ const CaseCell = (props: CaseCellProps) => {
             color='primary'
             onClick={() =>
               history.push({
-                pathname: '/review-diagnostic',
+                pathname: '/diagnostic',
                 state: staticState,
               })
             }
