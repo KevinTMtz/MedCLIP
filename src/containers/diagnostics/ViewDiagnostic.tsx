@@ -13,7 +13,7 @@ const ViewDiagnostic = () => {
   const locationState = useLocation().state as PatientCaseData;
 
   return (
-    <div>
+    <div className={classes.displayRows}>
       <Diagnostic patientCaseData={locationState} diagnostic={'Tumor'} />
 
       <div className={classes.displayRowsButtons}>
