@@ -17,6 +17,9 @@ const Registerpage: React.FC = () => {
         setEmail={setEmail}
         password={password}
         setPassword={setPassword}
+        authenticate={async () => {
+          console.log('Register');
+        }}
       />
     </div>
   );

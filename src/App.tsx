@@ -1,5 +1,5 @@
 import React from 'react';
-import { MouseEvent, useState } from 'react';
+import { MouseEvent, useState, useEffect } from 'react';
 import { Route, Switch, useHistory } from 'react-router';
 import {
   AppBar,
@@ -23,6 +23,8 @@ import ReviewDiagnostic from './containers/diagnostics/ReviewDiagnostic';
 import EditCase from './containers/cases/EditCase';
 import Loginpage from './containers/auth/Loginpage';
 import Registerpage from './containers/auth/Registerpage';
+import { IUser } from './contexts/user';
+import { UserContextProvider } from './contexts/user';
 
 const appBarStyles = makeStyles((_: Theme) =>
   createStyles({
@@ -38,11 +40,30 @@ const App = () => {
 
   const history = useHistory();
 
-  // TODO: Check if auth
-  const auth = false;
+  const [user, setUser] = useState<IUser | undefined>();
+  const [token, setToken] = useState<string | undefined>();
+  const [auth, setAuth] = useState<boolean>(false);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+
+  useEffect(() => {
+    if (user === undefined || token === undefined) {
+      history.push('/login');
+    }
+  });
+
+  const login = (_user: IUser, _token: string) => {
+    setUser(_user);
+    setToken(_token);
+    setAuth(true);
+  };
+
+  const logout = () => {
+    setUser(undefined);
+    setToken(undefined);
+    setAuth(false);
+  };
 
   const handleMenu = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -52,74 +73,83 @@ const App = () => {
     setAnchorEl(null);
   };
 
+  let userContextValue = {
+    user,
+    token,
+    login,
+    logout,
+  };
+
   return (
     <div>
-      <AppBar position="static">
-        <Toolbar variant="dense">
-          <Typography
-            className={classesAppBar.title}
-            variant="h6"
-            color="inherit"
-          >
-            MedCLIP
-          </Typography>
-          {!auth && (
-            <Button color="inherit" onClick={() => history.push('/login')}>
-              Login
-            </Button>
-          )}
-          {auth && (
-            <div>
-              <IconButton onClick={handleMenu} color="inherit">
-                <AccountCircle />
-              </IconButton>
-              <Menu
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                open={open}
-                onClose={handleClose}
-              >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
-              </Menu>
-            </div>
-          )}
-        </Toolbar>
-      </AppBar>
+      <UserContextProvider value={userContextValue}>
+        <AppBar position="static">
+          <Toolbar variant="dense">
+            <Typography
+              className={classesAppBar.title}
+              variant="h6"
+              color="inherit"
+            >
+              MedCLIP
+            </Typography>
+            {!auth && (
+              <Button color="inherit" onClick={() => history.push('/login')}>
+                Login
+              </Button>
+            )}
+            {auth && (
+              <div>
+                <IconButton onClick={handleMenu} color="inherit">
+                  <AccountCircle />
+                </IconButton>
+                <Menu
+                  anchorEl={anchorEl}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  open={open}
+                  onClose={handleClose}
+                >
+                  <MenuItem onClick={handleClose}>Profile</MenuItem>
+                  <MenuItem onClick={handleClose}>My account</MenuItem>
+                </Menu>
+              </div>
+            )}
+          </Toolbar>
+        </AppBar>
 
-      <div className={classes.rootDiv}>
-        <Switch>
-          <Route exact path="/">
-            <Landingpage />
-          </Route>
-          <Route exact path="/login">
-            <Loginpage />
-          </Route>
-          <Route exact path="/register">
-            <Registerpage />
-          </Route>
-          <Route exact path="/home">
-            <Homepage />
-          </Route>
-          <Route exact path="/create-case">
-            <CreateCase />
-          </Route>
-          <Route exact path="/edit-case">
-            <EditCase />
-          </Route>
-          <Route path="/review-diagnostic">
-            <ReviewDiagnostic />
-          </Route>
-        </Switch>
-      </div>
+        <div className={classes.rootDiv}>
+          <Switch>
+            <Route exact path="/">
+              <Landingpage />
+            </Route>
+            <Route exact path="/login">
+              <Loginpage />
+            </Route>
+            <Route exact path="/register">
+              <Registerpage />
+            </Route>
+            <Route exact path="/home">
+              <Homepage />
+            </Route>
+            <Route exact path="/create-case">
+              <CreateCase />
+            </Route>
+            <Route exact path="/edit-case">
+              <EditCase />
+            </Route>
+            <Route path="/review-diagnostic">
+              <ReviewDiagnostic />
+            </Route>
+          </Switch>
+        </div>
+      </UserContextProvider>
     </div>
   );
 };

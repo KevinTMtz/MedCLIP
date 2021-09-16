@@ -11,13 +11,14 @@ interface LoginFormProps {
   setEmail: React.Dispatch<React.SetStateAction<string | undefined>>;
   password: string | undefined;
   setPassword: React.Dispatch<React.SetStateAction<string | undefined>>;
+  authenticate: () => Promise<void>;
 }
 
 interface RegisterFormProps extends LoginFormProps {
   name: string | undefined;
   setName: React.Dispatch<React.SetStateAction<string | undefined>>;
   confirmation: string | undefined;
-  setConfirmation?: React.Dispatch<React.SetStateAction<string | undefined>>;
+  setConfirmation: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
 
 const AuthForm: React.FC<LoginFormProps | RegisterFormProps> = (
@@ -34,10 +35,24 @@ const AuthForm: React.FC<LoginFormProps | RegisterFormProps> = (
           {props.type === 'register' && (
             <TextField variant="outlined" label="Nombre:" />
           )}
-          <TextField variant="outlined" label="E-mail:" />
-          <TextField variant="outlined" label="Contraseña:" />
+          <TextField
+            variant="outlined"
+            label="E-mail:"
+            onChange={(event) => props.setEmail(event.target.value)}
+            type="email"
+          />
+          <TextField
+            variant="outlined"
+            label="Contraseña:"
+            onChange={(event) => props.setPassword(event.target.value)}
+            type="password"
+          />
           {props.type === 'register' && (
-            <TextField variant="outlined" label="Confirmar contraseña:" />
+            <TextField
+              type="password"
+              variant="outlined"
+              label="Confirmar contraseña:"
+            />
           )}
         </form>
         <div className={classes.displayRowsButtons}>
@@ -46,7 +61,9 @@ const AuthForm: React.FC<LoginFormProps | RegisterFormProps> = (
               <Button
                 variant="contained"
                 color="primary"
-                onClick={() => history.push('/homepage')}
+                onClick={() => {
+                  props.authenticate();
+                }}
               >
                 Iniciar sesión
               </Button>
