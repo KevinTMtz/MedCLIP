@@ -19,7 +19,11 @@ const ReviewDiagnostic = () => {
       <Diagnostic patientCaseData={locationState} diagnostic={diagnostic} />
 
       <div className={classes.displayRowsButtons}>
-        <Button variant='contained' color='primary'>
+        <Button
+          variant='contained'
+          color='primary'
+          onClick={() => history.push('/home')}
+        >
           Confirm diagnostic
         </Button>
         <Button
@@ -28,6 +32,13 @@ const ReviewDiagnostic = () => {
           onClick={() => history.push('/edit-case')}
         >
           Edit case &amp; Dismiss diagnostic
+        </Button>
+        <Button
+          variant='outlined'
+          color='secondary'
+          onClick={() => history.push('/home')}
+        >
+          Dismiss diagnostic
         </Button>
       </div>
     </div>

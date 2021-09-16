@@ -10,6 +10,7 @@ const diagnosticStyles = makeStyles((_: Theme) =>
       maxWidth: '50%',
       maxHeight: '300px',
       margin: '0 auto 24px auto',
+      borderRadius: '4px',
       '@media (max-width: 600px)': {
         maxWidth: '90%',
       },
@@ -31,7 +32,7 @@ const Diagnostic: React.FC<DiagnosticProps> = ({
 
   return (
     <div className={classes.displayRows}>
-      <h1>Case Diagnostic</h1>
+      <h1>Case</h1>
       <p>Case Name: {patientCaseData.caseName}</p>
       <p>Case Description: {patientCaseData.caseDescription}</p>
       <p>Patient Name: {patientCaseData.patientName}</p>
@@ -46,7 +47,8 @@ const Diagnostic: React.FC<DiagnosticProps> = ({
         src={patientCaseData.imageURL}
         className={classesDiagnostic.image}
       />
-      <h3>Diagnostic: {diagnostic}</h3>
+      <h1>Analysis result</h1>
+      <p>Diagnostic: {diagnostic}</p>
     </div>
   );
 };

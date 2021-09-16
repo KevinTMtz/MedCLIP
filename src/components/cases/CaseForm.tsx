@@ -26,7 +26,7 @@ const caseFormStyles = makeStyles((_: Theme) =>
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      padding: '16px 16px',
+      padding: '16px',
       cursor: 'pointer',
       textAlign: 'center',
       width: 'calc(100% - 34px)',
