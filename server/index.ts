@@ -1,6 +1,6 @@
-import bodyParser from 'body-parser';
 import express, { Request, Response } from 'express';
 import db from './db/connection';
+import cors from 'cors';
 
 import authRouter from './routers/auth';
 
@@ -18,6 +18,7 @@ const port = 3001;
   }
 })();
 
+app.use(cors());
 app.use(express.json());
 
 // Authentication router
