@@ -12,7 +12,7 @@ const router = Router();
 // Create new token
 const signJWT = (
   user: IUser,
-  callback: (error: Error | null, token: string | null) => void
+  callback: (error: Error | null, token: string | null) => void,
 ) => {
   let startTime = new Date().getTime();
   let expirationTime = startTime + Number(config.token.expireTime) * 100000;
@@ -35,7 +35,7 @@ const signJWT = (
         } else if (token) {
           callback(null, token);
         }
-      }
+      },
     );
   } catch (error: any) {
     console.log(error);
@@ -106,7 +106,20 @@ router.post('/register', async (req: Request, res: Response) => {
     user
       .save()
       .then((user) => {
-        return res.status(201).json({ user });
+        signJWT(user, (error, token) => {
+          if (error) {
+            return res.status(500).json({
+              message: error.message,
+              error: error,
+            });
+          } else if (token) {
+            return res.status(200).json({
+              message: 'Registration successful',
+              token: token,
+              user: user,
+            });
+          }
+        });
       })
       .catch((error) => {
         return res.status(500).json({

@@ -62,7 +62,8 @@ const App = () => {
         validateJWT(_user, _token);
       }
     }
-  });
+    // eslint-disable-next-line
+  }, []);
 
   const validateJWT = async (_user: string, _token: string) => {
     const _userJSON = JSON.parse(_user);
@@ -77,7 +78,6 @@ const App = () => {
       },
       (error) => {
         logout();
-        history.push('/');
       },
     );
   };
@@ -89,6 +89,8 @@ const App = () => {
 
     localStorage.setItem('user', JSON.stringify(_user));
     localStorage.setItem('token', _token);
+
+    history.push('/home');
   };
 
   const logout = () => {
@@ -98,6 +100,8 @@ const App = () => {
 
     localStorage.removeItem('user');
     localStorage.removeItem('token');
+
+    history.push('/');
   };
 
   const handleMenu = (event: MouseEvent<HTMLElement>) => {
@@ -127,12 +131,7 @@ const App = () => {
             >
               MedCLIP
             </Typography>
-            {!auth && (
-              <Button color='inherit' onClick={() => history.push('/login')}>
-                Login
-              </Button>
-            )}
-            {auth && (
+            {auth ? (
               <div>
                 <IconButton onClick={handleMenu} color='inherit'>
                   <AccountCircle />
@@ -162,6 +161,10 @@ const App = () => {
                   </MenuItem>
                 </Menu>
               </div>
+            ) : (
+              <Button color='inherit' onClick={() => history.push('/login')}>
+                Login
+              </Button>
             )}
           </Toolbar>
         </AppBar>
@@ -170,7 +173,6 @@ const App = () => {
           <Route exact path='/'>
             <Landingpage />
           </Route>
-
           <div className={classes.layoutDiv}>
             <Route exact path='/login'>
               <Loginpage />
