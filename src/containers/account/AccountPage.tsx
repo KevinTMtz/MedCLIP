@@ -8,13 +8,13 @@ import UserContext from '../../contexts/user';
 const AccountPage: React.FC = () => {
   const userContext = useContext(UserContext);
 
-  const [name, setName] = useState<string>();
-  const [email, setEmail] = useState<string>();
-  const [password, setPassword] = useState<string>();
-  const [confirmation, setConfirmation] = useState<string>();
+  const [name, setName] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [confirmation, setConfirmation] = useState<string>('');
   const [disabled, setDisabled] = useState<boolean>(true);
 
-  const [warning, setWarning] = useState<string>();
+  const [warning, setWarning] = useState<string>('');
   const [open, setOpen] = useState(false);
   const handleClick = () => {
     setOpen(true);
@@ -69,7 +69,6 @@ const AccountPage: React.FC = () => {
     }).then(
       (res) => {
         console.log(res);
-        setName(res.data.name);
         setDisabled(true);
       },
       (err) => {

@@ -1,17 +1,18 @@
-import { Button, TextField } from '@material-ui/core';
 import React from 'react';
+import { useHistory } from 'react-router';
+import { Button, TextField } from '@material-ui/core';
 
 import { styles } from '../../styles';
 
 interface AccountFormProps {
   name: string | undefined;
-  setName: React.Dispatch<React.SetStateAction<string | undefined>>;
-  email: string | undefined;
-  setEmail: React.Dispatch<React.SetStateAction<string | undefined>>;
-  password: string | undefined;
-  setPassword: React.Dispatch<React.SetStateAction<string | undefined>>;
-  confirmation: string | undefined;
-  setConfirmation: React.Dispatch<React.SetStateAction<string | undefined>>;
+  setName: React.Dispatch<React.SetStateAction<string>>;
+  email: string;
+  setEmail: React.Dispatch<React.SetStateAction<string>>;
+  password: string;
+  setPassword: React.Dispatch<React.SetStateAction<string>>;
+  confirmation: string;
+  setConfirmation: React.Dispatch<React.SetStateAction<string>>;
   disabled: boolean;
   setDisabled: React.Dispatch<React.SetStateAction<boolean>>;
   delete: () => Promise<void>;
@@ -20,6 +21,9 @@ interface AccountFormProps {
 
 const AccountForm: React.FC<AccountFormProps> = (props: AccountFormProps) => {
   const classes = styles();
+
+  const history = useHistory();
+
   return (
     <div>
       <form className={classes.displayRows}>
@@ -62,13 +66,18 @@ const AccountForm: React.FC<AccountFormProps> = (props: AccountFormProps) => {
         )}
         <div className={classes.displayRowsButtons}>
           {props.disabled ? (
-            <Button
-              variant='contained'
-              color='primary'
-              onClick={() => props.setDisabled(false)}
-            >
-              Edit
-            </Button>
+            <>
+              <Button
+                variant='contained'
+                color='primary'
+                onClick={() => props.setDisabled(false)}
+              >
+                Edit
+              </Button>
+              <Button variant='contained' onClick={() => history.push('/home')}>
+                Return home
+              </Button>
+            </>
           ) : (
             <>
               <Button
