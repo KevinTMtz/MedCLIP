@@ -37,8 +37,8 @@ const caseCellStyles = makeStyles((_: Theme) =>
 );
 
 interface CaseCellProps {
-  hasDiagnostic: boolean;
   patientCaseData: PatientCaseData;
+  isEditing: boolean;
 }
 
 const CaseCell = (props: CaseCellProps) => {
@@ -57,12 +57,12 @@ const CaseCell = (props: CaseCellProps) => {
         <CardContent>
           <Typography gutterBottom variant='h5' component='h2'>
             {`${props.patientCaseData.caseName} `}
-            {props.hasDiagnostic && (
+            {props.patientCaseData.hasDiagnostic && (
               <Chip
                 variant='outlined'
                 size='small'
-                color='secondary'
-                label='Private'
+                color={props.patientCaseData.isPublic ? 'primary' : 'secondary'}
+                label={props.patientCaseData.isPublic ? 'Public' : 'Private'}
               />
             )}
           </Typography>
@@ -72,7 +72,7 @@ const CaseCell = (props: CaseCellProps) => {
           </Typography>
         </CardContent>
       </CardActionArea>
-      {props.hasDiagnostic ? (
+      {props.patientCaseData.hasDiagnostic ? (
         <CardActions>
           <Button
             variant='contained'
@@ -80,7 +80,9 @@ const CaseCell = (props: CaseCellProps) => {
             color='primary'
             onClick={() =>
               history.push({
-                pathname: '/diagnostic',
+                pathname: props.isEditing
+                  ? '/manage-diagnostic'
+                  : '/diagnostic',
                 state: props.patientCaseData,
               })
             }

@@ -4,7 +4,7 @@ export const styles = makeStyles((theme: Theme) =>
   createStyles({
     rootDiv: {
       maxWidth: '1500px',
-      margin: '0px auto',
+      margin: '0px auto 16px auto',
       padding: '0 24px',
       '@media (max-width: 500px)': {
         padding: '0 16px',
@@ -13,16 +13,12 @@ export const styles = makeStyles((theme: Theme) =>
     displayRows: {
       display: 'flex',
       flexDirection: 'column',
-      '& > *': {
-        marginBottom: theme.spacing(3),
-      },
+      gap: '24px',
     },
     displayRowsButtons: {
       display: 'flex',
       flexDirection: 'column',
-      '& > *': {
-        marginBottom: theme.spacing(2),
-      },
+      gap: '16px',
     },
   }),
 );

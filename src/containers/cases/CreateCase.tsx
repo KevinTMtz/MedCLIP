@@ -13,6 +13,8 @@ const CreateCase = () => {
     patientSex: 'Male',
     PatientWeight: 0,
     imageURL: '',
+    hasDiagnostic: false,
+    isPublic: false,
   });
 
   return (
