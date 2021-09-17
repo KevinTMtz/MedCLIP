@@ -14,6 +14,7 @@ import {
   IconButton,
 } from '@material-ui/core';
 import { AccountCircle } from '@material-ui/icons';
+import axios from 'axios';
 
 import Homepage from './containers/Homepage';
 import Landingpage from './containers/Landingpage';
@@ -25,7 +26,8 @@ import Loginpage from './containers/auth/Loginpage';
 import Registerpage from './containers/auth/Registerpage';
 import { IUser } from './contexts/user';
 import { UserContextProvider } from './contexts/user';
-import axios from 'axios';
+import ViewDiagnostic from './containers/diagnostics/ViewDiagnostic';
+import ManageDiagnostic from './containers/diagnostics/ManageDiagnostic';
 
 const appBarStyles = makeStyles((_: Theme) =>
   createStyles({
@@ -166,28 +168,38 @@ const App = () => {
 
         <div className={classes.rootDiv}>
           <Switch>
-            <Route exact path="/">
-              <Landingpage />
-            </Route>
-            <Route exact path="/login">
+          <Route exact path='/'>
+            <Landingpage />
+          </Route>
+          <Route exact path="/login">
               <Loginpage />
             </Route>
             <Route exact path="/register">
               <Registerpage />
             </Route>
-            <Route exact path="/home">
-              <Homepage />
-            </Route>
-            <Route exact path="/create-case">
-              <CreateCase />
-            </Route>
-            <Route exact path="/edit-case">
-              <EditCase />
-            </Route>
-            <Route path="/review-diagnostic">
-              <ReviewDiagnostic />
-            </Route>
-          </Switch>
+          <Route exact path='/home'>
+            <Homepage />
+          </Route>
+
+          {/* Cases */}
+          <Route exact path='/create-case'>
+            <CreateCase />
+          </Route>
+          <Route exact path='/edit-case'>
+            <EditCase />
+          </Route>
+
+          {/* Diagnostics */}
+          <Route path='/diagnostic'>
+            <ViewDiagnostic />
+          </Route>
+          <Route path='/manage-diagnostic'>
+            <ManageDiagnostic />
+          </Route>
+          <Route path='/review-diagnostic'>
+            <ReviewDiagnostic />
+          </Route>
+        </Switch>
         </div>
       </UserContextProvider>
     </div>

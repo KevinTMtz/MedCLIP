@@ -6,4 +6,6 @@ export interface PatientCaseData {
   patientSex: string;
   PatientWeight: number;
   imageURL: string | undefined;
+  hasDiagnostic: boolean;
+  isPublic: boolean;
 }

@@ -1,37 +1,43 @@
 import React from 'react';
-import { Button } from '@material-ui/core';
-import { useHistory } from 'react-router';
+import { Box, Tab, Tabs } from '@material-ui/core';
 
-import { styles } from '../styles';
+import Cases from './cases/Cases';
+import Diagnostics from './diagnostics/Diagnostics';
+import TabPanel from '../components/navigation/TabPanel';
 
 const Homepage = () => {
-  const classes = styles();
+  const [value, setValue] = React.useState(0);
 
-  const history = useHistory();
+  const handleChange = (_: React.ChangeEvent<{}>, newValue: number) => {
+    setValue(newValue);
+  };
 
   return (
     <div>
-      <h1>Homepage</h1>
-      <div className={classes.displayRowsButtons}>
-        <Button
-          type='submit'
-          value='saveAndDiagnostic'
-          variant='contained'
-          color='primary'
-          onClick={() => history.push('/create-case')}
+      <Box sx={{ width: '100%' }}>
+        <Box
+          sx={{
+            borderColor: 'primary',
+            borderBottom: '1px solid #e8e8e8',
+          }}
         >
-          Create case
-        </Button>
-        <Button
-          type='submit'
-          value='saveAndDiagnostic'
-          variant='contained'
-          color='primary'
-          onClick={() => history.push('/edit-case')}
-        >
-          Edit case
-        </Button>
-      </div>
+          <Tabs
+            variant='fullWidth'
+            indicatorColor='primary'
+            value={value}
+            onChange={handleChange}
+          >
+            <Tab label='Diagnostics' />
+            <Tab label='My Cases' />
+          </Tabs>
+        </Box>
+        <TabPanel value={value} index={0}>
+          <Diagnostics />
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <Cases />
+        </TabPanel>
+      </Box>
     </div>
   );
 };
