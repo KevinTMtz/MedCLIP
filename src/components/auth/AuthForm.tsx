@@ -24,7 +24,7 @@ interface RegisterFormProps extends LoginFormProps {
 }
 
 const AuthForm: React.FC<LoginFormProps | RegisterFormProps> = (
-  props: LoginFormProps | RegisterFormProps
+  props: LoginFormProps | RegisterFormProps,
 ) => {
   const classes = styles();
 
@@ -36,68 +36,68 @@ const AuthForm: React.FC<LoginFormProps | RegisterFormProps> = (
         <h1>{props.title}</h1>
         <form className={classes.displayRows}>
           {props.type === 'register' && (
-            <TextField variant="outlined" label="Name:" />
+            <TextField variant='outlined' label='Name:' />
           )}
           <TextField
-            variant="outlined"
-            label="E-mail:"
+            variant='outlined'
+            label='E-mail:'
             onChange={(event) => props.setEmail(event.target.value)}
-            type="email"
+            type='email'
           />
           <TextField
-            variant="outlined"
-            label="Password:"
+            variant='outlined'
+            label='Password:'
             onChange={(event) => props.setPassword(event.target.value)}
-            type="password"
+            type='password'
           />
           {props.type === 'register' && (
             <TextField
-              type="password"
-              variant="outlined"
-              label="Repeat password:"
+              type='password'
+              variant='outlined'
+              label='Repeat password:'
             />
           )}
+          <div className={classes.displayRowsButtons}>
+            {props.type === 'login' ? (
+              <>
+                <Button
+                  variant='contained'
+                  color='primary'
+                  onClick={() => {
+                    props.authenticate();
+                  }}
+                >
+                  Sign in
+                </Button>
+                <Button
+                  variant='contained'
+                  onClick={() => history.push('/register')}
+                >
+                  Don't have an account? Register
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  variant='contained'
+                  color='primary'
+                  onClick={() => history.push('/homepage')}
+                >
+                  Register
+                </Button>
+                <Button
+                  variant='contained'
+                  onClick={() => history.push('/login')}
+                >
+                  Already have an account? Sign in
+                </Button>
+              </>
+            )}
+            <Button variant='outlined' onClick={() => history.push('/')}>
+              Cancel
+            </Button>
+          </div>
         </form>
-        <div className={classes.displayRowsButtons}>
-          {props.type === 'login' ? (
-            <>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => {
-                  props.authenticate();
-                }}
-              >
-                Sign in
-              </Button>
-              <Button
-                variant="contained"
-                onClick={() => history.push('/register')}
-              >
-                Don't have an account? Register
-              </Button>
-            </>
-          ) : (
-            <>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => history.push('/homepage')}
-              >
-                Register
-              </Button>
-              <Button
-                variant="contained"
-                onClick={() => history.push('/login')}
-              >
-                Already have an account? Sign in
-              </Button>
-            </>
-          )}
-          <Button variant="outlined" onClick={() => history.push('/')}>
-            Cancel
-          </Button>
-        </div>
       </header>
     </div>
   );
