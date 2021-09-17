@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles, createStyles, Theme } from '@material-ui/core';
 
-import CaseCell from '../cases/CaseCell';
+import CaseCell from './CaseCell';
 import { PatientCaseData } from '../../common';
 
 const caseCellsLayoutStyles = makeStyles((_: Theme) =>
@@ -18,6 +18,7 @@ const caseCellsLayoutStyles = makeStyles((_: Theme) =>
 
 interface CaseCellsLayoutProps {
   cases: PatientCaseData[];
+  isEditing: boolean;
 }
 
 const CaseCellsLayout = (props: CaseCellsLayoutProps) => {
@@ -26,7 +27,7 @@ const CaseCellsLayout = (props: CaseCellsLayoutProps) => {
   return (
     <div className={classesCaseCellsLayout.cellsDiv}>
       {props.cases.map((caseData) => (
-        <CaseCell patientCaseData={caseData} />
+        <CaseCell patientCaseData={caseData} isEditing={props.isEditing} />
       ))}
     </div>
   );

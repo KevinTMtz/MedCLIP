@@ -3,8 +3,8 @@ import { TextField } from '@material-ui/core';
 import { Autocomplete } from '@mui/material';
 
 import { PatientCaseData } from '../../common';
-import CaseCellsLayout from '../../components/layout/CaseCellsLayout';
 import { styles } from '../../styles';
+import CaseCellsLayout from '../../components/cases/CaseCellsLayout';
 
 const Diagnostics = () => {
   const classes = styles();
@@ -59,7 +59,7 @@ const Diagnostics = () => {
             showSelectedCase(caseNameInput);
           }}
         />
-        <CaseCellsLayout cases={displayedCases} />
+        <CaseCellsLayout cases={displayedCases} isEditing={false} />
       </div>
     </div>
   );

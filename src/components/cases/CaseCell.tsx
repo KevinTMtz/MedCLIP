@@ -38,6 +38,7 @@ const caseCellStyles = makeStyles((_: Theme) =>
 
 interface CaseCellProps {
   patientCaseData: PatientCaseData;
+  isEditing: boolean;
 }
 
 const CaseCell = (props: CaseCellProps) => {
@@ -79,7 +80,9 @@ const CaseCell = (props: CaseCellProps) => {
             color='primary'
             onClick={() =>
               history.push({
-                pathname: '/diagnostic',
+                pathname: props.isEditing
+                  ? '/manage-diagnostic'
+                  : '/diagnostic',
                 state: props.patientCaseData,
               })
             }

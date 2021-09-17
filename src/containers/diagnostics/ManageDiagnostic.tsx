@@ -6,7 +6,7 @@ import Diagnostic from '../../components/diagnostics/Diagnostic';
 import { PatientCaseData } from '../../common';
 import { styles } from '../../styles';
 
-const ViewDiagnostic = () => {
+const ManageDiagnostic = () => {
   const classes = styles();
 
   const history = useHistory();
@@ -17,12 +17,26 @@ const ViewDiagnostic = () => {
       <Diagnostic patientCaseData={locationState} diagnostic={'Tumor'} />
 
       <div className={classes.displayRowsButtons}>
+        <Button
+          variant='contained'
+          color='primary'
+          onClick={() => history.push('/home')}
+        >
+          Publish diagnostic
+        </Button>
+        <Button
+          variant='contained'
+          color='secondary'
+          onClick={() => history.push('/edit-case')}
+        >
+          Edit case &amp; Delete diagnostic
+        </Button>
         <Button variant='contained' onClick={() => history.push('/home')}>
-          Return to diagnostics
+          Return to my cases
         </Button>
       </div>
     </div>
   );
 };
 
-export default ViewDiagnostic;
+export default ManageDiagnostic;

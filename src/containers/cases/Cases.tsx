@@ -4,7 +4,7 @@ import { Button } from '@material-ui/core';
 
 import { styles } from '../../styles';
 import { PatientCaseData } from '../../common';
-import CaseCellsLayout from '../../components/layout/CaseCellsLayout';
+import CaseCellsLayout from '../../components/cases/CaseCellsLayout';
 
 const Cases = () => {
   const classes = styles();
@@ -50,7 +50,7 @@ const Cases = () => {
             Create case
           </Button>
         </div>
-        <CaseCellsLayout cases={cases} />
+        <CaseCellsLayout cases={cases} isEditing={true} />
       </div>
     </div>
   );
