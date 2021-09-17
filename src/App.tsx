@@ -149,8 +149,15 @@ const App = () => {
                   open={open}
                   onClose={handleClose}
                 >
-                  <MenuItem onClick={handleClose}>Profile</MenuItem>
                   <MenuItem onClick={handleClose}>My account</MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      logout();
+                      handleClose();
+                    }}
+                  >
+                    Logout
+                  </MenuItem>
                 </Menu>
               </div>
             )}
