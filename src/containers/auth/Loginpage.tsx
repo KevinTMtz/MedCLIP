@@ -1,30 +1,12 @@
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
-import {
-  createStyles,
-  CircularProgress,
-  makeStyles,
-  Theme,
-} from '@material-ui/core';
 
 import AuthForm from '../../components/auth/AuthForm';
 import UserContext from '../../contexts/user';
 import AuthSnackbar from '../../components/auth/AuthSnackbar';
-
-const LoginpageStyles = makeStyles((_: Theme) =>
-  createStyles({
-    centerSpinner: {
-      position: 'absolute',
-      left: '50%',
-      top: '50%',
-      transform: 'translate(-50%, -50%)',
-    },
-  }),
-);
+import Spinner from '../../components/auth/Spinner';
 
 const Loginpage: React.FC = () => {
-  const loginpageClasses = LoginpageStyles();
-
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
   const [warning, setWarning] = useState<string>();
@@ -78,9 +60,7 @@ const Loginpage: React.FC = () => {
   return (
     <div>
       {isAuth ? (
-        <div className={loginpageClasses.centerSpinner}>
-          <CircularProgress size='80px' color='primary' />
-        </div>
+        <Spinner />
       ) : (
         <>
           <AuthForm
