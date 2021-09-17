@@ -4,16 +4,18 @@ import React from 'react';
 import { styles } from '../../styles';
 
 interface AccountFormProps {
-  name: string;
-  setName: React.Dispatch<React.SetStateAction<string>>;
-  email: string;
-  setEmail: React.Dispatch<React.SetStateAction<string>>;
-  password: string;
-  setPassword: React.Dispatch<React.SetStateAction<string>>;
+  name: string | undefined;
+  setName: React.Dispatch<React.SetStateAction<string | undefined>>;
+  email: string | undefined;
+  setEmail: React.Dispatch<React.SetStateAction<string | undefined>>;
+  password: string | undefined;
+  setPassword: React.Dispatch<React.SetStateAction<string | undefined>>;
   confirmation: string | undefined;
   setConfirmation: React.Dispatch<React.SetStateAction<string | undefined>>;
   disabled: boolean;
   setDisabled: React.Dispatch<React.SetStateAction<boolean>>;
+  delete: () => Promise<void>;
+  update: () => Promise<void>;
 }
 
 const AccountForm: React.FC<AccountFormProps> = (props: AccountFormProps) => {
@@ -46,7 +48,6 @@ const AccountForm: React.FC<AccountFormProps> = (props: AccountFormProps) => {
               onChange={(event) => props.setPassword(event.target.value)}
               type='password'
               disabled={props.disabled}
-              value={props.password}
             />
             <TextField
               type='password'
@@ -56,7 +57,6 @@ const AccountForm: React.FC<AccountFormProps> = (props: AccountFormProps) => {
                 props.setConfirmation(event.target.value);
               }}
               disabled={props.disabled}
-              value={props.confirmation}
             />
           </>
         )}
@@ -74,16 +74,27 @@ const AccountForm: React.FC<AccountFormProps> = (props: AccountFormProps) => {
               <Button
                 variant='contained'
                 color='primary'
-                onClick={() => props.setDisabled(true)}
+                onClick={() => props.update()}
               >
                 Update my account
               </Button>
               <Button
                 variant='contained'
                 color='secondary'
-                onClick={() => props.setDisabled(true)}
+                onClick={() => {
+                  props.setDisabled(true);
+                  props.delete();
+                }}
               >
                 Delete my account
+              </Button>
+              <Button
+                variant='outlined'
+                onClick={() => {
+                  props.setDisabled(true);
+                }}
+              >
+                Cancel
               </Button>
             </>
           )}
