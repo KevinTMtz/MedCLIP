@@ -25,6 +25,7 @@ import Loginpage from './containers/auth/Loginpage';
 import Registerpage from './containers/auth/Registerpage';
 import { IUser } from './contexts/user';
 import { UserContextProvider } from './contexts/user';
+import axios from 'axios';
 
 const appBarStyles = makeStyles((_: Theme) =>
   createStyles({
@@ -49,20 +50,52 @@ const App = () => {
 
   useEffect(() => {
     if (user === undefined || token === undefined) {
-      history.push('/login');
+      let _token = localStorage.getItem('token');
+      let _user = localStorage.getItem('user');
+
+      if (_token === null || _user === null) {
+        logout();
+        history.push('/');
+      } else {
+        validateJWT(_user, _token);
+      }
     }
   });
+
+  const validateJWT = async (_user: string, _token: string) => {
+    const _userJSON = JSON.parse(_user);
+    await axios('http://localhost:3001/auth/validate', {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${_token}`,
+      },
+    }).then(
+      (res) => {
+        login(_userJSON, _token);
+      },
+      (error) => {
+        logout();
+        history.push('/');
+      }
+    );
+  };
 
   const login = (_user: IUser, _token: string) => {
     setUser(_user);
     setToken(_token);
     setAuth(true);
+
+    localStorage.setItem('user', JSON.stringify(_user));
+    localStorage.setItem('token', _token);
   };
 
   const logout = () => {
     setUser(undefined);
     setToken(undefined);
     setAuth(false);
+
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
   };
 
   const handleMenu = (event: MouseEvent<HTMLElement>) => {
