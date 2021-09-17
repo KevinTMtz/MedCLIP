@@ -34,7 +34,7 @@ const appBarStyles = makeStyles((_: Theme) =>
     title: {
       flexGrow: 1,
     },
-  })
+  }),
 );
 
 const App = () => {
@@ -78,7 +78,7 @@ const App = () => {
       (error) => {
         logout();
         history.push('/');
-      }
+      },
     );
   };
 
@@ -118,23 +118,23 @@ const App = () => {
   return (
     <div>
       <UserContextProvider value={userContextValue}>
-        <AppBar position="static">
-          <Toolbar variant="dense">
+        <AppBar position='static'>
+          <Toolbar variant='dense'>
             <Typography
               className={classesAppBar.title}
-              variant="h6"
-              color="inherit"
+              variant='h6'
+              color='inherit'
             >
               MedCLIP
             </Typography>
             {!auth && (
-              <Button color="inherit" onClick={() => history.push('/login')}>
+              <Button color='inherit' onClick={() => history.push('/login')}>
                 Login
               </Button>
             )}
             {auth && (
               <div>
-                <IconButton onClick={handleMenu} color="inherit">
+                <IconButton onClick={handleMenu} color='inherit'>
                   <AccountCircle />
                 </IconButton>
                 <Menu
@@ -166,41 +166,42 @@ const App = () => {
           </Toolbar>
         </AppBar>
 
-        <div className={classes.rootDiv}>
-          <Switch>
+        <Switch>
           <Route exact path='/'>
             <Landingpage />
           </Route>
-          <Route exact path="/login">
+
+          <div className={classes.layoutDiv}>
+            <Route exact path='/login'>
               <Loginpage />
             </Route>
-            <Route exact path="/register">
+            <Route exact path='/register'>
               <Registerpage />
             </Route>
-          <Route exact path='/home'>
-            <Homepage />
-          </Route>
+            <Route exact path='/home'>
+              <Homepage />
+            </Route>
 
-          {/* Cases */}
-          <Route exact path='/create-case'>
-            <CreateCase />
-          </Route>
-          <Route exact path='/edit-case'>
-            <EditCase />
-          </Route>
+            {/* Cases */}
+            <Route exact path='/create-case'>
+              <CreateCase />
+            </Route>
+            <Route exact path='/edit-case'>
+              <EditCase />
+            </Route>
 
-          {/* Diagnostics */}
-          <Route path='/diagnostic'>
-            <ViewDiagnostic />
-          </Route>
-          <Route path='/manage-diagnostic'>
-            <ManageDiagnostic />
-          </Route>
-          <Route path='/review-diagnostic'>
-            <ReviewDiagnostic />
-          </Route>
+            {/* Diagnostics */}
+            <Route path='/diagnostic'>
+              <ViewDiagnostic />
+            </Route>
+            <Route path='/manage-diagnostic'>
+              <ManageDiagnostic />
+            </Route>
+            <Route path='/review-diagnostic'>
+              <ReviewDiagnostic />
+            </Route>
+          </div>
         </Switch>
-        </div>
       </UserContextProvider>
     </div>
   );
