@@ -21,7 +21,7 @@ const Spinner: React.FC = () => {
   const spinnerClasses = spinnerStyles();
   return (
     <div className={spinnerClasses.centerSpinner}>
-      <CircularProgress size={80} />;
+      <CircularProgress size={80} />
     </div>
   );
 };
