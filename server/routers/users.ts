@@ -2,11 +2,26 @@ import { Request, Response, Router } from 'express';
 import { body, validationResult } from 'express-validator';
 import bcrypt from 'bcrypt';
 
-import config from '../config/config';
 import verifyJWT from '../middlewares/verifyJWT';
 import User from '../db/models/User';
 
 const router = Router();
+
+router.get('/get-my-info', verifyJWT, async (_: Request, res: Response) => {
+  let email = res.locals.jwt.email;
+  await User.findOne({ where: { email: email } }).then(
+    (user) => {
+      if (!user) {
+        return res.status(400).json({ message: 'The email does not exist' });
+      }
+      return res.status(200).json({ user: user });
+    },
+    (err) => {
+      console.log(err);
+      return res.status(400).json({ err });
+    },
+  );
+});
 
 router.post(
   '/update-my-user',
