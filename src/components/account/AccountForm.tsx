@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router';
 import { Button, TextField } from '@material-ui/core';
 
 import { styles } from '../../styles';
@@ -20,6 +21,9 @@ interface AccountFormProps {
 
 const AccountForm: React.FC<AccountFormProps> = (props: AccountFormProps) => {
   const classes = styles();
+
+  const history = useHistory();
+
   return (
     <div>
       <form className={classes.displayRows}>
@@ -62,13 +66,18 @@ const AccountForm: React.FC<AccountFormProps> = (props: AccountFormProps) => {
         )}
         <div className={classes.displayRowsButtons}>
           {props.disabled ? (
-            <Button
-              variant='contained'
-              color='primary'
-              onClick={() => props.setDisabled(false)}
-            >
-              Edit
-            </Button>
+            <>
+              <Button
+                variant='contained'
+                color='primary'
+                onClick={() => props.setDisabled(false)}
+              >
+                Edit
+              </Button>
+              <Button variant='contained' onClick={() => history.push('/home')}>
+                Return home
+              </Button>
+            </>
           ) : (
             <>
               <Button
