@@ -7,6 +7,8 @@ import { styles } from '../../styles';
 interface LoginFormProps {
   title: string;
   type: 'login' | 'register';
+  warning: string | undefined;
+  setWarning: React.Dispatch<React.SetStateAction<string | undefined>>;
   email: string | undefined;
   setEmail: React.Dispatch<React.SetStateAction<string | undefined>>;
   password: string | undefined;
@@ -27,13 +29,14 @@ const AuthForm: React.FC<LoginFormProps | RegisterFormProps> = (
   const classes = styles();
 
   const history = useHistory();
+
   return (
     <div>
       <header>
         <h1>{props.title}</h1>
         <form className={classes.displayRows}>
           {props.type === 'register' && (
-            <TextField variant="outlined" label="Nombre:" />
+            <TextField variant="outlined" label="Name:" />
           )}
           <TextField
             variant="outlined"
@@ -43,7 +46,7 @@ const AuthForm: React.FC<LoginFormProps | RegisterFormProps> = (
           />
           <TextField
             variant="outlined"
-            label="Contraseña:"
+            label="Password:"
             onChange={(event) => props.setPassword(event.target.value)}
             type="password"
           />
@@ -51,7 +54,7 @@ const AuthForm: React.FC<LoginFormProps | RegisterFormProps> = (
             <TextField
               type="password"
               variant="outlined"
-              label="Confirmar contraseña:"
+              label="Repeat password:"
             />
           )}
         </form>
@@ -65,13 +68,13 @@ const AuthForm: React.FC<LoginFormProps | RegisterFormProps> = (
                   props.authenticate();
                 }}
               >
-                Iniciar sesión
+                Sign in
               </Button>
               <Button
                 variant="contained"
                 onClick={() => history.push('/register')}
               >
-                ¿No tienes una cuenta? Regístrate
+                Don't have an account? Register
               </Button>
             </>
           ) : (
@@ -81,18 +84,18 @@ const AuthForm: React.FC<LoginFormProps | RegisterFormProps> = (
                 color="primary"
                 onClick={() => history.push('/homepage')}
               >
-                Registrarse
+                Register
               </Button>
               <Button
                 variant="contained"
                 onClick={() => history.push('/login')}
               >
-                ¿Ya tienes una cuenta? Inicia sesión
+                Already have an account? Sign in
               </Button>
             </>
           )}
           <Button variant="outlined" onClick={() => history.push('/')}>
-            Cancelar
+            Cancel
           </Button>
         </div>
       </header>

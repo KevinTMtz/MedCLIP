@@ -19,5 +19,5 @@ export const styles = makeStyles((theme: Theme) =>
         marginBottom: theme.spacing(2),
       },
     },
-  }),
+  })
 );

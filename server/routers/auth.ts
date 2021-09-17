@@ -52,7 +52,6 @@ router.get('/validate', verifyJWT, async (req: Request, res: Response) => {
 
 router.post('/login', async (req: Request, res: Response) => {
   let { email, password } = req.body;
-
   await User.findOne({ where: { email: email } })
     .then((user) => {
       if (user === null) {
