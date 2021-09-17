@@ -28,6 +28,7 @@ import { IUser } from './contexts/user';
 import { UserContextProvider } from './contexts/user';
 import ViewDiagnostic from './containers/diagnostics/ViewDiagnostic';
 import ManageDiagnostic from './containers/diagnostics/ManageDiagnostic';
+import AccountPage from './containers/account/AccountPage';
 
 const appBarStyles = makeStyles((_: Theme) =>
   createStyles({
@@ -150,7 +151,14 @@ const App = () => {
                   open={open}
                   onClose={handleClose}
                 >
-                  <MenuItem onClick={handleClose}>My account</MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      history.push('/my-account');
+                      handleClose();
+                    }}
+                  >
+                    My account
+                  </MenuItem>
                   <MenuItem
                     onClick={() => {
                       logout();
@@ -201,6 +209,9 @@ const App = () => {
             </Route>
             <Route path='/review-diagnostic'>
               <ReviewDiagnostic />
+            </Route>
+            <Route path='/my-account'>
+              <AccountPage />
             </Route>
           </div>
         </Switch>

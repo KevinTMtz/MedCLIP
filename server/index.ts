@@ -3,6 +3,7 @@ import db from './db/connection';
 import cors from 'cors';
 
 import authRouter from './routers/auth';
+import userRouter from './routers/users';
 
 const app = express();
 const port = 3001;
@@ -23,6 +24,9 @@ app.use(express.json());
 
 // Authentication router
 app.use('/auth', authRouter);
+
+// Users router
+app.use('/manage-users', userRouter);
 
 app.get('/', (_: Request, res: Response) => {
   res.send('Server is running!');
