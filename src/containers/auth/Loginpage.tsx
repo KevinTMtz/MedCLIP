@@ -1,31 +1,12 @@
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
-import { useHistory } from 'react-router';
-import {
-  createStyles,
-  CircularProgress,
-  makeStyles,
-  Theme,
-} from '@material-ui/core';
 
 import AuthForm from '../../components/auth/AuthForm';
 import UserContext from '../../contexts/user';
 import AuthSnackbar from '../../components/auth/AuthSnackbar';
-
-const LoginpageStyles = makeStyles((_: Theme) =>
-  createStyles({
-    centerSpinner: {
-      position: 'absolute',
-      left: '50%',
-      top: '50%',
-      transform: 'translate(-50%, -50%)',
-    },
-  })
-);
+import Spinner from '../../components/auth/Spinner';
 
 const Loginpage: React.FC = () => {
-  const loginpageClasses = LoginpageStyles();
-
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
   const [warning, setWarning] = useState<string>();
@@ -37,7 +18,6 @@ const Loginpage: React.FC = () => {
   };
 
   const userContext = useContext(UserContext);
-  const history = useHistory();
 
   const Login = async () => {
     if (email === undefined) {
@@ -65,7 +45,6 @@ const Loginpage: React.FC = () => {
       (res) => {
         userContext.login(res.data.user, res.data.token);
         setWarning(undefined);
-        history.push('/home');
       },
       (err) => {
         setIsAuth(false);
@@ -74,21 +53,19 @@ const Loginpage: React.FC = () => {
         setEmail(undefined);
         setPassword(undefined);
         return;
-      }
+      },
     );
   };
 
   return (
     <div>
       {isAuth ? (
-        <div className={loginpageClasses.centerSpinner}>
-          <CircularProgress size="80px" color="primary" />
-        </div>
+        <Spinner />
       ) : (
         <>
           <AuthForm
-            title="Login"
-            type="login"
+            title='Login'
+            type='login'
             warning={warning}
             setWarning={setWarning}
             email={email}

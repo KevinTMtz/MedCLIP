@@ -34,7 +34,7 @@ const appBarStyles = makeStyles((_: Theme) =>
     title: {
       flexGrow: 1,
     },
-  })
+  }),
 );
 
 const App = () => {
@@ -62,7 +62,8 @@ const App = () => {
         validateJWT(_user, _token);
       }
     }
-  });
+    // eslint-disable-next-line
+  }, []);
 
   const validateJWT = async (_user: string, _token: string) => {
     const _userJSON = JSON.parse(_user);
@@ -77,8 +78,7 @@ const App = () => {
       },
       (error) => {
         logout();
-        history.push('/');
-      }
+      },
     );
   };
 
@@ -89,6 +89,8 @@ const App = () => {
 
     localStorage.setItem('user', JSON.stringify(_user));
     localStorage.setItem('token', _token);
+
+    history.push('/home');
   };
 
   const logout = () => {
@@ -98,6 +100,8 @@ const App = () => {
 
     localStorage.removeItem('user');
     localStorage.removeItem('token');
+
+    history.push('/');
   };
 
   const handleMenu = (event: MouseEvent<HTMLElement>) => {
@@ -118,23 +122,18 @@ const App = () => {
   return (
     <div>
       <UserContextProvider value={userContextValue}>
-        <AppBar position="static">
-          <Toolbar variant="dense">
+        <AppBar position='static'>
+          <Toolbar variant='dense'>
             <Typography
               className={classesAppBar.title}
-              variant="h6"
-              color="inherit"
+              variant='h6'
+              color='inherit'
             >
               MedCLIP
             </Typography>
-            {!auth && (
-              <Button color="inherit" onClick={() => history.push('/login')}>
-                Login
-              </Button>
-            )}
-            {auth && (
+            {auth ? (
               <div>
-                <IconButton onClick={handleMenu} color="inherit">
+                <IconButton onClick={handleMenu} color='inherit'>
                   <AccountCircle />
                 </IconButton>
                 <Menu
@@ -162,44 +161,48 @@ const App = () => {
                   </MenuItem>
                 </Menu>
               </div>
+            ) : (
+              <Button color='inherit' onClick={() => history.push('/login')}>
+                Login
+              </Button>
             )}
           </Toolbar>
         </AppBar>
 
         <div className={classes.rootDiv}>
           <Switch>
-          <Route exact path='/'>
-            <Landingpage />
-          </Route>
-          <Route exact path="/login">
+            <Route exact path='/'>
+              <Landingpage />
+            </Route>
+            <Route exact path='/login'>
               <Loginpage />
             </Route>
-            <Route exact path="/register">
+            <Route exact path='/register'>
               <Registerpage />
             </Route>
-          <Route exact path='/home'>
-            <Homepage />
-          </Route>
+            <Route exact path='/home'>
+              <Homepage />
+            </Route>
 
-          {/* Cases */}
-          <Route exact path='/create-case'>
-            <CreateCase />
-          </Route>
-          <Route exact path='/edit-case'>
-            <EditCase />
-          </Route>
+            {/* Cases */}
+            <Route exact path='/create-case'>
+              <CreateCase />
+            </Route>
+            <Route exact path='/edit-case'>
+              <EditCase />
+            </Route>
 
-          {/* Diagnostics */}
-          <Route path='/diagnostic'>
-            <ViewDiagnostic />
-          </Route>
-          <Route path='/manage-diagnostic'>
-            <ManageDiagnostic />
-          </Route>
-          <Route path='/review-diagnostic'>
-            <ReviewDiagnostic />
-          </Route>
-        </Switch>
+            {/* Diagnostics */}
+            <Route path='/diagnostic'>
+              <ViewDiagnostic />
+            </Route>
+            <Route path='/manage-diagnostic'>
+              <ManageDiagnostic />
+            </Route>
+            <Route path='/review-diagnostic'>
+              <ReviewDiagnostic />
+            </Route>
+          </Switch>
         </div>
       </UserContextProvider>
     </div>
