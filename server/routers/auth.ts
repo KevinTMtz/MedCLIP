@@ -22,7 +22,7 @@ const signJWT = (
   try {
     jwt.sign(
       {
-        username: user.name,
+        email: user.email,
       },
       config.token.secret,
       {
@@ -57,8 +57,8 @@ router.post(
     let { email, password } = req.body;
     await User.findOne({ where: { email: email } })
       .then((user) => {
-        if (user === null) {
-          return res.status(401).json({
+        if (!user) {
+          return res.status(400).json({
             message: 'The email does not exist!',
           });
         }
