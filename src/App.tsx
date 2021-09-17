@@ -169,11 +169,11 @@ const App = () => {
           </Toolbar>
         </AppBar>
 
-        <div className={classes.rootDiv}>
-          <Switch>
-            <Route exact path='/'>
-              <Landingpage />
-            </Route>
+        <Switch>
+          <Route exact path='/'>
+            <Landingpage />
+          </Route>
+          <div className={classes.layoutDiv}>
             <Route exact path='/login'>
               <Loginpage />
             </Route>
@@ -202,8 +202,8 @@ const App = () => {
             <Route path='/review-diagnostic'>
               <ReviewDiagnostic />
             </Route>
-          </Switch>
-        </div>
+          </div>
+        </Switch>
       </UserContextProvider>
     </div>
   );
