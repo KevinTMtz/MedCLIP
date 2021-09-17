@@ -8,7 +8,7 @@ import TabPanel from '../components/navigation/TabPanel';
 const Homepage = () => {
   const [value, setValue] = React.useState(0);
 
-  const handleChange = (_: any, newValue: any) => {
+  const handleChange = (_: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
   };
 

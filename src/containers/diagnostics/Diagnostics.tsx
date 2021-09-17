@@ -53,7 +53,11 @@ const Diagnostics = () => {
           disablePortal
           options={cases.map((caseData) => caseData.caseName)}
           renderInput={(params) => (
-            <TextField {...params} variant='outlined' label='Search cases' />
+            <TextField
+              {...params}
+              variant='outlined'
+              label='Search diagnostics'
+            />
           )}
           onChange={(_: any, caseNameInput: string | null) => {
             showSelectedCase(caseNameInput);

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
-import { Button } from '@material-ui/core';
+import { Button, TextField } from '@material-ui/core';
 
 import { styles } from '../../styles';
 import { PatientCaseData } from '../../common';
 import CaseCellsLayout from '../../components/cases/CaseCellsLayout';
+import { Autocomplete } from '@mui/material';
 
 const Cases = () => {
   const classes = styles();
@@ -12,6 +13,7 @@ const Cases = () => {
   const history = useHistory();
 
   const [cases, setCases] = useState<PatientCaseData[]>([]);
+  const [displayedCases, setDisplayedCases] = useState<PatientCaseData[]>([]);
 
   useEffect(() => {
     const casesArr: PatientCaseData[] = [];
@@ -33,7 +35,16 @@ const Cases = () => {
     }
 
     setCases(casesArr);
+    setDisplayedCases(casesArr);
   }, []);
+
+  const showSelectedCase = (caseNameInput: string | null) => {
+    if (caseNameInput !== null) {
+      setDisplayedCases(cases.filter((r) => r.caseName === caseNameInput));
+    } else {
+      setDisplayedCases(cases);
+    }
+  };
 
   return (
     <div>
@@ -50,7 +61,17 @@ const Cases = () => {
             Create case
           </Button>
         </div>
-        <CaseCellsLayout cases={cases} isEditing={true} />
+        <Autocomplete
+          disablePortal
+          options={cases.map((caseData) => caseData.caseName)}
+          renderInput={(params) => (
+            <TextField {...params} variant='outlined' label='Search cases' />
+          )}
+          onChange={(_: any, caseNameInput: string | null) => {
+            showSelectedCase(caseNameInput);
+          }}
+        />
+        <CaseCellsLayout cases={displayedCases} isEditing={true} />
       </div>
     </div>
   );
