@@ -1,17 +1,17 @@
-import { Button, TextField } from '@material-ui/core';
 import React from 'react';
+import { Button, TextField } from '@material-ui/core';
 
 import { styles } from '../../styles';
 
 interface AccountFormProps {
   name: string | undefined;
-  setName: React.Dispatch<React.SetStateAction<string | undefined>>;
-  email: string | undefined;
-  setEmail: React.Dispatch<React.SetStateAction<string | undefined>>;
-  password: string | undefined;
-  setPassword: React.Dispatch<React.SetStateAction<string | undefined>>;
-  confirmation: string | undefined;
-  setConfirmation: React.Dispatch<React.SetStateAction<string | undefined>>;
+  setName: React.Dispatch<React.SetStateAction<string>>;
+  email: string;
+  setEmail: React.Dispatch<React.SetStateAction<string>>;
+  password: string;
+  setPassword: React.Dispatch<React.SetStateAction<string>>;
+  confirmation: string;
+  setConfirmation: React.Dispatch<React.SetStateAction<string>>;
   disabled: boolean;
   setDisabled: React.Dispatch<React.SetStateAction<boolean>>;
   delete: () => Promise<void>;
