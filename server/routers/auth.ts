@@ -1,9 +1,11 @@
 import { Router, Request, Response } from 'express';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
+
 import config from '../config/config';
 import IUser from '../db/interfaces/IUser';
 import User from '../db/models/User';
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
+import verifyJWT from '../middlewares/verifyJWT';
 
 const router = Router();
 
@@ -41,9 +43,15 @@ const signJWT = (
   }
 };
 
+router.get('/validate', verifyJWT, async (req: Request, res: Response) => {
+  console.log('Token validated!');
+  return res.status(200).json({
+    message: 'Token validated!',
+  });
+});
+
 router.post('/login', async (req: Request, res: Response) => {
   let { email, password } = req.body;
-
   await User.findOne({ where: { email: email } })
     .then((user) => {
       if (user === null) {
