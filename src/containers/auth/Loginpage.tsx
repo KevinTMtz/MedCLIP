@@ -31,6 +31,7 @@ const Loginpage: React.FC = () => {
       return;
     }
     setIsAuth(true);
+    //TODO: change all req paths to a variable
     await axios('http://localhost:3001/auth/login', {
       method: 'POST',
       headers: {
@@ -40,10 +41,11 @@ const Loginpage: React.FC = () => {
         email,
         password,
       },
+      withCredentials: true,
       responseType: 'json',
     }).then(
       (res) => {
-        userContext.login(res.data.user, res.data.token);
+        userContext.login();
         setWarning(undefined);
       },
       (err) => {

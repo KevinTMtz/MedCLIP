@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import db from './db/connection';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 
 import authRouter from './routers/auth';
 import userRouter from './routers/users';
@@ -19,7 +20,8 @@ const port = 3001;
   }
 })();
 
-app.use(cors());
+app.use(cors({ origin: true, credentials: true }));
+app.use(cookieParser());
 app.use(express.json());
 
 // Authentication router

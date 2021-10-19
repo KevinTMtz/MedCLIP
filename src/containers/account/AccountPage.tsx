@@ -22,17 +22,21 @@ const AccountPage: React.FC = () => {
 
   useEffect(() => {
     const GetInfo = async () => {
+      //TODO: change all req paths to a variable
       await axios('http://localhost:3001/manage-users/get-my-info', {
         method: 'GET',
         headers: {
           'content-type': 'application/json',
-          Authorization: `Bearer ${userContext.token}`,
         },
         responseType: 'json',
-      }).then((res) => {
-        setName(res.data.user.name);
-        setEmail(res.data.user.email);
-      });
+        withCredentials: true,
+      }).then(
+        (res) => {
+          setName(res.data.user.name);
+          setEmail(res.data.user.email);
+        },
+        (error) => console.log(error),
+      );
     };
 
     GetInfo();
@@ -60,11 +64,11 @@ const AccountPage: React.FC = () => {
       handleClick();
       return;
     }
+    //TODO: change all req paths to a variable
     await axios('http://localhost:3001/manage-users/update-my-user', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
-        Authorization: `Bearer ${userContext.token}`,
       },
       data: {
         name,
@@ -72,6 +76,7 @@ const AccountPage: React.FC = () => {
         password,
       },
       responseType: 'json',
+      withCredentials: true,
     }).then(
       (res) => {
         console.log(res);
@@ -85,13 +90,14 @@ const AccountPage: React.FC = () => {
   };
 
   const DeleteUser = async () => {
+    //TODO: change all req paths to a variable
     await axios('http://localhost:3001/manage-users/delete-my-user', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
-        Authorization: `Bearer ${userContext.token}`,
       },
       responseType: 'json',
+      withCredentials: true,
     }).then(
       (res) => {
         console.log(res);

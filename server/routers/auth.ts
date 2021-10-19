@@ -6,6 +6,7 @@ import bcrypt from 'bcrypt';
 import config from '../config/config';
 import IUser from '../db/interfaces/IUser';
 import User from '../db/models/User';
+import verifyJWT from '../middlewares/verifyJWT';
 
 const router = Router();
 
@@ -18,7 +19,7 @@ const signJWT = (
     jwt.sign(
       {
         id: user.id,
-        name: user.email,
+        name: user.name,
         email: user.email,
       },
       config.token.secret,
@@ -72,6 +73,13 @@ router.post(
                   error: error,
                 });
               } else if (token) {
+                res.cookie('token', token, {
+                  httpOnly: true,
+                  maxAge: config.httpCookie.maxage,
+                });
+                res.cookie('existToken', true, {
+                  maxAge: config.httpCookie.maxage,
+                });
                 return res.status(200).json({
                   message: 'Authentication successful',
                   token: token,
@@ -124,6 +132,13 @@ router.post(
                 error: error,
               });
             } else if (token) {
+              res.cookie('token', token, {
+                httpOnly: true,
+                maxAge: config.httpCookie.maxage,
+              });
+              res.cookie('existToken', true, {
+                maxAge: config.httpCookie.maxage,
+              });
               return res.status(200).json({
                 message: 'Registration successful',
                 token: token,
@@ -141,5 +156,11 @@ router.post(
     });
   },
 );
+
+router.post('/logout', verifyJWT, async (req: Request, res: Response) => {
+  res.clearCookie('token');
+  res.clearCookie('existToken');
+  res.status(200).json({ message: 'Logout succesful' });
+});
 
 export default router;

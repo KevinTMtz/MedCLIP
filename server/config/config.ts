@@ -13,6 +13,8 @@ const SERVER_TOKEN_ISSUER = process.env.SERVER_TOKEN_EXPIRETIME || 'MedClip';
 const SERVER_TOKEN_SECRET =
   process.env.SERVER_TOKEN_SECRET || 'medclip_secretcode';
 
+const HTTP_COOKIE_MAXAGE = Number(process.env.HTTP_COOKIE_MAXAGE) || 3600000;
+
 const SERVER = {
   port: SERVER_PORT,
   host: SERVER_HOST,
@@ -25,6 +27,9 @@ const SERVER = {
     name: DB_NAME,
     username: DB_USERNAME,
     password: DB_PASSWORD,
+  },
+  httpCookie: {
+    maxage: HTTP_COOKIE_MAXAGE,
   },
 };
 
