@@ -6,7 +6,6 @@ import bcrypt from 'bcrypt';
 import config from '../config/config';
 import IUser from '../db/interfaces/IUser';
 import User from '../db/models/User';
-import verifyJWT from '../middlewares/verifyJWT';
 
 const router = Router();
 
@@ -15,20 +14,18 @@ const signJWT = (
   user: IUser,
   callback: (error: Error | null, token: string | null) => void,
 ) => {
-  let startTime = new Date().getTime();
-  let expirationTime = startTime + Number(config.token.expireTime) * 100000;
-  expirationTime = Math.floor(expirationTime / 1000);
-
   try {
     jwt.sign(
       {
+        id: user.id,
+        name: user.email,
         email: user.email,
       },
       config.token.secret,
       {
         issuer: config.token.issuer,
         algorithm: 'HS256',
-        expiresIn: expirationTime,
+        expiresIn: config.token.expireTime,
       },
       (error, token) => {
         if (error) {
@@ -144,12 +141,5 @@ router.post(
     });
   },
 );
-
-router.get('/validate', verifyJWT, async (req: Request, res: Response) => {
-  console.log('Token validated!');
-  return res.status(200).json({
-    message: 'Token validated!',
-  });
-});
 
 export default router;
