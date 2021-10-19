@@ -41,7 +41,7 @@ const AccountForm: React.FC<AccountFormProps> = (props: AccountFormProps) => {
           label='E-mail:'
           onChange={(event) => props.setEmail(event.target.value)}
           type='email'
-          disabled
+          disabled={props.disabled}
           value={props.email}
         />
         {!props.disabled && (

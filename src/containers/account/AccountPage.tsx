@@ -45,6 +45,11 @@ const AccountPage: React.FC = () => {
       handleClick();
       return;
     }
+    if (email === undefined) {
+      setWarning('Please enter a valid email');
+      handleClick();
+      return;
+    }
     if (password === undefined || password?.length < 5) {
       setWarning('Please enter a valid password');
       handleClick();
@@ -63,6 +68,7 @@ const AccountPage: React.FC = () => {
       },
       data: {
         name,
+        email,
         password,
       },
       responseType: 'json',
