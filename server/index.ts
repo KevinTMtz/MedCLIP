@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 
 import authRouter from './routers/auth';
 import userRouter from './routers/users';
+import casesRouter from './routers/cases';
 
 const app = express();
 const port = 3001;
@@ -29,6 +30,9 @@ app.use('/auth', authRouter);
 
 // Users router
 app.use('/manage-users', userRouter);
+
+// Cases router
+app.use('/cases', casesRouter);
 
 app.get('/', (_: Request, res: Response) => {
   res.send('Server is running!');

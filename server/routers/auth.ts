@@ -70,7 +70,7 @@ router.post(
               if (error) {
                 return res.status(500).json({
                   message: error.message,
-                  error: error,
+                  error,
                 });
               } else if (token) {
                 res.cookie('token', token, {
@@ -82,18 +82,16 @@ router.post(
                 });
                 return res.status(200).json({
                   message: 'Authentication successful',
-                  token: token,
-                  user: user,
                 });
               }
             });
           }
         });
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((error) => {
+        console.log(error);
         res.status(500).json({
-          error: err,
+          error,
         });
       });
   },
@@ -110,10 +108,10 @@ router.post(
         message: 'Please fill all the fields correctly',
       });
     }
-    let { name, email, password } = req.body;
+    const { name, email, password } = req.body;
     bcrypt.hash(password, 16, (error, hash) => {
       if (error) {
-        return res.status(500).json({ message: error.message, error: error });
+        return res.status(500).json({ message: error.message, error });
       }
 
       const user = User.build({
@@ -129,7 +127,7 @@ router.post(
             if (error) {
               return res.status(500).json({
                 message: error.message,
-                error: error,
+                error,
               });
             } else if (token) {
               res.cookie('token', token, {
@@ -141,8 +139,6 @@ router.post(
               });
               return res.status(200).json({
                 message: 'Registration successful',
-                token: token,
-                user: user,
               });
             }
           });
