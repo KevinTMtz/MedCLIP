@@ -4,9 +4,12 @@ import axios from 'axios';
 import AccountForm from '../../components/account/AccountForm';
 import AuthSnackbar from '../../components/auth/AuthSnackbar';
 import UserContext from '../../contexts/user';
+import Spinner from '../../components/auth/Spinner';
 
 const AccountPage: React.FC = () => {
   const userContext = useContext(UserContext);
+
+  const [isLoading, setLoading] = useState<boolean>(false);
 
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
@@ -22,6 +25,7 @@ const AccountPage: React.FC = () => {
 
   useEffect(() => {
     const GetInfo = async () => {
+      setLoading(true);
       //TODO: change all req paths to a variable
       await axios('http://localhost:3001/manage-users/get-my-info', {
         method: 'GET',
@@ -34,8 +38,12 @@ const AccountPage: React.FC = () => {
         (res) => {
           setName(res.data.user.name);
           setEmail(res.data.user.email);
+          setLoading(false);
         },
-        (error) => console.log(error),
+        (error) => {
+          console.log(error);
+          setLoading(true);
+        },
       );
     };
 
@@ -64,6 +72,7 @@ const AccountPage: React.FC = () => {
       handleClick();
       return;
     }
+    setLoading(true);
     //TODO: change all req paths to a variable
     await axios('http://localhost:3001/manage-users/update-my-user', {
       method: 'POST',
@@ -79,17 +88,19 @@ const AccountPage: React.FC = () => {
       withCredentials: true,
     }).then(
       (res) => {
-        console.log(res);
         setDisabled(true);
+        setLoading(false);
       },
       (err) => {
         setWarning(err.response.data.message);
         handleClick();
+        setLoading(false);
       },
     );
   };
 
   const DeleteUser = async () => {
+    setLoading(true);
     //TODO: change all req paths to a variable
     await axios('http://localhost:3001/manage-users/delete-my-user', {
       method: 'POST',
@@ -101,6 +112,7 @@ const AccountPage: React.FC = () => {
     }).then(
       (res) => {
         console.log(res);
+        setLoading(false);
         userContext.logout();
       },
       (err) => {
@@ -112,22 +124,27 @@ const AccountPage: React.FC = () => {
 
   return (
     <div>
-      <h1>My Account</h1>
-      <AccountForm
-        name={name}
-        setName={setName}
-        email={email}
-        setEmail={setEmail}
-        password={password}
-        setPassword={setPassword}
-        confirmation={confirmation}
-        setConfirmation={setConfirmation}
-        disabled={disabled}
-        setDisabled={setDisabled}
-        delete={DeleteUser}
-        update={UpdateUser}
-      />
-      <AuthSnackbar warning={warning} setOpen={setOpen} open={open} />
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <>
+          <AccountForm
+            name={name}
+            setName={setName}
+            email={email}
+            setEmail={setEmail}
+            password={password}
+            setPassword={setPassword}
+            confirmation={confirmation}
+            setConfirmation={setConfirmation}
+            disabled={disabled}
+            setDisabled={setDisabled}
+            delete={DeleteUser}
+            update={UpdateUser}
+          />
+          <AuthSnackbar warning={warning} setOpen={setOpen} open={open} />
+        </>
+      )}
     </div>
   );
 };
