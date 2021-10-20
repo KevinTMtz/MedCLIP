@@ -1,6 +1,6 @@
 import React from 'react';
 import { MouseEvent, useState, useEffect } from 'react';
-import { Route, Switch, useHistory } from 'react-router';
+import { Route, Switch, useHistory, useLocation } from 'react-router';
 import {
   AppBar,
   createStyles,
@@ -24,7 +24,6 @@ import ReviewDiagnostic from './containers/diagnostics/ReviewDiagnostic';
 import EditCase from './containers/cases/EditCase';
 import Loginpage from './containers/auth/Loginpage';
 import Registerpage from './containers/auth/Registerpage';
-import { IUser } from './contexts/user';
 import { UserContextProvider } from './contexts/user';
 import ViewDiagnostic from './containers/diagnostics/ViewDiagnostic';
 import ManageDiagnostic from './containers/diagnostics/ManageDiagnostic';
@@ -44,65 +43,56 @@ const App = () => {
 
   const history = useHistory();
 
-  const [user, setUser] = useState<IUser | undefined>();
-  const [token, setToken] = useState<string | undefined>();
   const [auth, setAuth] = useState<boolean>(false);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const location = useLocation();
   const open = Boolean(anchorEl);
 
   useEffect(() => {
-    if (user === undefined || token === undefined) {
-      let _token = localStorage.getItem('token');
-      let _user = localStorage.getItem('user');
-
-      if (_token === null || _user === null) {
-        logout();
-        history.push('/');
-      } else {
-        validateJWT(_user, _token);
-      }
+    // Check if cookie exist
+    if (document.cookie.indexOf('existToken') >= 0) {
+      login();
     }
+    // Else redirect logout to erase token cookie
+    else {
+      logout();
+    }
+
     // eslint-disable-next-line
   }, []);
 
-  const validateJWT = async (_user: string, _token: string) => {
-    const _userJSON = JSON.parse(_user);
-    await axios('http://localhost:3001/auth/validate', {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${_token}`,
-      },
-    }).then(
-      (res) => {
-        login(_userJSON, _token);
-      },
-      (error) => {
-        logout();
-      },
-    );
-  };
-
-  const login = (_user: IUser, _token: string) => {
-    setUser(_user);
-    setToken(_token);
+  const login = () => {
     setAuth(true);
-
-    localStorage.setItem('user', JSON.stringify(_user));
-    localStorage.setItem('token', _token);
-
-    history.push('/home');
+    if (
+      location.pathname === '/' ||
+      location.pathname === '/login' ||
+      location.pathname === '/register'
+    )
+      history.push('/home');
   };
 
   const logout = () => {
-    setUser(undefined);
-    setToken(undefined);
+    //TODO: change all req paths to a variable
+    axios('http://localhost:3001/auth/logout', {
+      method: 'POST',
+      responseType: 'json',
+      withCredentials: true,
+    }).then(
+      () => {},
+      (error) => {
+        if (error.response!.status === 401)
+          console.log('Token not available or expired');
+        else console.log(error);
+      },
+    );
     setAuth(false);
-
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
-
-    history.push('/');
+    if (
+      location.pathname !== '/' &&
+      location.pathname !== '/login' &&
+      location.pathname !== '/register'
+    )
+      history.push('/login');
   };
 
   const handleMenu = (event: MouseEvent<HTMLElement>) => {
@@ -114,8 +104,6 @@ const App = () => {
   };
 
   let userContextValue = {
-    user,
-    token,
     login,
     logout,
   };

@@ -12,11 +12,12 @@ import { Close } from '@material-ui/icons';
 const authSnackbarStyles = makeStyles((_: Theme) =>
   createStyles({
     loginWarning: {
-      backgroundColor: 'red',
-      color: 'white',
+      backgroundColor: 'white',
+      color: 'red',
+      border: '1px solid red',
       textAlign: 'center',
     },
-  })
+  }),
 );
 
 interface AuthSnackbarProps {
@@ -26,7 +27,7 @@ interface AuthSnackbarProps {
 }
 
 const AuthSnackbar: React.FC<AuthSnackbarProps> = (
-  props: AuthSnackbarProps
+  props: AuthSnackbarProps,
 ) => {
   const authSnackbarClasses = authSnackbarStyles();
 
@@ -47,12 +48,12 @@ const AuthSnackbar: React.FC<AuthSnackbarProps> = (
         action={
           <>
             <IconButton
-              size="small"
-              aria-label="close"
-              color="inherit"
+              size='small'
+              aria-label='close'
+              color='inherit'
               onClick={handleClose}
             >
-              <Close fontSize="small" />
+              <Close fontSize='small' />
             </IconButton>
           </>
         }

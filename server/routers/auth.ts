@@ -15,20 +15,18 @@ const signJWT = (
   user: IUser,
   callback: (error: Error | null, token: string | null) => void,
 ) => {
-  let startTime = new Date().getTime();
-  let expirationTime = startTime + Number(config.token.expireTime) * 100000;
-  expirationTime = Math.floor(expirationTime / 1000);
-
   try {
     jwt.sign(
       {
+        id: user.id,
+        name: user.name,
         email: user.email,
       },
       config.token.secret,
       {
         issuer: config.token.issuer,
         algorithm: 'HS256',
-        expiresIn: expirationTime,
+        expiresIn: config.token.expireTime,
       },
       (error, token) => {
         if (error) {
@@ -75,6 +73,13 @@ router.post(
                   error: error,
                 });
               } else if (token) {
+                res.cookie('token', token, {
+                  httpOnly: true,
+                  maxAge: config.httpCookie.maxage,
+                });
+                res.cookie('existToken', true, {
+                  maxAge: config.httpCookie.maxage,
+                });
                 return res.status(200).json({
                   message: 'Authentication successful',
                   token: token,
@@ -127,6 +132,13 @@ router.post(
                 error: error,
               });
             } else if (token) {
+              res.cookie('token', token, {
+                httpOnly: true,
+                maxAge: config.httpCookie.maxage,
+              });
+              res.cookie('existToken', true, {
+                maxAge: config.httpCookie.maxage,
+              });
               return res.status(200).json({
                 message: 'Registration successful',
                 token: token,
@@ -145,11 +157,10 @@ router.post(
   },
 );
 
-router.get('/validate', verifyJWT, async (req: Request, res: Response) => {
-  console.log('Token validated!');
-  return res.status(200).json({
-    message: 'Token validated!',
-  });
+router.post('/logout', verifyJWT, async (req: Request, res: Response) => {
+  res.clearCookie('token');
+  res.clearCookie('existToken');
+  res.status(200).json({ message: 'Logout succesful' });
 });
 
 export default router;

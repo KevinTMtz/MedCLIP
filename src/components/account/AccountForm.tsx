@@ -1,8 +1,35 @@
 import React from 'react';
 import { useHistory } from 'react-router';
-import { Button, TextField } from '@material-ui/core';
+import {
+  Button,
+  makeStyles,
+  createStyles,
+  TextField,
+  Theme,
+  Container,
+  Typography,
+} from '@material-ui/core';
 
 import { styles } from '../../styles';
+
+const formStyles = makeStyles((_: Theme) =>
+  createStyles({
+    centerForm: {
+      position: 'absolute',
+      left: '50%',
+      top: '50%',
+      transform: 'translate(-50%, -50%)',
+      textAlign: 'center',
+      width: '40%',
+      '@media (max-width: 1000px)': {
+        width: '60%',
+      },
+      '@media (max-width: 600px)': {
+        width: '80%',
+      },
+    },
+  }),
+);
 
 interface AccountFormProps {
   name: string | undefined;
@@ -21,11 +48,17 @@ interface AccountFormProps {
 
 const AccountForm: React.FC<AccountFormProps> = (props: AccountFormProps) => {
   const classes = styles();
+  const formClasses = formStyles();
 
   const history = useHistory();
 
   return (
-    <div>
+    <Container className={formClasses.centerForm}>
+      <header>
+        <Typography variant='h4' align='center' style={{ margin: '15px auto' }}>
+          My account
+        </Typography>
+      </header>
       <form className={classes.displayRows}>
         <TextField
           variant='outlined'
@@ -41,7 +74,7 @@ const AccountForm: React.FC<AccountFormProps> = (props: AccountFormProps) => {
           label='E-mail:'
           onChange={(event) => props.setEmail(event.target.value)}
           type='email'
-          disabled
+          disabled={props.disabled}
           value={props.email}
         />
         {!props.disabled && (
@@ -109,7 +142,7 @@ const AccountForm: React.FC<AccountFormProps> = (props: AccountFormProps) => {
           )}
         </div>
       </form>
-    </div>
+    </Container>
   );
 };
 

@@ -1,23 +1,12 @@
 import React from 'react';
 
-export interface IUser {
-  id: number;
-  name: string;
-  email: string;
-  password: string;
-}
-
 export interface IUserContext {
-  user: IUser | undefined;
-  token: string | undefined;
-  login: (user: IUser, token: string) => void;
+  login: () => void;
   logout: () => void;
 }
 
 const UserContext = React.createContext<IUserContext>({
-  user: undefined,
-  token: undefined,
-  login: (user: IUser, token: string) => {},
+  login: () => {},
   logout: () => {},
 });
 

@@ -43,6 +43,7 @@ const Registerpage: React.FC = () => {
       return;
     }
     setIsAuth(true);
+    //TODO: change all req paths to a variable
     await axios('http://localhost:3001/auth/register', {
       method: 'POST',
       headers: {
@@ -54,9 +55,10 @@ const Registerpage: React.FC = () => {
         name,
       },
       responseType: 'json',
+      withCredentials: true,
     }).then(
       (res) => {
-        userContext.login(res.data.user, res.data.token);
+        userContext.login();
         setWarning(undefined);
       },
       (err) => {

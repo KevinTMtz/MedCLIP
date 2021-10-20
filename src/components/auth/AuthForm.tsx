@@ -1,8 +1,35 @@
 import React from 'react';
-import { Button, TextField } from '@material-ui/core';
+import {
+  Button,
+  makeStyles,
+  createStyles,
+  TextField,
+  Theme,
+  Container,
+  Typography,
+} from '@material-ui/core';
 import { useHistory } from 'react-router';
 
 import { styles } from '../../styles';
+
+const formStyles = makeStyles((_: Theme) =>
+  createStyles({
+    centerForm: {
+      position: 'absolute',
+      left: '50%',
+      top: '50%',
+      transform: 'translate(-50%, -50%)',
+      textAlign: 'center',
+      width: '40%',
+      '@media (max-width: 1000px)': {
+        width: '60%',
+      },
+      '@media (max-width: 600px)': {
+        width: '80%',
+      },
+    },
+  }),
+);
 
 interface AuthFormProps {
   title: string;
@@ -22,13 +49,16 @@ interface AuthFormProps {
 
 const AuthForm: React.FC<AuthFormProps> = (props: AuthFormProps) => {
   const classes = styles();
+  const formClasses = formStyles();
 
   const history = useHistory();
 
   return (
-    <div>
+    <Container className={formClasses.centerForm}>
       <header>
-        <h1>{props.title}</h1>
+        <Typography variant='h4' align='center' style={{ margin: '15px auto' }}>
+          {props.title}
+        </Typography>
       </header>
       <form className={classes.displayRows}>
         {props.type === 'register' && (
@@ -102,7 +132,7 @@ const AuthForm: React.FC<AuthFormProps> = (props: AuthFormProps) => {
           </Button>
         </div>
       </form>
-    </div>
+    </Container>
   );
 };
 

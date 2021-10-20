@@ -8,10 +8,12 @@ const DB_PASSWORD = process.env.DB_PASSWORD || '';
 
 const SERVER_PORT = process.env.SERVER_PORT || 3001;
 const SERVER_HOST = process.env.SERVER_HOST || 'localhost';
-const SERVER_TOKEN_EXPIRETIME = process.env.SERVER_TOKEN_EXPIRETIME || 3600;
+const SERVER_TOKEN_EXPIRETIME = process.env.SERVER_TOKEN_EXPIRETIME || '1h';
 const SERVER_TOKEN_ISSUER = process.env.SERVER_TOKEN_EXPIRETIME || 'MedClip';
 const SERVER_TOKEN_SECRET =
-  process.env.SERVER_TOKEN_SECRET || 'ultrasecretcode';
+  process.env.SERVER_TOKEN_SECRET || 'medclip_secretcode';
+
+const HTTP_COOKIE_MAXAGE = Number(process.env.HTTP_COOKIE_MAXAGE) || 3600000;
 
 const SERVER = {
   port: SERVER_PORT,
@@ -25,6 +27,9 @@ const SERVER = {
     name: DB_NAME,
     username: DB_USERNAME,
     password: DB_PASSWORD,
+  },
+  httpCookie: {
+    maxage: HTTP_COOKIE_MAXAGE,
   },
 };
 
