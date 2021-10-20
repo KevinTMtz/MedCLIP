@@ -82,7 +82,6 @@ router.post(
                 });
                 return res.status(200).json({
                   message: 'Authentication successful',
-                  token: token,
                 });
               }
             });
@@ -140,7 +139,6 @@ router.post(
               });
               return res.status(200).json({
                 message: 'Registration successful',
-                token: token,
               });
             }
           });
