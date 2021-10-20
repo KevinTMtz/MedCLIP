@@ -8,7 +8,7 @@ import User from '../db/models/User';
 const router = Router();
 
 router.get('/get-my-info', verifyJWT, async (_: Request, res: Response) => {
-  let id = res.locals.jwt.id;
+  const id = res.locals.jwt.id;
   await User.findOne({ where: { id: id } }).then(
     (user) => {
       if (!user) {
@@ -16,9 +16,9 @@ router.get('/get-my-info', verifyJWT, async (_: Request, res: Response) => {
       }
       return res.status(200).json({ user: user });
     },
-    (err) => {
-      console.log(err);
-      return res.status(400).json({ err });
+    (error) => {
+      console.log(error);
+      return res.status(400).json({ error });
     },
   );
 });
@@ -45,15 +45,15 @@ router.post(
         { name: name, email: email, password: hash },
         { where: { id: id } },
       ).then(
-        (user) => {
+        () => {
           console.log('User updated');
           return res
             .status(200)
             .json({ message: 'Your user has been updated' });
         },
-        (err) => {
-          console.log(err);
-          return res.status(400).json({ err });
+        (error) => {
+          console.log(error);
+          return res.status(400).json({ error });
         },
       );
     });
@@ -74,15 +74,15 @@ router.post('/delete-my-user', verifyJWT, async (_: Request, res: Response) => {
             .status(200)
             .json({ message: 'Your user has been deleted' });
         },
-        (err) => {
-          console.log(err);
-          return res.status(400).json({ err });
+        (error) => {
+          console.log(error);
+          return res.status(400).json({ error });
         },
       );
     },
-    (err) => {
-      console.log(err);
-      return res.status(400).json({ err });
+    (error) => {
+      console.log(error);
+      return res.status(400).json({ error });
     },
   );
 });

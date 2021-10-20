@@ -11,14 +11,6 @@ const Case = db.define<ICase>('Case', {
     primaryKey: true,
     unique: true,
   },
-  userID: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: {
-      model: User,
-      key: 'id',
-    },
-  },
   name: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -34,7 +26,6 @@ const Case = db.define<ICase>('Case', {
   patientBirthDate: {
     type: DataTypes.DATE,
     allowNull: true,
-    defaultValue: DataTypes.NOW,
   },
   patientSex: {
     type: DataTypes.STRING,
@@ -51,5 +42,7 @@ const Case = db.define<ICase>('Case', {
     defaultValue: 'url',
   },
 });
+
+Case.belongsTo(User, { as: 'user', foreignKey: { allowNull: false } });
 
 export default Case;

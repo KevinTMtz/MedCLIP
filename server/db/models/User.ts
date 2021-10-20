@@ -1,6 +1,7 @@
 import { DataTypes } from 'sequelize';
 import db from '../connection';
 import IUser from '../interfaces/IUser';
+import Case from './Case';
 
 const User = db.define<IUser>('User', {
   id: {
