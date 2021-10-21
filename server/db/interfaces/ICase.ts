@@ -3,6 +3,7 @@ import { Model } from 'sequelize';
 interface ICase extends Model {
   id: number;
   userID: number;
+  caseID: number;
   name: string;
   description: string;
   patientName: string;
