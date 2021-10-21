@@ -12,7 +12,7 @@ const Diagnostic = db.define<IDiagnostic>('Diagnostic', {
     primaryKey: true,
     unique: true,
   },
-  diagnostic: {
+  diagnosis: {
     type: DataTypes.STRING,
     allowNull: false,
   },

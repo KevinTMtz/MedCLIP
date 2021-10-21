@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser';
 import authRouter from './routers/auth';
 import userRouter from './routers/users';
 import casesRouter from './routers/cases';
+import diagnosticsRouter from './routers/diagnostics';
 
 const app = express();
 const port = 3001;
@@ -33,6 +34,9 @@ app.use('/manage-users', userRouter);
 
 // Cases router
 app.use('/cases', casesRouter);
+
+// Diagnostics route
+app.use('/diagnostics', diagnosticsRouter);
 
 app.get('/', (_: Request, res: Response) => {
   res.send('Server is running!');
