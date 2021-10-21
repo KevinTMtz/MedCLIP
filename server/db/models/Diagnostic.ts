@@ -2,7 +2,6 @@ import { DataTypes } from 'sequelize';
 import db from '../connection';
 
 import IDiagnostic from '../interfaces/IDiagnostic';
-import Case from './Case';
 
 const Diagnostic = db.define<IDiagnostic>('Diagnostic', {
   id: {
@@ -19,10 +18,12 @@ const Diagnostic = db.define<IDiagnostic>('Diagnostic', {
   public: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
+    defaultValue: false,
   },
   anonymous: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
+    defaultValue: false,
   },
 });
 

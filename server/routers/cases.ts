@@ -127,42 +127,4 @@ router.post(
   },
 );
 
-router.post(
-  '/:caseId([0-9]+)/make-diagnostic',
-  verifyJWT,
-  isOwnedBy,
-  async (req: Request, res: Response) => {
-    if (!validationResult(req).isEmpty()) {
-      return res
-        .status(400)
-        .json({ message: 'Please fill all the fields correctly' });
-    }
-
-    const the_case: ICase = res.locals.case;
-    // TODO: Use model to get diagnostic
-    // const diagnostic = makeDiagnostic(the_case.imageURL)
-    const diagnosis = 'Vein of Galen Malformation';
-    await Diagnostic.create({
-      diagnosis: diagnosis,
-      public: false,
-      anonymous: false,
-    }).then(
-      (diagnostic) => {
-        const diagnosticID: number = diagnostic.getDataValue('id');
-        the_case.update({ diagnosticId: diagnosticID }).then(
-          () => {
-            return res
-              .status(200)
-              .json({ message: 'Diagnostic succesfully created' });
-          },
-          (error) => res.status(500).json(error),
-        );
-      },
-      (error) => {
-        return res.status(500).json({ message: error.message, error });
-      },
-    );
-  },
-);
-
 export default router;
