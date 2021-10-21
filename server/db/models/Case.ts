@@ -1,7 +1,9 @@
 import { DataTypes } from 'sequelize';
 import db from '../connection';
+
 import ICase from '../interfaces/ICase';
 import User from './User';
+import Diagnostic from './Diagnostic';
 
 const Case = db.define<ICase>('Case', {
   id: {
@@ -44,5 +46,10 @@ const Case = db.define<ICase>('Case', {
 });
 
 Case.belongsTo(User, { as: 'user', foreignKey: { allowNull: false } });
+
+Case.belongsTo(Diagnostic, {
+  as: 'diagnostic',
+  foreignKey: { allowNull: true },
+});
 
 export default Case;

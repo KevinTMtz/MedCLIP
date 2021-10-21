@@ -1,10 +1,11 @@
 import { Request, Response, Router } from 'express';
-import { body, param, validationResult } from 'express-validator';
+import { body, validationResult } from 'express-validator';
 
 import verifyJWT from '../middlewares/verifyJWT';
 import isOwnedBy from '../middlewares/isOwnedBy';
 import Case from '../db/models/Case';
 import ICase from '../db/interfaces/ICase';
+import Diagnostic from '../db/models/Diagnostic';
 
 const router = Router();
 
@@ -40,7 +41,7 @@ router.post(
     }
     const userID = res.locals.jwt.id;
     const { case_data, patient_data } = req.body;
-    Case.create({
+    await Case.create({
       name: case_data.name,
       userId: userID,
       description: case_data.description,
@@ -54,7 +55,6 @@ router.post(
         return res.status(201).json({ message: 'Case succesfully created' });
       },
       (error) => {
-        console.log(error);
         return res.status(500).json({ message: error.message, error });
       },
     );
@@ -99,13 +99,14 @@ router.post(
         patientSex: patient_data.sex,
         patientWeight: parseFloat(patient_data.weight),
         imageURL: case_data.imageURL,
+        diagnosticId: null,
       })
       .then(
         () => {
           console.log('Case updated');
           return res.status(200).json({ message: 'Case succesfully updated' });
         },
-        (error) => res.status(400).json(error),
+        (error) => res.status(500).json(error),
       );
   },
 );
@@ -121,7 +122,7 @@ router.post(
         console.log('Case deleted');
         return res.status(200).json({ message: 'Case succesfully deleted' });
       },
-      (error) => res.status(400).json(error),
+      (error) => res.status(500).json(error),
     );
   },
 );
