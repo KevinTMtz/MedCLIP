@@ -27,33 +27,35 @@ const diagnosticStyles = makeStyles((_: Theme) =>
 interface DiagnosticProps {
   patientCaseData: PatientCaseData;
   diagnosticData: DiagnosticData;
+  isEditing: boolean;
 }
 
 const Diagnostic: React.FC<DiagnosticProps> = ({
   patientCaseData,
   diagnosticData,
+  isEditing,
 }) => {
   const classesDiagnostic = diagnosticStyles();
 
   return (
     <div>
       <h1>
-        Case{' '}
-        <Chip
-          variant='outlined'
-          size='small'
-          color={diagnosticData.isPublic ? 'primary' : 'secondary'}
-          label={diagnosticData.isPublic ? 'Public' : 'Private'}
-        />{' '}
-        {diagnosticData.isAnonymous && (
-          <Chip variant='outlined' size='small' label='Anonymous' />
-        )}
+        Case - {patientCaseData.caseName}
+        <br />
+        <>
+          <Chip
+            variant='outlined'
+            size='small'
+            color={diagnosticData.isPublic ? 'primary' : 'secondary'}
+            label={diagnosticData.isPublic ? 'Public' : 'Private'}
+          />{' '}
+          {diagnosticData.isAnonymous && (
+            <Chip variant='outlined' size='small' label='Anonymous' />
+          )}
+        </>
       </h1>
 
       <div className={classesDiagnostic.rows}>
-        <p>
-          <strong>Name:</strong> {patientCaseData.caseName}
-        </p>
         <p>
           <strong>Description:</strong> {patientCaseData.caseDescription}
         </p>
@@ -63,7 +65,7 @@ const Diagnostic: React.FC<DiagnosticProps> = ({
 
       <h3>Patient Information</h3>
       <div className={classesDiagnostic.rows}>
-        {diagnosticData.isAnonymous ? (
+        {diagnosticData.isAnonymous && !isEditing ? (
           <p>This case is anonymous</p>
         ) : (
           <>

@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useHistory, useLocation } from 'react-router';
 import axios from 'axios';
-import { Button } from '@material-ui/core';
+import { Button, FormControlLabel, Switch } from '@material-ui/core';
 
 import Diagnostic from '../../components/diagnostics/Diagnostic';
 import { DiagnosticData, PatientCaseData } from '../../common';
 import { styles } from '../../styles';
+import { mergeObjects } from '../../common/utils';
 
 const ManageDiagnostic = () => {
   const classes = styles();
@@ -14,6 +15,17 @@ const ManageDiagnostic = () => {
   const locationState = useLocation().state as {
     patientCaseData: PatientCaseData;
     diagnosticData: DiagnosticData;
+  };
+
+  const [diagnosticData, setDiagnosticData] = useState(
+    locationState.diagnosticData,
+  );
+
+  const handleChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    visibilityOrPrivacy: number,
+  ) => {
+    changeVisibility(visibilityOrPrivacy);
   };
 
   const deleteDiagnostic = async () => {
@@ -44,13 +56,15 @@ const ManageDiagnostic = () => {
     const newData = {
       isPublic:
         visibilityOrPrivacy === 0
-          ? !locationState.diagnosticData.isPublic
-          : locationState.diagnosticData.isPublic,
+          ? !diagnosticData.isPublic
+          : diagnosticData.isPublic,
       isAnonymous:
         visibilityOrPrivacy === 1
-          ? !locationState.diagnosticData.isAnonymous
-          : locationState.diagnosticData.isAnonymous,
+          ? !diagnosticData.isAnonymous
+          : diagnosticData.isAnonymous,
     };
+
+    setDiagnosticData(mergeObjects(diagnosticData, newData));
 
     await axios(
       `http://localhost:3001/diagnostics/${locationState.patientCaseData.id}/change-visibility`,
@@ -64,12 +78,7 @@ const ManageDiagnostic = () => {
         responseType: 'json',
       },
     ).then(
-      (res) => {
-        history.push({
-          pathname: '/home',
-          state: { currentTab: 1 },
-        });
-      },
+      (res) => {},
       (err) => {
         console.log(err);
       },
@@ -80,41 +89,31 @@ const ManageDiagnostic = () => {
     <div className={classes.displayRows}>
       <Diagnostic
         patientCaseData={locationState.patientCaseData}
-        diagnosticData={locationState.diagnosticData}
+        diagnosticData={diagnosticData}
+        isEditing={true}
       />
 
       <div className={classes.displayRowsButtons}>
-        <Button
-          variant='contained'
-          color='primary'
-          onClick={async () => {
-            await changeVisibility(0);
-
-            history.push({
-              pathname: '/home',
-              state: { currentTab: 1 },
-            });
-          }}
-        >
-          Make diagnostic{' '}
-          {locationState.diagnosticData.isPublic ? 'private' : 'public'}
-        </Button>
-        <Button
-          variant='outlined'
-          color='primary'
-          onClick={async () => {
-            await changeVisibility(1);
-
-            history.push({
-              pathname: '/home',
-              state: { currentTab: 1 },
-            });
-          }}
-        >
-          {locationState.diagnosticData.isAnonymous
-            ? 'Show patient data'
-            : 'Make anonymous'}
-        </Button>
+        <FormControlLabel
+          control={
+            <Switch
+              color='primary'
+              checked={diagnosticData.isPublic}
+              onChange={(event) => handleChange(event, 0)}
+            />
+          }
+          label='Public'
+        />
+        <FormControlLabel
+          control={
+            <Switch
+              color='primary'
+              checked={diagnosticData.isAnonymous}
+              onChange={(event) => handleChange(event, 1)}
+            />
+          }
+          label='Anonymous'
+        />
 
         <Button
           variant='contained'
