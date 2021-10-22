@@ -85,19 +85,36 @@ const EditCase = () => {
   };
 
   const updateCase = async () => {
-    await axios(`http://localhost:3001/cases/${patientCase.id}/update`, {
+    var data = new FormData();
+    data.append('file', imageFile as Blob);
+    data.append('cloud_name', 'dtvygtfio');
+    data.append('upload_preset', 'dvibozng');
+
+    await axios('https://api.cloudinary.com/v1_1/dtvygtfio/image/upload', {
       method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-      },
-      data: {
-        ...patientCase,
-      },
-      withCredentials: true,
+      data: data,
       responseType: 'json',
     }).then(
-      (res) => {
-        console.log('Updated case');
+      async (res) => {
+        await axios(`http://localhost:3001/cases/${patientCase.id}/update`, {
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json',
+          },
+          data: {
+            ...patientCase,
+            imageURL: res.data.url,
+          },
+          withCredentials: true,
+          responseType: 'json',
+        }).then(
+          (res) => {
+            console.log('Updated case');
+          },
+          (err) => {
+            return;
+          },
+        );
       },
       (err) => {
         return;
