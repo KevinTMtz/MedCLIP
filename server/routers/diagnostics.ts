@@ -34,7 +34,7 @@ router.get(
   verifyJWT,
   isOwnedBy,
   async (req: Request, res: Response) => {
-    const the_case: ICase = res.locals.case;
+    // const the_case: ICase = res.locals.case;
     // TODO: Use model to get diagnostic
     // const diagnostic = makeDiagnostic(the_case.imageURL)
     const diagnosis = 'Vein of Galen Malformation';
@@ -65,8 +65,8 @@ router.post(
       diagnosis: diagnosis,
     }).then(
       (diagnostic) => {
-        const diagnosticID: number = diagnostic.getDataValue('id');
-        the_case.update({ diagnosticId: diagnosticID }).then(
+        const diagnosticId: number = diagnostic.getDataValue('id');
+        the_case.update({ diagnosticId: diagnosticId }).then(
           () => {
             return res
               .status(200)
@@ -97,7 +97,7 @@ router.post(
     }
     const diagnostic: IDiagnostic = res.locals.diagnostic;
     const { isPublic, isAnonymous } = req.body;
-    diagnostic.update({ public: isPublic, anonymous: isAnonymous }).then(
+    diagnostic.update({ isPublic: isPublic, isAnonymous: isAnonymous }).then(
       () => {
         return res
           .status(200)

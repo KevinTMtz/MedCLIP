@@ -2,10 +2,10 @@ import { Model } from 'sequelize';
 
 interface ICase extends Model {
   id: number;
-  userID: number;
-  diagnosticID: number;
-  name: string;
-  description: string;
+  userId: number;
+  diagnosticId: number;
+  caseName: string;
+  caseDescription: string;
   patientName: string;
   patientBirthDate: Date;
   patientSex: string;

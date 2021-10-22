@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles, createStyles, Theme } from '@material-ui/core';
 
-import { PatientCaseData } from '../../common';
+import { DiagnosticData, PatientCaseData } from '../../common';
 import { styles } from '../../styles';
 
 const diagnosticStyles = makeStyles((_: Theme) =>
@@ -20,12 +20,12 @@ const diagnosticStyles = makeStyles((_: Theme) =>
 
 interface DiagnosticProps {
   patientCaseData: PatientCaseData;
-  diagnostic: string;
+  diagnosticData: DiagnosticData;
 }
 
 const Diagnostic: React.FC<DiagnosticProps> = ({
   patientCaseData,
-  diagnostic,
+  diagnosticData,
 }) => {
   const classesDiagnostic = diagnosticStyles();
   const classes = styles();
@@ -40,15 +40,19 @@ const Diagnostic: React.FC<DiagnosticProps> = ({
         Patient Birth Date: {patientCaseData.patientBirthDate?.toLocaleString()}
       </p>
       <p>Patient Sex: {patientCaseData.patientSex}</p>
-      <p>Patient Weight: {patientCaseData.PatientWeight}kg</p>
+      <p>Patient Weight: {patientCaseData.patientWeight}kg</p>
       <p>Medical Image:</p>
       <img
         alt='Could not display'
         src={patientCaseData.imageURL}
         className={classesDiagnostic.image}
       />
-      <h1>Analysis result</h1>
-      <p>Diagnostic: {diagnostic}</p>
+      {diagnosticData && (
+        <>
+          <h1>Analysis result</h1>
+          <p>Diagnostic: {diagnosticData.diagnosis}</p>
+        </>
+      )}
     </div>
   );
 };

@@ -4,8 +4,15 @@ export interface PatientCaseData {
   patientName: string;
   patientBirthDate: Date | null;
   patientSex: string;
-  PatientWeight: number;
+  patientWeight: number;
   imageURL: string | undefined;
-  hasDiagnostic: boolean;
+  id?: string;
+  diagnosticId?: string;
+}
+
+export interface DiagnosticData {
+  id: number;
+  diagnosis: string;
   isPublic: boolean;
+  isAnonymous: boolean;
 }

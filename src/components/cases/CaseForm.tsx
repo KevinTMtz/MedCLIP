@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import {
   TextField,
   createStyles,
@@ -29,7 +30,7 @@ const caseFormStyles = makeStyles((_: Theme) =>
       padding: '16px',
       cursor: 'pointer',
       textAlign: 'center',
-      width: 'calc(100% - 34px)',
+      width: '100%',
       border: '1px solid #ccc',
       borderRadius: '4px',
       '&:hover': {
@@ -60,6 +61,9 @@ interface CaseFormProps {
   setImageFile: React.Dispatch<React.SetStateAction<File | undefined>>;
   patientCase: PatientCaseData;
   setPatientCase: React.Dispatch<React.SetStateAction<PatientCaseData>>;
+  createDiagnostic?: () => Promise<void>;
+  caseAction: () => Promise<void>;
+  deleteCase?: () => Promise<void>;
 }
 
 const CaseForm = (props: CaseFormProps) => {
@@ -152,10 +156,10 @@ const CaseForm = (props: CaseFormProps) => {
           variant='outlined'
           type='number'
           required
-          value={props.patientCase.PatientWeight}
+          value={props.patientCase.patientWeight}
           onChange={(event: React.ChangeEvent<{ value: unknown }>) =>
             hangleSetPatientCase({
-              PatientWeight: event.target.value as string,
+              patientWeight: event.target.value as string,
             })
           }
         />
@@ -190,40 +194,84 @@ const CaseForm = (props: CaseFormProps) => {
 
         {/* Actions */}
         <div className={classes.displayRowsButtons}>
-          <Button
-            type='submit'
-            value='saveAndDiagnostic'
-            variant='contained'
-            color='primary'
-            onClick={() =>
-              history.push({
-                pathname: '/review-diagnostic',
-                state: {
-                  ...props.patientCase,
-                },
-              })
-            }
-          >
-            {props.isEditing ? 'Update case' : 'Create case'} &amp; Make
-            diagnostic
-          </Button>
+          {props.isEditing && (
+            <Button
+              type='submit'
+              value='diagnostic'
+              variant='contained'
+              color='primary'
+              onClick={async () => {
+                if (props.createDiagnostic) await props.createDiagnostic();
+
+                axios(
+                  `http://localhost:3001/diagnostics/${props.patientCase.id}`,
+                  {
+                    method: 'GET',
+                    headers: {
+                      'content-type': 'application/json',
+                    },
+                    withCredentials: true,
+                    responseType: 'json',
+                  },
+                ).then(
+                  (res) => {
+                    history.push({
+                      pathname: '/review-diagnostic',
+                      state: {
+                        patientCaseData: props.patientCase,
+                        diagnosticData: res.data.diagnostic_data,
+                      },
+                    });
+                  },
+                  (err) => {
+                    return;
+                  },
+                );
+              }}
+            >
+              Make diagnostic
+            </Button>
+          )}
+
           <Button
             variant='outlined'
             color='primary'
             value='saveAndDiagnostic'
-            onClick={() => history.push('/home')}
+            onClick={async () => {
+              await props.caseAction();
+              history.push({
+                pathname: '/home',
+                state: { currentTab: 1 },
+              });
+            }}
           >
             {props.isEditing ? 'Update case' : 'Create case'}
           </Button>
+          {props.isEditing && (
+            <Button
+              variant='contained'
+              color='secondary'
+              onClick={async () => {
+                if (props.deleteCase) await props.deleteCase();
+                history.push({
+                  pathname: '/home',
+                  state: { currentTab: 1 },
+                });
+              }}
+            >
+              Delete case
+            </Button>
+          )}
           <Button
             variant='contained'
-            color='secondary'
-            onClick={() => history.push('/home')}
+            onClick={() =>
+              history.push({
+                pathname: '/home',
+                state: { currentTab: 1 },
+              })
+            }
           >
-            Delete case
-          </Button>
-          <Button variant='contained' onClick={() => history.push('/home')}>
-            Return to my cases
+            Cancel case {props.isEditing ? 'update' : 'creation'}
           </Button>
         </div>
       </form>

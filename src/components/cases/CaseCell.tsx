@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
+import axios from 'axios';
 import {
   makeStyles,
   createStyles,
@@ -14,7 +15,7 @@ import {
   Chip,
 } from '@material-ui/core';
 
-import { PatientCaseData } from '../../common';
+import { DiagnosticData, PatientCaseData } from '../../common';
 
 const caseCellStyles = makeStyles((_: Theme) =>
   createStyles({
@@ -46,6 +47,28 @@ const CaseCell = (props: CaseCellProps) => {
 
   const history = useHistory();
 
+  const [diagnostic, setDiagnostic] = useState<DiagnosticData>();
+
+  useEffect(() => {
+    if (props.patientCaseData.diagnosticId) {
+      axios(`http://localhost:3001/diagnostics/${props.patientCaseData.id}`, {
+        method: 'GET',
+        headers: {
+          'content-type': 'application/json',
+        },
+        withCredentials: true,
+        responseType: 'json',
+      }).then(
+        (res) => {
+          setDiagnostic(res.data.diagnostic_data);
+        },
+        (err) => {
+          return;
+        },
+      );
+    }
+  }, []);
+
   return (
     <Card className={classesCaseCell.root}>
       <CardActionArea disabled>
@@ -57,12 +80,12 @@ const CaseCell = (props: CaseCellProps) => {
         <CardContent>
           <Typography gutterBottom variant='h5' component='h2'>
             {`${props.patientCaseData.caseName} `}
-            {props.patientCaseData.hasDiagnostic && (
+            {props.patientCaseData.diagnosticId && (
               <Chip
                 variant='outlined'
                 size='small'
-                color={props.patientCaseData.isPublic ? 'primary' : 'secondary'}
-                label={props.patientCaseData.isPublic ? 'Public' : 'Private'}
+                color={diagnostic?.isPublic ? 'primary' : 'secondary'}
+                label={diagnostic?.isPublic ? 'Public' : 'Private'}
               />
             )}
           </Typography>
@@ -72,7 +95,7 @@ const CaseCell = (props: CaseCellProps) => {
           </Typography>
         </CardContent>
       </CardActionArea>
-      {props.patientCaseData.hasDiagnostic ? (
+      {props.patientCaseData.diagnosticId ? (
         <CardActions>
           <Button
             variant='contained'
@@ -83,7 +106,10 @@ const CaseCell = (props: CaseCellProps) => {
                 pathname: props.isEditing
                   ? '/manage-diagnostic'
                   : '/diagnostic',
-                state: props.patientCaseData,
+                state: {
+                  patientCaseData: props.patientCaseData,
+                  diagnosticData: diagnostic,
+                },
               })
             }
           >
@@ -103,20 +129,7 @@ const CaseCell = (props: CaseCellProps) => {
               })
             }
           >
-            Edit case
-          </Button>
-          <Button
-            variant='contained'
-            size='small'
-            color='primary'
-            onClick={() =>
-              history.push({
-                pathname: '/review-diagnostic',
-                state: props.patientCaseData,
-              })
-            }
-          >
-            Make Diagnostic
+            Edit case or make diagnostic
           </Button>
         </CardActions>
       )}

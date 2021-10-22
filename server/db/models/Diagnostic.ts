@@ -15,12 +15,12 @@ const Diagnostic = db.define<IDiagnostic>('Diagnostic', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  public: {
+  isPublic: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
     defaultValue: false,
   },
-  anonymous: {
+  isAnonymous: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
     defaultValue: false,
