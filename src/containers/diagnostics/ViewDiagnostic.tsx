@@ -28,7 +28,7 @@ const ViewDiagnostic = () => {
           onClick={() =>
             history.push({
               pathname: '/home',
-              state: { currentTab: 1 },
+              state: { currentTab: 0 },
             })
           }
         >

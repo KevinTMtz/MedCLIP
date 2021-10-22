@@ -5,31 +5,35 @@ import { Autocomplete } from '@mui/material';
 import { PatientCaseData } from '../../common';
 import { styles } from '../../styles';
 import CaseCellsLayout from '../../components/cases/CaseCellsLayout';
+import axios from 'axios';
 
 const Diagnostics = () => {
   const classes = styles();
 
-  const [cases] = useState<PatientCaseData[]>([]);
+  const [cases, setCases] = useState<PatientCaseData[]>([]);
   const [displayedCases, setDisplayedCases] = useState<PatientCaseData[]>([]);
 
   useEffect(() => {
-    // let casesArr: PatientCaseData[] = [];
-    // for (let i = 1; i <= 4; i++) {
-    //   casesArr.push({
-    //     caseName: `Brain ${i}`,
-    //     caseDescription:
-    //       'Left temporal lobe ring enhancing lesion with associated vasogenic edema.',
-    //     patientName: 'Juan',
-    //     patientBirthDate: new Date(),
-    //     patientSex: 'Male',
-    //     patientWeight: 69,
-    //     imageURL:
-    //       'https://prod-images-static.radiopaedia.org/images/25899296/0c8c2658ce6f072ec207823e75f7c7_big_gallery.jpeg',
-    //   });
-    // }
-    // casesArr = casesArr.filter((r) => r.isPublic);
-    // setCases(casesArr);
-    // setDisplayedCases(casesArr);
+    axios('http://localhost:3001/diagnostics/get-all-public', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      data: {
+        start: 0,
+        end: 10,
+      },
+      withCredentials: true,
+      responseType: 'json',
+    }).then(
+      (res) => {
+        setCases(res.data);
+        setDisplayedCases(res.data);
+      },
+      (err) => {
+        return;
+      },
+    );
   }, []);
 
   const showSelectedCase = (caseNameInput: string | null) => {
