@@ -18,12 +18,48 @@ const ManageDiagnostic = () => {
 
   const deleteDiagnostic = async () => {
     await axios(
-      `http://localhost:3001/diagnostics/${locationState.patientCaseData.id}/delete`,
+      `http://localhost:3001/diagnostics/${locationState.patientCaseData.id}/change-visibility`,
       {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
         },
+        withCredentials: true,
+        responseType: 'json',
+      },
+    ).then(
+      (res) => {
+        history.push({
+          pathname: '/home',
+          state: { currentTab: 1 },
+        });
+      },
+      (err) => {
+        console.log(err);
+      },
+    );
+  };
+
+  const changeVisibility = async (visibilityOrPrivacy: number) => {
+    const newData = {
+      isPublic:
+        visibilityOrPrivacy === 0
+          ? !locationState.diagnosticData.isPublic
+          : locationState.diagnosticData.isPublic,
+      isAnonymous:
+        visibilityOrPrivacy === 1
+          ? !locationState.diagnosticData.isAnonymous
+          : locationState.diagnosticData.isAnonymous,
+    };
+
+    await axios(
+      `http://localhost:3001/diagnostics/${locationState.patientCaseData.id}/change-visibility`,
+      {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+        },
+        data: newData,
         withCredentials: true,
         responseType: 'json',
       },
@@ -51,9 +87,33 @@ const ManageDiagnostic = () => {
         <Button
           variant='contained'
           color='primary'
-          onClick={() => history.push('/home')}
+          onClick={async () => {
+            await changeVisibility(1);
+
+            history.push({
+              pathname: '/home',
+              state: { currentTab: 1 },
+            });
+          }}
         >
-          Publish diagnostic
+          {locationState.diagnosticData.isAnonymous
+            ? 'Show patient data'
+            : 'Make anonymous'}
+        </Button>
+        <Button
+          variant='contained'
+          color='primary'
+          onClick={async () => {
+            await changeVisibility(0);
+
+            history.push({
+              pathname: '/home',
+              state: { currentTab: 1 },
+            });
+          }}
+        >
+          Make diagnostic{' '}
+          {locationState.diagnosticData.isPublic ? 'private' : 'public'}
         </Button>
         <Button
           variant='contained'

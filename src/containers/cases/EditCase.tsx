@@ -13,8 +13,6 @@ const EditCase = () => {
   const [patientCase, setPatientCase] =
     useState<PatientCaseData>(locationState);
 
-  console.log(patientCase);
-
   useEffect(() => {
     if (patientCase.imageURL) {
       const xhr = new XMLHttpRequest();

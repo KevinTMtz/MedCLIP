@@ -51,7 +51,12 @@ const ReviewDiagnostic = () => {
         <Button
           variant='contained'
           color='primary'
-          onClick={() => history.push('/home')}
+          onClick={() =>
+            history.push({
+              pathname: '/home',
+              state: { currentTab: 1 },
+            })
+          }
         >
           Confirm diagnostic
         </Button>
