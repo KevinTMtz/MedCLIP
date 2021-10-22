@@ -20,7 +20,6 @@ import Homepage from './containers/Homepage';
 import Landingpage from './containers/Landingpage';
 import { styles } from './styles';
 import CreateCase from './containers/cases/CreateCase';
-import ReviewDiagnostic from './containers/diagnostics/ReviewDiagnostic';
 import EditCase from './containers/cases/EditCase';
 import Loginpage from './containers/auth/Loginpage';
 import Registerpage from './containers/auth/Registerpage';
@@ -186,7 +185,7 @@ const App = () => {
             <Route exact path='/create-case'>
               <CreateCase />
             </Route>
-            <Route exact path='/edit-case'>
+            <Route path='/edit-case/:caseId'>
               <EditCase />
             </Route>
 
@@ -196,9 +195,6 @@ const App = () => {
             </Route>
             <Route path='/manage-diagnostic'>
               <ManageDiagnostic />
-            </Route>
-            <Route path='/review-diagnostic'>
-              <ReviewDiagnostic />
             </Route>
             <Route path='/my-account'>
               <AccountPage />

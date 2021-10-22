@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 import {
   TextField,
   createStyles,
@@ -61,7 +60,7 @@ interface CaseFormProps {
   setImageFile: React.Dispatch<React.SetStateAction<File | undefined>>;
   patientCase: PatientCaseData;
   setPatientCase: React.Dispatch<React.SetStateAction<PatientCaseData>>;
-  createDiagnostic?: () => Promise<void>;
+  createDiagnostic?: () => void;
   caseAction: () => Promise<void>;
   deleteCase?: () => Promise<void>;
 }
@@ -200,33 +199,13 @@ const CaseForm = (props: CaseFormProps) => {
               value='diagnostic'
               variant='contained'
               color='primary'
-              onClick={async () => {
-                if (props.createDiagnostic) await props.createDiagnostic();
+              onClick={() => {
+                if (props.createDiagnostic) props.createDiagnostic();
 
-                axios(
-                  `http://localhost:3001/diagnostics/${props.patientCase.id}`,
-                  {
-                    method: 'GET',
-                    headers: {
-                      'content-type': 'application/json',
-                    },
-                    withCredentials: true,
-                    responseType: 'json',
-                  },
-                ).then(
-                  (res) => {
-                    history.push({
-                      pathname: '/review-diagnostic',
-                      state: {
-                        patientCaseData: props.patientCase,
-                        diagnosticData: res.data.diagnostic_data,
-                      },
-                    });
-                  },
-                  (err) => {
-                    return;
-                  },
-                );
+                history.push({
+                  pathname: '/home',
+                  state: { currentTab: 1 },
+                });
               }}
             >
               Make diagnostic
@@ -234,7 +213,7 @@ const CaseForm = (props: CaseFormProps) => {
           )}
 
           <Button
-            variant='outlined'
+            variant={props.isEditing ? 'outlined' : 'contained'}
             color='primary'
             value='saveAndDiagnostic'
             onClick={async () => {
@@ -245,7 +224,7 @@ const CaseForm = (props: CaseFormProps) => {
               });
             }}
           >
-            {props.isEditing ? 'Update case' : 'Create case'}
+            {props.isEditing ? 'Update' : 'Create'} case
           </Button>
           {props.isEditing && (
             <Button

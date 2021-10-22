@@ -18,7 +18,7 @@ const ManageDiagnostic = () => {
 
   const deleteDiagnostic = async () => {
     await axios(
-      `http://localhost:3001/diagnostics/${locationState.patientCaseData.id}/change-visibility`,
+      `http://localhost:3001/diagnostics/${locationState.patientCaseData.id}/delete`,
       {
         method: 'POST',
         headers: {
@@ -88,6 +88,21 @@ const ManageDiagnostic = () => {
           variant='contained'
           color='primary'
           onClick={async () => {
+            await changeVisibility(0);
+
+            history.push({
+              pathname: '/home',
+              state: { currentTab: 1 },
+            });
+          }}
+        >
+          Make diagnostic{' '}
+          {locationState.diagnosticData.isPublic ? 'private' : 'public'}
+        </Button>
+        <Button
+          variant='outlined'
+          color='primary'
+          onClick={async () => {
             await changeVisibility(1);
 
             history.push({
@@ -100,21 +115,7 @@ const ManageDiagnostic = () => {
             ? 'Show patient data'
             : 'Make anonymous'}
         </Button>
-        <Button
-          variant='contained'
-          color='primary'
-          onClick={async () => {
-            await changeVisibility(0);
 
-            history.push({
-              pathname: '/home',
-              state: { currentTab: 1 },
-            });
-          }}
-        >
-          Make diagnostic{' '}
-          {locationState.diagnosticData.isPublic ? 'private' : 'public'}
-        </Button>
         <Button
           variant='contained'
           color='secondary'

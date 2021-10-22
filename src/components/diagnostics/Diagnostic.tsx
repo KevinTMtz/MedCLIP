@@ -35,24 +35,29 @@ const Diagnostic: React.FC<DiagnosticProps> = ({
       <h1>Case</h1>
       <p>Case Name: {patientCaseData.caseName}</p>
       <p>Case Description: {patientCaseData.caseDescription}</p>
-      <p>Patient Name: {patientCaseData.patientName}</p>
-      <p>
-        Patient Birth Date: {patientCaseData.patientBirthDate?.toLocaleString()}
-      </p>
-      <p>Patient Sex: {patientCaseData.patientSex}</p>
-      <p>Patient Weight: {patientCaseData.patientWeight}kg</p>
+      {diagnosticData.isAnonymous ? (
+        <p>
+          Patient information is not displayed because the case is anonymous
+        </p>
+      ) : (
+        <>
+          <p>Patient Name: {patientCaseData.patientName}</p>
+          <p>
+            Patient Birth Date:{' '}
+            {patientCaseData.patientBirthDate?.toLocaleString()}
+          </p>
+          <p>Patient Sex: {patientCaseData.patientSex}</p>
+          <p>Patient Weight: {patientCaseData.patientWeight}kg</p>
+        </>
+      )}
       <p>Medical Image:</p>
       <img
         alt='Could not display'
         src={patientCaseData.imageURL}
         className={classesDiagnostic.image}
       />
-      {diagnosticData && (
-        <>
-          <h1>Analysis result</h1>
-          <p>Diagnostic: {diagnosticData.diagnosis}</p>
-        </>
-      )}
+      <h1>Analysis result</h1>
+      <p>Diagnostic: {diagnosticData.diagnosis}</p>
     </div>
   );
 };
