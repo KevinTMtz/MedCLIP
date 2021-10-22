@@ -78,7 +78,16 @@ const CaseForm = (props: CaseFormProps) => {
     <div>
       <h1>{props.isEditing ? 'Edit' : 'Create'} case</h1>
       {/* Add onSubmit validation */}
-      <form className={classes.displayRows}>
+      <form
+        className={classes.displayRows}
+        onSubmit={async () => {
+          await props.caseAction();
+          history.push({
+            pathname: '/home',
+            state: { currentTab: 1 },
+          });
+        }}
+      >
         <TextField
           variant='outlined'
           label='Case Name'
@@ -195,7 +204,6 @@ const CaseForm = (props: CaseFormProps) => {
         <div className={classes.displayRowsButtons}>
           {props.isEditing && (
             <Button
-              type='submit'
               value='diagnostic'
               variant='contained'
               color='primary'
@@ -208,21 +216,15 @@ const CaseForm = (props: CaseFormProps) => {
                 });
               }}
             >
-              Make diagnostic
+              Make diagnostic without updating
             </Button>
           )}
 
           <Button
             variant={props.isEditing ? 'outlined' : 'contained'}
+            type='submit'
             color='primary'
             value='saveAndDiagnostic'
-            onClick={async () => {
-              await props.caseAction();
-              history.push({
-                pathname: '/home',
-                state: { currentTab: 1 },
-              });
-            }}
           >
             {props.isEditing ? 'Update' : 'Create'} case
           </Button>

@@ -20,6 +20,7 @@ const ViewDiagnostic = () => {
       <Diagnostic
         patientCaseData={locationState.patientCaseData}
         diagnosticData={locationState.diagnosticData}
+        isEditing={false}
       />
 
       <div className={classes.displayRowsButtons}>
