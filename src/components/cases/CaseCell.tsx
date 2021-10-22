@@ -67,7 +67,7 @@ const CaseCell = (props: CaseCellProps) => {
         },
       );
     }
-  }, []);
+  }, [props.patientCaseData.diagnosticId, props.patientCaseData.id]);
 
   return (
     <Card className={classesCaseCell.root}>
@@ -129,8 +129,7 @@ const CaseCell = (props: CaseCellProps) => {
             color='primary'
             onClick={() =>
               history.push({
-                pathname: '/edit-case',
-                state: props.patientCaseData,
+                pathname: `/edit-case/${props.patientCaseData.id}`,
               })
             }
           >
