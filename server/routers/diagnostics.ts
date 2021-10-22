@@ -8,8 +8,41 @@ import isOwnedBy from '../middlewares/isOwnedBy';
 import hasDiagnostic from '../middlewares/hasDiagnostic';
 import checkVisibility from '../middlewares/checkVisibility';
 import IDiagnostic from '../db/interfaces/IDiagnostic';
+import Case from '../db/models/Case';
 
 const router = Router();
+
+router.post(
+  '/get-all-public',
+  body('start').isInt(),
+  body('end').isInt(),
+  async (req: Request, res: Response) => {
+    if (!validationResult(req).isEmpty()) {
+      return res
+        .status(400)
+        .json({ message: 'Please provide the number of cases' });
+    }
+    const { start, end } = req.body;
+    Case.findAll({
+      include: [
+        {
+          model: Diagnostic,
+          as: 'diagnostic',
+          required: true,
+        },
+      ],
+      limit: end - start,
+      offset: start,
+    }).then(
+      (cases) => {
+        return res.status(200).json(cases);
+      },
+      (error) => {
+        return res.status(400).json(error);
+      },
+    );
+  },
+);
 
 router.get(
   '/:caseId([0-9]+)',
@@ -25,7 +58,9 @@ router.get(
       case_data.patientBirthDate = new Date();
       case_data.patientWeight = 0;
     }
-    return res.status(200).json({ case_data, diagnostic_data });
+    const data = case_data.get({ plain: true });
+    data.diagnostic = diagnostic_data;
+    return res.status(200).json(data);
   },
 );
 
