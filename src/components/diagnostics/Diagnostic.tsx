@@ -52,9 +52,7 @@ const Diagnostic: React.FC<DiagnosticProps> = ({
       <h3>Patient Information</h3>
       <div className={classesDiagnostic.rows}>
         {diagnosticData.isAnonymous ? (
-          <p>
-            Patient information is not displayed because the case is anonymous
-          </p>
+          <p>This case is anonymous</p>
         ) : (
           <>
             <p>
@@ -62,7 +60,7 @@ const Diagnostic: React.FC<DiagnosticProps> = ({
             </p>
             <p>
               <strong>Birth Date:</strong>{' '}
-              {patientCaseData.patientBirthDate?.toLocaleString()}
+              {patientCaseData.patientBirthDate?.toString().slice(0, 10)}
             </p>
             <p>
               <strong>Sex:</strong> {patientCaseData.patientSex}
