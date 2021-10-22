@@ -6,6 +6,7 @@ import { styles } from '../../styles';
 import { PatientCaseData } from '../../common';
 import CaseCellsLayout from '../../components/cases/CaseCellsLayout';
 import { Autocomplete } from '@mui/material';
+import axios from 'axios';
 
 const Cases = () => {
   const classes = styles();
@@ -16,26 +17,22 @@ const Cases = () => {
   const [displayedCases, setDisplayedCases] = useState<PatientCaseData[]>([]);
 
   useEffect(() => {
-    const casesArr: PatientCaseData[] = [];
-
-    for (let i = 1; i <= 5; i++) {
-      casesArr.push({
-        caseName: `Brain ${i}`,
-        caseDescription:
-          'Left temporal lobe ring enhancing lesion with associated vasogenic edema.',
-        patientName: 'Juan',
-        patientBirthDate: new Date(),
-        patientSex: 'Male',
-        PatientWeight: 69,
-        imageURL:
-          'https://prod-images-static.radiopaedia.org/images/25899296/0c8c2658ce6f072ec207823e75f7c7_big_gallery.jpeg',
-        hasDiagnostic: i % 2 === 0,
-        isPublic: i % 2 === 0,
-      });
-    }
-
-    setCases(casesArr);
-    setDisplayedCases(casesArr);
+    axios('http://localhost:3001/cases/', {
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json',
+      },
+      withCredentials: true,
+      responseType: 'json',
+    }).then(
+      (res) => {
+        setCases(res.data);
+        setDisplayedCases(res.data);
+      },
+      (err) => {
+        return;
+      },
+    );
   }, []);
 
   const showSelectedCase = (caseNameInput: string | null) => {

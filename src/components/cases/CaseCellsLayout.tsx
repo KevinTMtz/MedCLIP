@@ -26,8 +26,12 @@ const CaseCellsLayout = (props: CaseCellsLayoutProps) => {
 
   return (
     <div className={classesCaseCellsLayout.cellsDiv}>
-      {props.cases.map((caseData) => (
-        <CaseCell patientCaseData={caseData} isEditing={props.isEditing} />
+      {props.cases.map((caseData, index) => (
+        <CaseCell
+          key={`case-cell-${index}`}
+          patientCaseData={caseData}
+          isEditing={props.isEditing}
+        />
       ))}
     </div>
   );

@@ -13,11 +13,11 @@ const Case = db.define<ICase>('Case', {
     primaryKey: true,
     unique: true,
   },
-  name: {
+  caseName: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  description: {
+  caseDescription: {
     type: DataTypes.STRING,
     allowNull: false,
   },

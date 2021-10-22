@@ -4,9 +4,16 @@ import { Box, Tab, Tabs } from '@material-ui/core';
 import Cases from './cases/Cases';
 import Diagnostics from './diagnostics/Diagnostics';
 import TabPanel from '../components/navigation/TabPanel';
+import { useLocation } from 'react-router';
+
+interface LocationProps {
+  currentTab: number;
+}
 
 const Homepage = () => {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = React.useState(
+    (useLocation().state as LocationProps)?.currentTab ?? 0,
+  );
 
   const handleChange = (_: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);

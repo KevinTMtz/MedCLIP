@@ -169,7 +169,9 @@ const App = () => {
           <Route exact path='/'>
             <Landingpage />
           </Route>
-          <div className={classes.layoutDiv}>
+        </Switch>
+        <div className={classes.layoutDiv}>
+          <Switch>
             <Route exact path='/login'>
               <Loginpage />
             </Route>
@@ -201,8 +203,8 @@ const App = () => {
             <Route path='/my-account'>
               <AccountPage />
             </Route>
-          </div>
-        </Switch>
+          </Switch>
+        </div>
       </UserContextProvider>
     </div>
   );

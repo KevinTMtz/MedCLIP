@@ -40,7 +40,7 @@ const Diagnostic: React.FC<DiagnosticProps> = ({
         Patient Birth Date: {patientCaseData.patientBirthDate?.toLocaleString()}
       </p>
       <p>Patient Sex: {patientCaseData.patientSex}</p>
-      <p>Patient Weight: {patientCaseData.PatientWeight}kg</p>
+      <p>Patient Weight: {patientCaseData.patientWeight}kg</p>
       <p>Medical Image:</p>
       <img
         alt='Could not display'

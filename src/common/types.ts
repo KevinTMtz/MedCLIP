@@ -4,8 +4,9 @@ export interface PatientCaseData {
   patientName: string;
   patientBirthDate: Date | null;
   patientSex: string;
-  PatientWeight: number;
+  patientWeight: number;
   imageURL: string | undefined;
   hasDiagnostic: boolean;
   isPublic: boolean;
+  id?: string;
 }

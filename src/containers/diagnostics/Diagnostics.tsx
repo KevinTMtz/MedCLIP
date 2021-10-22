@@ -23,7 +23,7 @@ const Diagnostics = () => {
         patientName: 'Juan',
         patientBirthDate: new Date(),
         patientSex: 'Male',
-        PatientWeight: 69,
+        patientWeight: 69,
         imageURL:
           'https://prod-images-static.radiopaedia.org/images/25899296/0c8c2658ce6f072ec207823e75f7c7_big_gallery.jpeg',
         hasDiagnostic: true,

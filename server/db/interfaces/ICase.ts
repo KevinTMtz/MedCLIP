@@ -4,8 +4,8 @@ interface ICase extends Model {
   id: number;
   userID: number;
   diagnosticID: number;
-  name: string;
-  description: string;
+  caseName: string;
+  caseDescription: string;
   patientName: string;
   patientBirthDate: Date;
   patientSex: string;

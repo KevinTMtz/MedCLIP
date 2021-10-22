@@ -34,7 +34,7 @@ router.get(
   verifyJWT,
   isOwnedBy,
   async (req: Request, res: Response) => {
-    const the_case: ICase = res.locals.case;
+    // const the_case: ICase = res.locals.case;
     // TODO: Use model to get diagnostic
     // const diagnostic = makeDiagnostic(the_case.imageURL)
     const diagnosis = 'Vein of Galen Malformation';

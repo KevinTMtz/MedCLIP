@@ -5,7 +5,6 @@ import verifyJWT from '../middlewares/verifyJWT';
 import isOwnedBy from '../middlewares/isOwnedBy';
 import Case from '../db/models/Case';
 import ICase from '../db/interfaces/ICase';
-import Diagnostic from '../db/models/Diagnostic';
 
 const router = Router();
 
@@ -26,13 +25,13 @@ router.get('/', verifyJWT, async (req: Request, res: Response) => {
 router.post(
   '/create',
   verifyJWT,
-  body('case_data.name').notEmpty(),
-  body('case_data.description').notEmpty(),
-  body('case_data.imageURL').notEmpty(),
-  body('patient_data.name').notEmpty(),
-  body('patient_data.birthDate').notEmpty(),
-  body('patient_data.sex').notEmpty(),
-  body('patient_data.weight').notEmpty(),
+  body('caseName').notEmpty(),
+  body('caseDescription').notEmpty(),
+  body('imageURL').notEmpty(),
+  body('patientName').notEmpty(),
+  body('patientBirthDate').notEmpty(),
+  body('patientSex').notEmpty(),
+  body('patientWeight').notEmpty(),
   async (req: Request, res: Response) => {
     if (!validationResult(req).isEmpty()) {
       return res
@@ -40,16 +39,16 @@ router.post(
         .json({ message: 'Please fill all the fields correctly' });
     }
     const userID = res.locals.jwt.id;
-    const { case_data, patient_data } = req.body;
+    const data = req.body;
     await Case.create({
-      name: case_data.name,
       userId: userID,
-      description: case_data.description,
-      patientName: patient_data.name,
-      patientBirthDate: Date.parse(patient_data.birthDate),
-      patientSex: patient_data.sex,
-      patientWeight: parseFloat(patient_data.weight),
-      imageURL: case_data.imageURL,
+      caseName: data.caseName,
+      caseDescription: data.caseDescription,
+      patientName: data.patientName,
+      patientBirthDate: Date.parse(data.patientBirthDate),
+      patientSex: data.patientSex,
+      patientWeight: parseFloat(data.patientWeight),
+      imageURL: data.imageURL,
     }).then(
       () => {
         return res.status(201).json({ message: 'Case succesfully created' });
@@ -75,30 +74,30 @@ router.post(
   '/:caseId([0-9]+)/update',
   verifyJWT,
   isOwnedBy,
-  body('case_data.name').notEmpty(),
-  body('case_data.description').notEmpty(),
-  body('case_data.imageURL').notEmpty(),
-  body('patient_data.name').notEmpty(),
-  body('patient_data.birthDate').notEmpty(),
-  body('patient_data.sex').notEmpty(),
-  body('patient_data.weight').notEmpty(),
+  body('caseName').notEmpty(),
+  body('caseDescription').notEmpty(),
+  body('imageURL').notEmpty(),
+  body('patientName').notEmpty(),
+  body('patientBirthDate').notEmpty(),
+  body('patientSex').notEmpty(),
+  body('patientWeight').notEmpty(),
   async (req: Request, res: Response) => {
     if (!validationResult(req).isEmpty()) {
       return res
         .status(400)
         .json({ message: 'Please fill all the fields correctly' });
     }
-    const { case_data, patient_data } = req.body;
+    const data = req.body;
     const the_case: ICase = res.locals.case;
     await the_case
       .update({
-        name: case_data.name,
-        description: case_data.description,
-        patientName: patient_data.name,
-        patientBirthDate: Date.parse(patient_data.birthDate),
-        patientSex: patient_data.sex,
-        patientWeight: parseFloat(patient_data.weight),
-        imageURL: case_data.imageURL,
+        caseName: data.caseName,
+        caseDescription: data.caseDescription,
+        patientName: data.patientName,
+        patientBirthDate: Date.parse(data.patientBirthDate),
+        patientSex: data.patientSex,
+        patientWeight: parseFloat(data.patientWeight),
+        imageURL: data.imageURL,
         diagnosticId: null,
       })
       .then(
