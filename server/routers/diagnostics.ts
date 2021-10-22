@@ -29,6 +29,7 @@ router.post(
           model: Diagnostic,
           as: 'diagnostic',
           required: true,
+          where: { isPublic: true },
         },
       ],
       limit: end - start,

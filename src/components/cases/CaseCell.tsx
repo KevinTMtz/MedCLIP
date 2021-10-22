@@ -60,7 +60,7 @@ const CaseCell = (props: CaseCellProps) => {
         responseType: 'json',
       }).then(
         (res) => {
-          setDiagnostic(res.data.diagnostic_data);
+          setDiagnostic(res.data.diagnostic);
         },
         (err) => {
           return;
