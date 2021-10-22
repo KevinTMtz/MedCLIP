@@ -27,6 +27,10 @@ const Diagnostics = () => {
       responseType: 'json',
     }).then(
       (res) => {
+        res.data.sort((a: PatientCaseData, b: PatientCaseData) =>
+          a.caseName > b.caseName ? 1 : -1,
+        );
+
         setCases(res.data);
         setDisplayedCases(res.data);
       },
