@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles, createStyles, Theme } from '@material-ui/core';
+import { makeStyles, createStyles, Theme, Chip } from '@material-ui/core';
 
 import { DiagnosticData, PatientCaseData } from '../../common';
 import Divider from '../ui/Divider';
@@ -37,7 +37,19 @@ const Diagnostic: React.FC<DiagnosticProps> = ({
 
   return (
     <div>
-      <h1>Case</h1>
+      <h1>
+        Case{' '}
+        <Chip
+          variant='outlined'
+          size='small'
+          color={diagnosticData.isPublic ? 'primary' : 'secondary'}
+          label={diagnosticData.isPublic ? 'Public' : 'Private'}
+        />{' '}
+        {diagnosticData.isAnonymous && (
+          <Chip variant='outlined' size='small' label='Anonymous' />
+        )}
+      </h1>
+
       <div className={classesDiagnostic.rows}>
         <p>
           <strong>Name:</strong> {patientCaseData.caseName}
