@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router';
+import { useHistory, useLocation } from 'react-router';
 import axios from 'axios';
 
 import { PatientCaseData } from '../../common';
@@ -7,11 +7,15 @@ import { mergeObjects } from '../../common/utils';
 import CaseForm from '../../components/cases/CaseForm';
 
 const EditCase = () => {
+  const history = useHistory();
+
   const locationState = useLocation().state as PatientCaseData;
 
   const [imageFile, setImageFile] = useState<File>();
   const [patientCase, setPatientCase] =
     useState<PatientCaseData>(locationState);
+
+  console.log(patientCase);
 
   useEffect(() => {
     if (patientCase.imageURL) {
@@ -29,7 +33,7 @@ const EditCase = () => {
       xhr.open('GET', patientCase.imageURL);
       xhr.send();
     }
-  }, [patientCase.imageURL]);
+  }, []);
 
   const createDiagnostic = async () => {
     await axios(
@@ -48,8 +52,28 @@ const EditCase = () => {
         responseType: 'json',
       },
     ).then(
-      (res) => {
-        return;
+      async (res) => {
+        await axios(`http://localhost:3001/diagnostics/${patientCase.id}`, {
+          method: 'GET',
+          headers: {
+            'content-type': 'application/json',
+          },
+          withCredentials: true,
+          responseType: 'json',
+        }).then(
+          (res) => {
+            history.push({
+              pathname: '/review-diagnostic',
+              state: {
+                patientCaseData: patientCase,
+                diagnosticData: res.data.diagnostic_data,
+              },
+            });
+          },
+          (err) => {
+            return;
+          },
+        );
       },
       (err) => {
         return;
@@ -70,7 +94,7 @@ const EditCase = () => {
       responseType: 'json',
     }).then(
       (res) => {
-        console.log('Created case');
+        console.log('Updated case');
       },
       (err) => {
         return;

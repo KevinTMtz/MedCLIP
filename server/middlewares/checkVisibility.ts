@@ -6,9 +6,7 @@ const checkVisibility = (req: Request, res: Response, next: NextFunction) => {
   if (diagnostic.getDataValue('public')) next();
   const userId = res.locals.jwt.id;
   if (userId === res.locals.case.userId) next();
-  return res
-    .status(403)
-    .json({ message: 'You can not access this diagnostic' });
+  return res;
 };
 
 export default checkVisibility;

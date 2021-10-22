@@ -67,26 +67,31 @@ const CaseCell = (props: CaseCellProps) => {
         },
       );
     }
-  }, [props.patientCaseData.diagnosticId, props.patientCaseData.id]);
+  }, []);
 
   return (
     <Card className={classesCaseCell.root}>
       <CardActionArea disabled>
         <CardMedia
           className={classesCaseCell.media}
-          image='https://prod-images-static.radiopaedia.org/images/25899296/0c8c2658ce6f072ec207823e75f7c7_big_gallery.jpeg'
+          image={props.patientCaseData.imageURL}
           title='Medical Imaginery'
         />
         <CardContent>
           <Typography gutterBottom variant='h5' component='h2'>
             {`${props.patientCaseData.caseName} `}
             {props.patientCaseData.diagnosticId && (
-              <Chip
-                variant='outlined'
-                size='small'
-                color={diagnostic?.isPublic ? 'primary' : 'secondary'}
-                label={diagnostic?.isPublic ? 'Public' : 'Private'}
-              />
+              <>
+                <Chip
+                  variant='outlined'
+                  size='small'
+                  color={diagnostic?.isPublic ? 'primary' : 'secondary'}
+                  label={diagnostic?.isPublic ? 'Public' : 'Private'}
+                />{' '}
+                {diagnostic?.isAnonymous && (
+                  <Chip variant='outlined' size='small' label='Anonymous' />
+                )}
+              </>
             )}
           </Typography>
 
