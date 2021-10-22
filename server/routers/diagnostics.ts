@@ -24,7 +24,15 @@ router.post(
     }
     const { start, end } = req.body;
     Case.findAll({
-      include: [{ model: Diagnostic, as: 'diagnostic', required: true }],
+      include: [
+        {
+          model: Diagnostic,
+          as: 'diagnostic',
+          required: true,
+        },
+      ],
+      limit: end - start,
+      offset: start,
     }).then(
       (cases) => {
         return res.status(200).json(cases);
@@ -50,7 +58,9 @@ router.get(
       case_data.patientBirthDate = new Date();
       case_data.patientWeight = 0;
     }
-    return res.status(200).json({ case_data, diagnostic_data });
+    const data = case_data.get({ plain: true });
+    data.diagnostic = diagnostic_data;
+    return res.status(200).json(data);
   },
 );
 
