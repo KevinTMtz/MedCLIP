@@ -2,18 +2,24 @@ import React from 'react';
 import { makeStyles, createStyles, Theme } from '@material-ui/core';
 
 import { DiagnosticData, PatientCaseData } from '../../common';
-import { styles } from '../../styles';
+import Divider from '../ui/Divider';
 
 const diagnosticStyles = makeStyles((_: Theme) =>
   createStyles({
     image: {
       maxWidth: '50%',
       maxHeight: '300px',
-      margin: '0 auto 24px auto',
+      margin: '0 auto',
       borderRadius: '4px',
       '@media (max-width: 600px)': {
         maxWidth: '90%',
       },
+    },
+    rows: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '8px',
+      marginBottom: '20px',
     },
   }),
 );
@@ -28,36 +34,62 @@ const Diagnostic: React.FC<DiagnosticProps> = ({
   diagnosticData,
 }) => {
   const classesDiagnostic = diagnosticStyles();
-  const classes = styles();
 
   return (
-    <div className={classes.displayRows}>
+    <div>
       <h1>Case</h1>
-      <p>Case Name: {patientCaseData.caseName}</p>
-      <p>Case Description: {patientCaseData.caseDescription}</p>
-      {diagnosticData.isAnonymous ? (
+      <div className={classesDiagnostic.rows}>
         <p>
-          Patient information is not displayed because the case is anonymous
+          <strong>Name:</strong> {patientCaseData.caseName}
         </p>
-      ) : (
-        <>
-          <p>Patient Name: {patientCaseData.patientName}</p>
+        <p>
+          <strong>Description:</strong> {patientCaseData.caseDescription}
+        </p>
+      </div>
+
+      <Divider />
+
+      <h3>Patient Information</h3>
+      <div className={classesDiagnostic.rows}>
+        {diagnosticData.isAnonymous ? (
           <p>
-            Patient Birth Date:{' '}
-            {patientCaseData.patientBirthDate?.toLocaleString()}
+            Patient information is not displayed because the case is anonymous
           </p>
-          <p>Patient Sex: {patientCaseData.patientSex}</p>
-          <p>Patient Weight: {patientCaseData.patientWeight}kg</p>
-        </>
-      )}
-      <p>Medical Image:</p>
-      <img
-        alt='Could not display'
-        src={patientCaseData.imageURL}
-        className={classesDiagnostic.image}
-      />
-      <h1>Analysis result</h1>
-      <p>Diagnostic: {diagnosticData.diagnosis}</p>
+        ) : (
+          <>
+            <p>
+              <strong>Name:</strong> {patientCaseData.patientName}
+            </p>
+            <p>
+              <strong>Birth Date:</strong>{' '}
+              {patientCaseData.patientBirthDate?.toLocaleString()}
+            </p>
+            <p>
+              <strong>Sex:</strong> {patientCaseData.patientSex}
+            </p>
+            <p>
+              <strong>Weight:</strong> {patientCaseData.patientWeight}kg
+            </p>
+          </>
+        )}
+      </div>
+
+      <Divider />
+
+      <h3>Medical Image</h3>
+      <div className={classesDiagnostic.rows}>
+        <img
+          alt='Could not display'
+          src={patientCaseData.imageURL}
+          className={classesDiagnostic.image}
+        />
+      </div>
+
+      <Divider />
+
+      <h2>Diagnostic</h2>
+      <p>{diagnosticData.diagnosis}</p>
+      <br />
     </div>
   );
 };
