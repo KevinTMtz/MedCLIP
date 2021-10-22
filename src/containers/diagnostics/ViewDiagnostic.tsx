@@ -3,21 +3,35 @@ import { useHistory, useLocation } from 'react-router';
 import { Button } from '@material-ui/core';
 
 import Diagnostic from '../../components/diagnostics/Diagnostic';
-import { PatientCaseData } from '../../common';
+import { DiagnosticData, PatientCaseData } from '../../common';
 import { styles } from '../../styles';
 
 const ViewDiagnostic = () => {
   const classes = styles();
 
   const history = useHistory();
-  const locationState = useLocation().state as PatientCaseData;
+  const locationState = useLocation().state as {
+    patientCaseData: PatientCaseData;
+    diagnosticData: DiagnosticData;
+  };
 
   return (
     <div className={classes.displayRows}>
-      <Diagnostic patientCaseData={locationState} diagnostic={'Tumor'} />
+      <Diagnostic
+        patientCaseData={locationState.patientCaseData}
+        diagnosticData={locationState.diagnosticData}
+      />
 
       <div className={classes.displayRowsButtons}>
-        <Button variant='contained' onClick={() => history.push('/home')}>
+        <Button
+          variant='contained'
+          onClick={() =>
+            history.push({
+              pathname: '/home',
+              state: { currentTab: 1 },
+            })
+          }
+        >
           Return to diagnostics
         </Button>
       </div>

@@ -13,6 +13,8 @@ const EditCase = () => {
   const [patientCase, setPatientCase] =
     useState<PatientCaseData>(locationState);
 
+  console.log(patientCase);
+
   useEffect(() => {
     if (patientCase.imageURL) {
       const xhr = new XMLHttpRequest();
@@ -29,7 +31,33 @@ const EditCase = () => {
       xhr.open('GET', patientCase.imageURL);
       xhr.send();
     }
-  }, [patientCase.imageURL]);
+  }, []);
+
+  const createDiagnostic = async () => {
+    await axios(
+      `http://localhost:3001/diagnostics/${patientCase.id}/save-diagnostic`,
+      {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+        },
+        data: {
+          diagnosis: 'Vein of Galen Malformation',
+          isPublic: false,
+          isAnonym: false,
+        },
+        withCredentials: true,
+        responseType: 'json',
+      },
+    ).then(
+      (res) => {
+        return;
+      },
+      (err) => {
+        return;
+      },
+    );
+  };
 
   const updateCase = async () => {
     await axios(`http://localhost:3001/cases/${patientCase.id}/update`, {
@@ -78,7 +106,7 @@ const EditCase = () => {
         setImageFile={setImageFile}
         patientCase={patientCase}
         setPatientCase={setPatientCase}
-        caseAndDiagnosticAction={async () => {}}
+        createDiagnostic={createDiagnostic}
         caseAction={updateCase}
         deleteCase={deleteCase}
       />

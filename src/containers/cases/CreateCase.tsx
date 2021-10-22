@@ -14,8 +14,6 @@ const CreateCase = () => {
     patientSex: 'Male',
     patientWeight: 0,
     imageURL: '',
-    hasDiagnostic: false,
-    isPublic: false,
   });
 
   const createCase = async () => {
@@ -47,7 +45,6 @@ const CreateCase = () => {
         setImageFile={setImageFile}
         patientCase={patientCase}
         setPatientCase={setPatientCase}
-        caseAndDiagnosticAction={async () => {}}
         caseAction={createCase}
       />
     </div>

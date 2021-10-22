@@ -9,9 +9,9 @@ import ICase from '../db/interfaces/ICase';
 const router = Router();
 
 router.get('/', verifyJWT, async (req: Request, res: Response) => {
-  const userID = res.locals.jwt.id;
+  const userId = res.locals.jwt.id;
 
-  Case.findAll({ where: { userId: userID } }).then(
+  Case.findAll({ where: { userId: userId } }).then(
     (cases) => {
       return res.status(200).json(cases);
     },
@@ -38,10 +38,10 @@ router.post(
         .status(400)
         .json({ message: 'Please fill all the fields correctly' });
     }
-    const userID = res.locals.jwt.id;
+    const userId = res.locals.jwt.id;
     const data = req.body;
     await Case.create({
-      userId: userID,
+      userId: userId,
       caseName: data.caseName,
       caseDescription: data.caseDescription,
       patientName: data.patientName,

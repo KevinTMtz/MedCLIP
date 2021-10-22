@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import {
   TextField,
   createStyles,
@@ -60,7 +61,7 @@ interface CaseFormProps {
   setImageFile: React.Dispatch<React.SetStateAction<File | undefined>>;
   patientCase: PatientCaseData;
   setPatientCase: React.Dispatch<React.SetStateAction<PatientCaseData>>;
-  caseAndDiagnosticAction: () => Promise<void>;
+  createDiagnostic?: () => Promise<void>;
   caseAction: () => Promise<void>;
   deleteCase?: () => Promise<void>;
 }
@@ -193,23 +194,45 @@ const CaseForm = (props: CaseFormProps) => {
 
         {/* Actions */}
         <div className={classes.displayRowsButtons}>
-          <Button
-            type='submit'
-            value='saveAndDiagnostic'
-            variant='contained'
-            color='primary'
-            onClick={() =>
-              history.push({
-                pathname: '/review-diagnostic',
-                state: {
-                  ...props.patientCase,
-                },
-              })
-            }
-          >
-            {props.isEditing ? 'Update case' : 'Create case'} &amp; Make
-            diagnostic
-          </Button>
+          {props.isEditing && (
+            <Button
+              type='submit'
+              value='diagnostic'
+              variant='contained'
+              color='primary'
+              onClick={async () => {
+                if (props.createDiagnostic) await props.createDiagnostic();
+
+                axios(
+                  `http://localhost:3001/diagnostics/${props.patientCase.id}`,
+                  {
+                    method: 'GET',
+                    headers: {
+                      'content-type': 'application/json',
+                    },
+                    withCredentials: true,
+                    responseType: 'json',
+                  },
+                ).then(
+                  (res) => {
+                    history.push({
+                      pathname: '/review-diagnostic',
+                      state: {
+                        patientCaseData: props.patientCase,
+                        diagnosticData: res.data.diagnostic_data,
+                      },
+                    });
+                  },
+                  (err) => {
+                    return;
+                  },
+                );
+              }}
+            >
+              Make diagnostic
+            </Button>
+          )}
+
           <Button
             variant='outlined'
             color='primary'

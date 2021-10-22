@@ -11,15 +11,15 @@ const hasDiagnostic = (req: Request, res: Response, next: NextFunction) => {
         return res.status(404).json({ message: 'Case not found' });
       const the_case = case_found;
       res.locals.case = case_found;
-      const diagnosticID = the_case.getDataValue('diagnosticId');
+      const diagnosticId = the_case.getDataValue('diagnosticId');
 
-      if (!diagnosticID) {
+      if (!diagnosticId) {
         return res
           .status(404)
           .json({ message: 'The case does not have a diagnostic yet' });
       }
 
-      Diagnostic.findOne({ where: { id: diagnosticID } }).then(
+      Diagnostic.findOne({ where: { id: diagnosticId } }).then(
         (diagnostic) => {
           res.locals.diagnostic = diagnostic;
           next();
