@@ -18,7 +18,7 @@ const ManageDiagnostic = () => {
 
   const deleteDiagnostic = async () => {
     await axios(
-      `http://localhost:3001/diagnostics/${locationState.patientCaseData.id}/change-visibility`,
+      `http://localhost:3001/diagnostics/${locationState.patientCaseData.id}/delete`,
       {
         method: 'POST',
         headers: {

@@ -29,7 +29,7 @@ const EditCase = () => {
       xhr.open('GET', patientCase.imageURL);
       xhr.send();
     }
-  }, []);
+  }, [patientCase.imageURL]);
 
   const createDiagnostic = async () => {
     await axios(

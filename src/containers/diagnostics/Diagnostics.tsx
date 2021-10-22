@@ -9,7 +9,7 @@ import CaseCellsLayout from '../../components/cases/CaseCellsLayout';
 const Diagnostics = () => {
   const classes = styles();
 
-  const [cases, setCases] = useState<PatientCaseData[]>([]);
+  const [cases] = useState<PatientCaseData[]>([]);
   const [displayedCases, setDisplayedCases] = useState<PatientCaseData[]>([]);
 
   useEffect(() => {

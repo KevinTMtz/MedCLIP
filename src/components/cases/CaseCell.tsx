@@ -67,7 +67,7 @@ const CaseCell = (props: CaseCellProps) => {
         },
       );
     }
-  }, []);
+  }, [props.patientCaseData.diagnosticId, props.patientCaseData.id]);
 
   return (
     <Card className={classesCaseCell.root}>
