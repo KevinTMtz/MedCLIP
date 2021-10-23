@@ -80,7 +80,8 @@ const CaseForm = (props: CaseFormProps) => {
       {/* Add onSubmit validation */}
       <form
         className={classes.displayRows}
-        onSubmit={async () => {
+        onSubmit={async (event) => {
+          event.preventDefault();
           await props.caseAction();
           history.push({
             pathname: '/home',
