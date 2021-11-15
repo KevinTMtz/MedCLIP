@@ -12,7 +12,7 @@ const Diagnostic = db.define<IDiagnostic>('Diagnostic', {
     unique: true,
   },
   diagnosis: {
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT,
     allowNull: false,
   },
   isPublic: {
