@@ -9,11 +9,12 @@ const DB_PASSWORD = process.env.DB_PASSWORD || '';
 const SERVER_PORT = process.env.SERVER_PORT || 3001;
 const SERVER_HOST = process.env.SERVER_HOST || 'localhost';
 const SERVER_TOKEN_EXPIRETIME = process.env.SERVER_TOKEN_EXPIRETIME || '6h';
-const SERVER_TOKEN_ISSUER = process.env.SERVER_TOKEN_EXPIRETIME || 'MedClip';
+const SERVER_TOKEN_ISSUER = process.env.SERVER_TOKEN_ISSUER || 'MedClip';
 const SERVER_TOKEN_SECRET =
   process.env.SERVER_TOKEN_SECRET || 'medclip_secretcode';
 
-const HTTP_COOKIE_MAXAGE = Number(process.env.HTTP_COOKIE_MAXAGE) || 10800000;
+const HTTP_COOKIE_MAXAGE =
+  parseInt(process.env.HTTP_COOKIE_MAXAGE!) || 10800000;
 
 const API_URL = process.env.API_URL || 'localhost:5000/';
 

@@ -1,5 +1,6 @@
 import { Request, Response, Router } from 'express';
 import { body, validationResult } from 'express-validator';
+import axios from 'axios';
 
 import verifyJWT from '../middlewares/verifyJWT';
 import Diagnostic from '../db/models/Diagnostic';
@@ -9,6 +10,7 @@ import hasDiagnostic from '../middlewares/hasDiagnostic';
 import checkVisibility from '../middlewares/checkVisibility';
 import IDiagnostic from '../db/interfaces/IDiagnostic';
 import Case from '../db/models/Case';
+import SERVER from '../config/config';
 
 const router = Router();
 
@@ -70,11 +72,42 @@ router.get(
   verifyJWT,
   isOwnedBy,
   async (req: Request, res: Response) => {
-    // const the_case: ICase = res.locals.case;
-    // TODO: Use model to get diagnostic
-    // const diagnostic = makeDiagnostic(the_case.imageURL)
-    const diagnosis = 'Vein of Galen Malformation';
-    return res.status(200).json(diagnosis);
+    axios
+      .get(SERVER.api.url + 'check', {
+        headers: {
+          'content-type': 'application/json',
+        },
+        responseType: 'json',
+        withCredentials: true,
+      })
+      .then(
+        () => {
+          console.log('API online');
+          const the_case: ICase = res.locals.case;
+          axios
+            .get(SERVER.api.url + 'get_caption', {
+              headers: {
+                'content-type': 'application/json',
+              },
+              data: {
+                url: the_case.getDataValue('imageURL'),
+              },
+              responseType: 'json',
+              withCredentials: true,
+            })
+            .then((caption) => {
+              return res.status(200).json(caption);
+            })
+            .catch((error) => {
+              return res
+                .status(400)
+                .json({ message: 'Invalid image url', error });
+            });
+        },
+        (error) => {
+          return res.status(500).json({ message: error.message, error });
+        },
+      );
   },
 );
 
