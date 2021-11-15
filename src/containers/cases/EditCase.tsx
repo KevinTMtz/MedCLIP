@@ -5,6 +5,7 @@ import axios from 'axios';
 import { PatientCaseData } from '../../common';
 import { mergeObjects } from '../../common/utils';
 import CaseForm from '../../components/cases/CaseForm';
+import Spinner from '../../components/auth/Spinner';
 
 interface CaseParams {
   caseId: string;
@@ -23,6 +24,8 @@ const EditCase = () => {
     patientWeight: 0,
     imageURL: '',
   });
+
+  const [isLoading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     axios(`http://localhost:3001/cases/${caseId}`, {
@@ -59,6 +62,7 @@ const EditCase = () => {
   }, [caseId]);
 
   const createDiagnostic = async () => {
+    setLoading(true);
     await axios(
       `http://localhost:3001/diagnostics/${patientCase?.id}/get-diagnosis`,
       {
@@ -89,13 +93,16 @@ const EditCase = () => {
         ).then(
           (res) => {
             console.log('Created diagnostic');
+            setLoading(false);
           },
           (err) => {
+            setLoading(false);
             return;
           },
         );
       },
       (err) => {
+        setLoading(false);
         return;
       },
     );
@@ -159,16 +166,20 @@ const EditCase = () => {
 
   return (
     <div>
-      <CaseForm
-        isEditing={true}
-        imageFile={imageFile}
-        setImageFile={setImageFile}
-        patientCase={patientCase}
-        setPatientCase={setPatientCase}
-        createDiagnostic={createDiagnostic}
-        caseAction={updateCase}
-        deleteCase={deleteCase}
-      />
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <CaseForm
+          isEditing={true}
+          imageFile={imageFile}
+          setImageFile={setImageFile}
+          patientCase={patientCase}
+          setPatientCase={setPatientCase}
+          createDiagnostic={createDiagnostic}
+          caseAction={updateCase}
+          deleteCase={deleteCase}
+        />
+      )}
     </div>
   );
 };
