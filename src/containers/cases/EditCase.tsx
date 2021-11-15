@@ -58,25 +58,42 @@ const EditCase = () => {
     );
   }, [caseId]);
 
-  const createDiagnostic = () => {
-    axios(
-      `http://localhost:3001/diagnostics/${patientCase?.id}/save-diagnostic`,
+  const createDiagnostic = async () => {
+    await axios(
+      `http://localhost:3001/diagnostics/${patientCase?.id}/get-diagnosis`,
       {
-        method: 'POST',
+        method: 'GET',
         headers: {
           'content-type': 'application/json',
-        },
-        data: {
-          diagnosis: 'Vein of Galen Malformation',
-          isPublic: false,
-          isAnonym: false,
         },
         withCredentials: true,
         responseType: 'json',
       },
     ).then(
-      (res) => {
-        console.log('Created diagnostic');
+      async (res) => {
+        await axios(
+          `http://localhost:3001/diagnostics/${patientCase?.id}/save-diagnostic`,
+          {
+            method: 'POST',
+            headers: {
+              'content-type': 'application/json',
+            },
+            data: {
+              diagnosis: res.data.diagnosis,
+              isPublic: false,
+              isAnonym: false,
+            },
+            withCredentials: true,
+            responseType: 'json',
+          },
+        ).then(
+          (res) => {
+            console.log('Created diagnostic');
+          },
+          (err) => {
+            return;
+          },
+        );
       },
       (err) => {
         return;

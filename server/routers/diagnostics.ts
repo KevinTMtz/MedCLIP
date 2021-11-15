@@ -82,7 +82,6 @@ router.get(
       })
       .then(
         () => {
-          console.log('API online');
           const the_case: ICase = res.locals.case;
           axios
             .get(SERVER.api.url + 'get_caption', {
@@ -95,8 +94,8 @@ router.get(
               responseType: 'json',
               withCredentials: true,
             })
-            .then((caption) => {
-              return res.status(200).json(caption);
+            .then((response) => {
+              return res.status(200).json({ diagnosis: response.data });
             })
             .catch((error) => {
               return res

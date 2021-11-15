@@ -60,7 +60,7 @@ interface CaseFormProps {
   setImageFile: React.Dispatch<React.SetStateAction<File | undefined>>;
   patientCase: PatientCaseData;
   setPatientCase: React.Dispatch<React.SetStateAction<PatientCaseData>>;
-  createDiagnostic?: () => void;
+  createDiagnostic?: () => Promise<void>;
   caseAction: () => Promise<void>;
   deleteCase?: () => Promise<void>;
 }
@@ -208,9 +208,8 @@ const CaseForm = (props: CaseFormProps) => {
               value='diagnostic'
               variant='contained'
               color='primary'
-              onClick={() => {
-                if (props.createDiagnostic) props.createDiagnostic();
-
+              onClick={async () => {
+                if (props.createDiagnostic) await props.createDiagnostic();
                 history.push({
                   pathname: '/home',
                   state: { currentTab: 1 },
