@@ -1,3 +1,7 @@
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 const DB_NAME = process.env.DB_NAME || 'medclip_dev';
 const DB_USERNAME = process.env.DB_USERNAME || 'root';
 const DB_PASSWORD = process.env.DB_PASSWORD || '';
@@ -10,6 +14,8 @@ const SERVER_TOKEN_SECRET =
   process.env.SERVER_TOKEN_SECRET || 'medclip_secretcode';
 
 const HTTP_COOKIE_MAXAGE = Number(process.env.HTTP_COOKIE_MAXAGE) || 10800000;
+
+const API_URL = process.env.API_URL || 'localhost:5000/';
 
 const SERVER = {
   port: SERVER_PORT,
@@ -26,6 +32,9 @@ const SERVER = {
   },
   httpCookie: {
     maxage: HTTP_COOKIE_MAXAGE,
+  },
+  api: {
+    url: API_URL,
   },
 };
 
