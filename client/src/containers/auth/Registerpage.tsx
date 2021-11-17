@@ -44,7 +44,7 @@ const Registerpage: React.FC = () => {
     }
     setIsAuth(true);
     //TODO: change all req paths to a variable
-    await axios('http://localhost:3001/auth/register', {
+    await axios('/api/auth/register', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',

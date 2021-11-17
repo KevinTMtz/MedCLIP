@@ -18,7 +18,8 @@ const port = 3001;
     console.log('Database online');
     await db.sync().then(() => console.log('Tables created'));
   } catch (error) {
-    throw new Error(error as string);
+    //throw new Error(error as string);
+    console.log(error);
   }
 })();
 

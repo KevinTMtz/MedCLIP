@@ -14,7 +14,7 @@ const Diagnostics = () => {
   const [displayedCases, setDisplayedCases] = useState<PatientCaseData[]>([]);
 
   useEffect(() => {
-    axios('http://localhost:3001/diagnostics/get-all-public', {
+    axios('/api/diagnostics/get-all-public', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',

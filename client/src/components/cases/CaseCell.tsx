@@ -51,7 +51,7 @@ const CaseCell = (props: CaseCellProps) => {
 
   useEffect(() => {
     if (props.patientCaseData.diagnosticId) {
-      axios(`http://localhost:3001/diagnostics/${props.patientCaseData.id}`, {
+      axios(`/api/diagnostics/${props.patientCaseData.id}`, {
         method: 'GET',
         headers: {
           'content-type': 'application/json',

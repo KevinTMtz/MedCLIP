@@ -73,7 +73,7 @@ const App = () => {
 
   const logout = () => {
     //TODO: change all req paths to a variable
-    axios('http://localhost:3001/auth/logout', {
+    axios('/api/auth/logout', {
       method: 'POST',
       responseType: 'json',
       withCredentials: true,

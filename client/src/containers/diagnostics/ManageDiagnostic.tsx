@@ -29,17 +29,14 @@ const ManageDiagnostic = () => {
   };
 
   const deleteDiagnostic = async () => {
-    await axios(
-      `http://localhost:3001/diagnostics/${locationState.patientCaseData.id}/delete`,
-      {
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json',
-        },
-        withCredentials: true,
-        responseType: 'json',
+    await axios(`/api/diagnostics/${locationState.patientCaseData.id}/delete`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
       },
-    ).then(
+      withCredentials: true,
+      responseType: 'json',
+    }).then(
       (res) => {
         history.push({
           pathname: '/home',
@@ -67,7 +64,7 @@ const ManageDiagnostic = () => {
     setDiagnosticData(mergeObjects(diagnosticData, newData));
 
     await axios(
-      `http://localhost:3001/diagnostics/${locationState.patientCaseData.id}/change-visibility`,
+      `/api/diagnostics/${locationState.patientCaseData.id}/change-visibility`,
       {
         method: 'POST',
         headers: {

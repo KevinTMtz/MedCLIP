@@ -28,7 +28,7 @@ const CreateCase = () => {
       responseType: 'json',
     }).then(
       async (res) => {
-        await axios('http://localhost:3001/cases/create', {
+        await axios('/api/cases/create', {
           method: 'POST',
           headers: {
             'content-type': 'application/json',

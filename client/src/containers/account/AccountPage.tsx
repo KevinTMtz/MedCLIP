@@ -27,7 +27,7 @@ const AccountPage: React.FC = () => {
     const GetInfo = async () => {
       setLoading(true);
       //TODO: change all req paths to a variable
-      await axios('http://localhost:3001/manage-users/get-my-info', {
+      await axios('/api/manage-users/get-my-info', {
         method: 'GET',
         headers: {
           'content-type': 'application/json',
@@ -74,7 +74,7 @@ const AccountPage: React.FC = () => {
     }
     setLoading(true);
     //TODO: change all req paths to a variable
-    await axios('http://localhost:3001/manage-users/update-my-user', {
+    await axios('/api/manage-users/update-my-user', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
@@ -102,7 +102,7 @@ const AccountPage: React.FC = () => {
   const DeleteUser = async () => {
     setLoading(true);
     //TODO: change all req paths to a variable
-    await axios('http://localhost:3001/manage-users/delete-my-user', {
+    await axios('/api/manage-users/delete-my-user', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
