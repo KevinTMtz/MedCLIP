@@ -17,7 +17,7 @@ const Cases = () => {
   const [displayedCases, setDisplayedCases] = useState<PatientCaseData[]>([]);
 
   useEffect(() => {
-    axios('http://localhost:3001/cases/', {
+    axios('/api/cases/', {
       method: 'GET',
       headers: {
         'content-type': 'application/json',

@@ -28,7 +28,7 @@ const EditCase = () => {
   const [isLoading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    axios(`http://localhost:3001/cases/${caseId}`, {
+    axios(`/api/cases/${caseId}`, {
       method: 'GET',
       headers: {
         'content-type': 'application/json',
@@ -63,34 +63,28 @@ const EditCase = () => {
 
   const createDiagnostic = async () => {
     setLoading(true);
-    await axios(
-      `http://localhost:3001/diagnostics/${patientCase?.id}/get-diagnosis`,
-      {
-        method: 'GET',
-        headers: {
-          'content-type': 'application/json',
-        },
-        withCredentials: true,
-        responseType: 'json',
+    await axios(`/api/diagnostics/${patientCase?.id}/get-diagnosis`, {
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json',
       },
-    ).then(
+      withCredentials: true,
+      responseType: 'json',
+    }).then(
       async (res) => {
-        await axios(
-          `http://localhost:3001/diagnostics/${patientCase?.id}/save-diagnostic`,
-          {
-            method: 'POST',
-            headers: {
-              'content-type': 'application/json',
-            },
-            data: {
-              diagnosis: res.data.diagnosis,
-              isPublic: false,
-              isAnonym: false,
-            },
-            withCredentials: true,
-            responseType: 'json',
+        await axios(`/api/diagnostics/${patientCase?.id}/save-diagnostic`, {
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json',
           },
-        ).then(
+          data: {
+            diagnosis: res.data.diagnosis,
+            isPublic: false,
+            isAnonym: false,
+          },
+          withCredentials: true,
+          responseType: 'json',
+        }).then(
           (res) => {
             console.log('Created diagnostic');
             setLoading(false);
@@ -120,7 +114,7 @@ const EditCase = () => {
       responseType: 'json',
     }).then(
       async (res) => {
-        await axios(`http://localhost:3001/cases/${patientCase.id}/update`, {
+        await axios(`/api/cases/${patientCase.id}/update`, {
           method: 'POST',
           headers: {
             'content-type': 'application/json',
@@ -147,7 +141,7 @@ const EditCase = () => {
   };
 
   const deleteCase = async () => {
-    await axios(`http://localhost:3001/cases/${patientCase.id}/delete`, {
+    await axios(`/api/cases/${patientCase.id}/delete`, {
       method: 'POST',
       headers: {
         'content-type': 'application/json',

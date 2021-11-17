@@ -2,9 +2,10 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+const DB_HOST = process.env.DB_HOST || 'localhost';
 const DB_NAME = process.env.DB_NAME || 'medclip_dev';
-const DB_USERNAME = process.env.DB_USERNAME || 'root';
-const DB_PASSWORD = process.env.DB_PASSWORD || '';
+const DB_USERNAME = process.env.DB_ROOT_USERNAME || 'username';
+const DB_PASSWORD = process.env.DB_ROOT_PASSWORD || '';
 
 const SERVER_PORT = process.env.SERVER_PORT || 3001;
 const SERVER_HOST = process.env.SERVER_HOST || 'localhost';
@@ -27,6 +28,7 @@ const SERVER = {
     secret: SERVER_TOKEN_SECRET,
   },
   db: {
+    host: DB_HOST,
     name: DB_NAME,
     username: DB_USERNAME,
     password: DB_PASSWORD,
